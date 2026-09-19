@@ -584,7 +584,7 @@ td.tk{color:var(--tx2);min-width:240px}
   </div>
   <div class="grid2">
     <div class="card pad">
-      <h3 style="font-size:16px;font-weight:800">대면 · 10월 2일 (목)</h3>
+      <h3 style="font-size:16px;font-weight:800">대면 · 10월 2일 (금)</h3>
       <p style="font-size:13px;color:var(--tx2);margin-top:7px">
         한국생산성본부 · 09:00 ~ 18:00 · 회당 1시간. 원하는 시간대를 선택하세요.</p>
       <div class="callout warn" style="margin-top:12px">
@@ -917,7 +917,7 @@ function loadState(){
   return api("/api/state" + q).then(function(j){
     BOOKINGS = [];
     Object.keys(j.taken || {}).forEach(function(t){
-      BOOKINGS.push({ n: j.taken[t].name, when: "10.02 (목) " + t, how: "대면",
+      BOOKINGS.push({ n: j.taken[t].name, when: "10.02 (금) " + t, how: "대면",
                       st: "확정", at: j.taken[t].at });
     });
     VOTEWIN = j.vote || VOTEWIN;
@@ -1030,7 +1030,7 @@ function openFace(){
 function faceTaken(){
   var t = {};
   BOOKINGS.forEach(function(r){
-    if (r.how === "대면" && r.st !== "취소") t[r.when.replace("10.02 (목) ", "")] = r.n;
+    if (r.how === "대면" && r.st !== "취소") t[r.when.replace("10.02 (금) ", "")] = r.n;
   });
   return t;
 }
@@ -1068,7 +1068,7 @@ function syncPick(){
   }
   $("pick").innerHTML = picked === null
     ? "시간대를 선택해 주세요."
-    : '<b>10월 2일 (목) ' + SLOTS[picked].t + " ~ " + (Number(SLOTS[picked].t.slice(0,2))+1)
+    : '<b>10월 2일 (금) ' + SLOTS[picked].t + " ~ " + (Number(SLOTS[picked].t.slice(0,2))+1)
       + ':00</b> · 한국생산성본부 · 1시간';
 }
 function fmtPhone(v){
