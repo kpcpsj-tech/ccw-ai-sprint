@@ -204,7 +204,15 @@ td.tk{color:var(--tx2);min-width:240px}
 .crange .dur{margin-left:auto;text-align:right}
 .crange .dur b{color:var(--vio)}
 
-.subs{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.subs{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.subph{display:flex;align-items:center;gap:10px;margin:26px 0 12px}
+.subph:first-child{margin-top:0}
+.subph h3{font-size:15.5px;font-weight:800;margin:0;letter-spacing:-.01em}
+.subph .sp-n{flex:none;width:26px;height:26px;border-radius:8px;display:grid;place-items:center;
+  background:var(--vio);color:#fff;font-size:11px;font-weight:700}
+.subph .sp-n.opt{background:var(--bg3);color:var(--tx2);border:1px solid var(--line2)}
+.subph .sp-due{margin-left:auto;font-size:10.5px;color:var(--tx3);white-space:nowrap}
+.sub.opt{border-style:dashed}
 @media (max-width:820px){.subs{grid-template-columns:1fr}}
 .sub{display:flex;flex-direction:column;gap:9px;padding:17px 18px;background:#fff;
   border:1px solid var(--line);border-radius:12px}
@@ -215,7 +223,11 @@ td.tk{color:var(--tx2);min-width:240px}
 .sub.ok .sub-n{background:var(--ok);color:#fff}
 .sub h4{font-size:14.5px;font-weight:700;margin:0}
 .sub .rq{font-family:"IBM Plex Mono",monospace;font-size:10.5px;color:var(--tx3);margin-top:2px}
-.sub .ds{font-size:12.5px;color:var(--tx2);line-height:1.65}
+.sub .ds{font-size:12.5px;color:var(--tx2);line-height:1.65;list-style:none;padding:0;margin:0;
+  display:flex;flex-direction:column;gap:5px}
+.sub .ds li{position:relative;padding-left:11px}
+.sub .ds li::before{content:"";position:absolute;left:0;top:8px;width:4px;height:4px;
+  border-radius:50%;background:var(--line2)}
 .fd{display:flex;gap:8px;margin-top:auto;padding-top:5px}
 .fd input{flex:1;min-width:0;font-family:"IBM Plex Mono",monospace;font-size:12px;
   border:1px solid var(--line2);border-radius:8px;padding:9px 11px;background:#fff;color:var(--tx)}
@@ -488,7 +500,8 @@ td.tk{color:var(--tx2);min-width:240px}
         <h3>규칙</h3>
         <ul class="cl">
           <li><b>제출 원칙</b> — 기획 단계의 산출물이 아닌, 실제로 작동하는 결과물을 제출합니다.</li>
-          <li><b>제출 기한</b> — 2026. 11. 20.(금). 4종을 모두 제출해야 심사 대상이 됩니다.</li>
+          <li><b>제출 기한</b> — 최종 피칭·전문가 사전평가용 제출물(a~c)은 2026. 11. 20.(금)까지.
+            데모데이용 제출물(d~e)은 별도 안내드립니다.</li>
           <li><b>멘토링</b> — 1인당 2회, 회당 1시간. 대면·비대면 여부와 관계없이 동일하게 적용합니다.</li>
           <li><b>과제 변경</b> — 해커톤 당시 시간이 부족해 다루지 못한 과제를 다시 진행하거나, 과제를 변경하는 것도 가능합니다.</li>
           <li class="no"><b>대면 일정 불참</b> — 11.21 전문가 심사와 12.4 수료식 피칭은 대면 일정으로,
@@ -632,27 +645,29 @@ td.tk{color:var(--tx2);min-width:240px}
 <!-- ======================= 제출 ======================= -->
 <div class="view wrap" id="v-submit" hidden>
   <div class="sec-h"><span class="n">03</span><h2>결과물 제출</h2>
-    <span class="hint">마감 2026. 11. 20 (금)</span></div>
+    <span class="hint">1차 마감 2026. 11. 20 (금)</span></div>
   <p style="color:var(--tx2);font-size:14px;max-width:66ch">
     기획 단계의 산출물이 아니라 <b>실제로 작동하는 결과물</b>을 제출하는 것이 원칙입니다.
-    아래 4종을 <b>하나의 구글폼</b>에서 한 번에 제출합니다. 마감 전까지 몇 번이든 다시 제출할 수 있고,
-    마지막 제출분이 심사 대상이 됩니다.</p>
+    제출물은 <b>제출 시점에 따라 두 묶음</b>으로 나뉩니다. 마감 전까지 몇 번이든 다시 제출할 수 있고,
+    마지막 제출분이 평가 대상이 됩니다.</p>
   <div style="margin-top:14px"><span class="chip mono" id="dSubmit">마감까지</span></div>
 
-  <div class="subs" id="subs" style="margin-top:18px"></div>
+  <div id="subs" style="margin-top:18px"></div>
 
   <div class="formbox">
     <div class="fb-main">
       <div class="fb-k">제출 폼 <span class="fb-lock">준비 중</span></div>
       <h3>CCW AI Sprint 최종 결과물 제출</h3>
-      <p>4종을 하나의 구글폼에서 한 번에 제출합니다. 폼은 아직 열리지 않았습니다.
+      <p>제출물을 하나의 구글폼에서 한 번에 제출합니다. 폼은 아직 열리지 않았습니다.
         열리는 즉시 이 버튼이 활성화되고, 진출자 10인에게 따로 안내드립니다.</p>
     </div>
     <button class="cta" id="formBtn" type="button" disabled aria-disabled="true">
       제출 폼 준비 중 <span aria-hidden="true">🔒</span></button>
   </div>
   <p class="authnote" style="margin-top:12px">
-    마감은 2026년 11월 20일(금)입니다. 폼이 열리기 전까지는 제출 항목만 미리 확인해 주세요.</p>
+    최종 피칭·전문가 사전평가용 제출물(a~c)의 마감은 2026년 11월 20일(금)입니다.
+    데모데이용 제출물(d~e)의 양식과 마감은 별도로 안내드립니다.
+    폼이 열리기 전까지는 제출 항목만 미리 확인해 주세요.</p>
 </div>
 
 <!-- ======================= 투표 ======================= -->
@@ -846,11 +861,31 @@ var HTL = [
   {d:"11.23", l:"청중 투표 오픈", s:""},
   {d:"12.04", l:"Final Sprint", s:""}
 ];
-var SUBMISSIONS = [
-  {i:1,t:"작동하는 AI 도구",  q:"접속 링크 또는 실행 파일",  d:"다른 사람이 직접 실행해 볼 수 있는 상태여야 합니다.", p:"https://…", k:"url"},
-  {i:2,t:"설명자료 (포스터)", q:"제공 양식 · PDF",           d:"문제, 목표 사용자, 핵심 기능, 이용 방법, 기대 효과. 데모데이 부스 포스터로도 사용합니다.", p:"poster.pdf", k:"file"},
-  {i:3,t:"시연 영상",         q:"5분 내외 녹화본",           d:"도구의 목적과 입력 내용, 사용 절차를 담습니다. 현장 사고 대비 백업으로도 활용합니다.", p:"https://youtu.be/…", k:"url"},
-  {i:4,t:"사용자 후기",       q:"본인 외 수 명의 사용 기록", d:"실제로 써 본 사람의 기록입니다. 멘토링에서 다루는 보완 작업의 근거가 됩니다.", p:"https://docs.google.com/…", k:"url"}
+var SUB_PHASES = [
+  { n:"01", t:"최종 피칭 및 전문가 사전평가", due:"2026. 11. 20 (금) 마감",
+    items:[
+      { i:"a", t:"작동하는 AI 도구", q:"접속 링크 또는 실행 파일", d:[
+        "제작한 AI 솔루션의 접속 링크 또는 실행 파일",
+        "타인이 직접 실행해 볼 수 있는 상태여야 합니다"]},
+      { i:"b", t:"설명자료 (피치덱)", q:"발표용 자료", d:[
+        "해결하려는 문제, 목표 사용자, AI 솔루션의 핵심 기능, 이용 방법 및 기대 효과 등을 포함합니다"]},
+      { i:"c", t:"시연 영상", q:"5분 내외", d:[
+        "목적과 입력 내용, 사용 절차 등을 포함한 5분 내외 영상",
+        "현장 사고에 대비한 백업으로 활용하며, 데모데이 부스에서 영상 루핑으로 사용합니다"]}
+    ]},
+  { n:"02", t:"파이널 스프린트 데모데이", due:"12. 4 (금) 부스 활용",
+    items:[
+      { i:"d", t:"AI 도구 및 시연 영상", q:"제공 양식", d:[
+        "개발한 AI 솔루션의 주요 내용을 한눈에 확인할 수 있도록 제공하는 양식에 맞춰 작성합니다",
+        "12. 4.(금) 데모데이의 청중평가 부스에 활용합니다"]},
+      { i:"e", t:"설명자료 (포스터)", q:"제공 양식", d:[
+        "개발한 AI 솔루션의 주요 내용을 한눈에 확인할 수 있도록 제공하는 양식에 맞춰 작성합니다",
+        "12. 4.(금) 데모데이의 청중평가 부스에 활용합니다"]}
+    ]}
+];
+var SUB_OPTIONAL = [
+  "행사에 참석한 청중들의 좋은 평가를 받기 위해 자율적으로 추가 준비를 하실 수 있습니다",
+  "예) 사용자 후기 — 본인 외에 실제로 사용해 본 사람 수 명의 사용 기록"
 ];
 var SLOTS = [];
 for (var h = 9; h <= 17; h++){
@@ -1003,12 +1038,26 @@ function renderAdmin(){
 }
 
 function renderSubs(){
-  $("subs").innerHTML = SUBMISSIONS.map(function(s){
-    return '<div class="sub">'
-      + '<div class="sub-t"><span class="sub-n">' + s.i + '</span>'
-      + '<div><h4>' + s.t + '</h4><div class="rq">' + s.q + '</div></div></div>'
-      + '<div class="ds">' + s.d + '</div></div>';
+  var o = SUB_PHASES.map(function(ph){
+    var cards = ph.items.map(function(s){
+      return '<div class="sub">'
+        + '<div class="sub-t"><span class="sub-n">' + s.i + '</span>'
+        + '<div><h4>' + s.t + '</h4><div class="rq">' + s.q + '</div></div></div>'
+        + '<ul class="ds">' + s.d.map(function(x){ return '<li>' + x + '</li>'; }).join("") + '</ul>'
+        + '</div>';
+    }).join("");
+    return '<div class="subph"><span class="sp-n mono">' + ph.n + '</span>'
+      + '<h3>' + ph.t + '</h3><span class="sp-due mono">' + ph.due + '</span></div>'
+      + '<div class="subs">' + cards + '</div>';
   }).join("");
+
+  o += '<div class="subph"><span class="sp-n mono opt">+</span>'
+     + '<h3>선택사항</h3><span class="sp-due mono">자율</span></div>'
+     + '<div class="sub opt"><ul class="ds">'
+     + SUB_OPTIONAL.map(function(x){ return '<li>' + x + '</li>'; }).join("")
+     + '</ul></div>';
+
+  $("subs").innerHTML = o;
 }
 function syncMine(){
   var mine = BOOKINGS.filter(function(r){ return r.n === who && r.st !== "취소"; });
