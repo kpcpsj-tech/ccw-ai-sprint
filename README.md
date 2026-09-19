@@ -6,7 +6,7 @@
 데이터는 구글 시트에 그대로 쌓이므로 사무국이 시트를 직접 열어 보고 고칠 수 있습니다.
 
 ```
-public/index.html      화면 전체 (HTML/CSS/JS 한 파일)
+index.html             화면 전체 (HTML/CSS/JS 한 파일)
 api/auth.js            비밀번호 확인
 api/state.js           공개 상태 — 예약된 슬롯, 투표 기간, 내 투표 내역
 api/book.js            대면 멘토링 신청 / 취소 (선착순)
@@ -87,8 +87,8 @@ Vercel 환경변수: `SHEET_ID`, `GOOGLE_SERVICE_ACCOUNT_EMAIL`, `GOOGLE_PRIVATE
 |---|---|
 | `APPS_SCRIPT_URL` | A안 5번의 `/exec` 주소 |
 | `APPS_SCRIPT_SECRET` | A안 3번에서 정한 문자열 |
-| `FINALIST_PW` | 진출자 비밀번호 (예: `AWD-7743`) |
-| `ADMIN_PW` | 운영사무국 비밀번호 (예: `BMG-9245`) |
+| `FINALIST_PW` | 진출자 10인에게 안내할 비밀번호 |
+| `ADMIN_PW` | 운영사무국 비밀번호 |
 | `PHONE_SALT` | 아무 긴 문자열. 휴대폰 번호를 해시할 때 씁니다 |
 
 > B안을 쓰신다면 `APPS_SCRIPT_*` 대신 `SHEET_ID` · `GOOGLE_SERVICE_ACCOUNT_EMAIL` · `GOOGLE_PRIVATE_KEY` 를 넣습니다.
@@ -160,7 +160,7 @@ curl -H "x-ccw-pw: 운영사무국_비밀번호" https://ccw-ai-sprint.vercel.ap
 구글 시트 없이 메모리만으로 돌려볼 수 있습니다 (서버를 끄면 데이터는 사라집니다).
 
 ```bash
-STORE=memory FINALIST_PW=AWD-7743 ADMIN_PW=BMG-9245 \
+STORE=memory FINALIST_PW=진출자에게-안내할-비밀번호 ADMIN_PW=운영사무국-비밀번호 \
 VOTE_OPEN=2020-01-01T00:00:00Z \
 node scripts/dev-server.js
 # http://localhost:3000

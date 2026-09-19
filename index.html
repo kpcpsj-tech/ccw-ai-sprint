@@ -778,9 +778,9 @@ td.tk{color:var(--tx2);min-width:240px}
 
       <div class="mlab">진출자 비밀번호</div>
       <div class="authrow">
-        <input type="password" id="finalPw" maxlength="10" placeholder="예) ABC-1234"
+        <input type="password" id="finalPw" maxlength="32" placeholder="사무국이 안내한 비밀번호"
                aria-label="진출자 비밀번호" autocomplete="off"
-               autocapitalize="characters" spellcheck="false">
+               autocapitalize="none" autocorrect="off" spellcheck="false">
       </div>
       <p class="authnote" id="authNote">사무국이 진출자 10인에게만 개별 안내한 비밀번호입니다.</p>
 
@@ -798,9 +798,9 @@ td.tk{color:var(--tx2);min-width:240px}
     <div id="stepAdmin" hidden>
       <div class="mlab">운영사무국 인증</div>
       <div class="authrow">
-        <input type="password" id="adminPw" maxlength="10" placeholder="예) ABC-1234"
+        <input type="password" id="adminPw" maxlength="32" placeholder="운영사무국 비밀번호"
                aria-label="운영사무국 비밀번호" autocomplete="off"
-               autocapitalize="characters" spellcheck="false">
+               autocapitalize="none" autocorrect="off" spellcheck="false">
       </div>
       <p class="authnote" id="adminNote">운영사무국에만 공유하는 비밀번호입니다.</p>
     </div>
@@ -1209,7 +1209,7 @@ document.addEventListener("click", function(e){
 /* 비밀번호는 서버(환경변수)에만 있습니다. 화면 코드에는 들어 있지 않습니다. */
 var HINT_F = '사무국이 진출자 10인에게만 개별 안내한 비밀번호입니다.';
 var HINT_A = '운영사무국에만 공유하는 비밀번호입니다.';
-var PWLEN = 7;   /* 영문 3 + 숫자 4 */
+var PWLEN = 4;   /* 들어가기 버튼을 열어 주는 최소 길이. 실제 확인은 서버가 합니다. */
 
 function setRole(r){
   role = r;
@@ -1243,7 +1243,7 @@ function syncModal(){
 function normPw(v){ return String(v || "").toUpperCase().replace(/[^A-Z0-9]/g, ""); }
 function pwWatch(inputId, noteId, hint){
   $(inputId).addEventListener("input", function(){
-    this.value = this.value.toUpperCase().replace(/[^A-Z0-9-]/g, "").slice(0, 10);
+    this.value = this.value.replace(/\s/g, "").slice(0, 32);
     $(noteId).innerHTML = hint;
     syncModal();
   });

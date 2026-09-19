@@ -4,7 +4,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-const root = path.dirname(fileURLToPath(import.meta.url)) + "/..";
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const PORT = Number(process.env.PORT || 3000);
 const TYPES = { ".html": "text/html; charset=utf-8", ".css": "text/css; charset=utf-8",
                 ".js": "text/javascript; charset=utf-8", ".png": "image/png",
@@ -29,8 +29,8 @@ const server = http.createServer(async (req, res) => {
   }
 
   const rel = url.pathname === "/" ? "/index.html" : url.pathname;
-  const file = path.join(root, "public", rel);
-  if (!file.startsWith(path.join(root, "public")) || !fs.existsSync(file)) {
+  const file = path.join(root, rel);
+  if (!file.startsWith(root) || !fs.existsSync(file)) {
     res.statusCode = 404; return res.end("not found");
   }
   res.setHeader("content-type", TYPES[path.extname(file)] || "application/octet-stream");
