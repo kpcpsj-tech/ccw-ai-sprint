@@ -1,0 +1,12 @@
+{
+  "name": "ccw-ai-sprint",
+  "version": "1.0.0",
+  "private": true,
+  "description": "CCW AI 스프린트 · 파이널 스프린트 — 안내 · 멘토링 예약 · 결과물 제출 · 청중 투표",
+  "type": "module",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "dev": "node scripts/dev-server.js",
+    "test": "node --test scripts/*.test.js"
+  }
+}
