@@ -19,30 +19,61 @@ scripts/dev-server.js  로컬 확인용 서버
 
 ---
 
-## 1. 구글 시트 준비 (약 10분, 한 번만)
+## 1. 구글 시트 준비
 
-### 1-1. 스프레드시트 만들기
+저장소는 두 가지 방식 중 하나를 고르면 됩니다. **A안(Apps Script)을 권장합니다.**
+구글 클라우드 프로젝트도, 서비스 계정도, JSON 키도 필요 없어서 조직 보안 정책에 막히지 않습니다.
+
+### 1-1. 스프레드시트 만들기 (두 방식 공통)
 1. https://sheets.new 에서 새 시트를 만듭니다.
-2. 이름을 `CCW AI 스프린트 운영` 처럼 알아보기 쉽게 바꿉니다.
+2. 이름을 `CCW Final sprint 운영` 처럼 알아보기 쉽게 바꿉니다.
 3. 주소창의 `https://docs.google.com/spreadsheets/d/`**`여기_긴_문자열`**`/edit` 에서
-   가운데 긴 문자열이 **SHEET_ID** 입니다. 복사해 둡니다.
+   가운데 긴 문자열이 **SHEET_ID** 입니다. (A안에서는 쓰지 않습니다)
 
-> 탭(`bookings`, `votes`)은 직접 만들 필요 없습니다. 4번 단계에서 자동으로 생깁니다.
+> 탭(`bookings`, `votes`)은 직접 만들 필요 없습니다. 자동으로 생깁니다.
 
-### 1-2. 서비스 계정 만들기
-1. https://console.cloud.google.com/projectcreate → 프로젝트 이름 `ccw-ai-sprint` → **만들기**
+---
+
+### A안 (권장) — Apps Script 웹 앱
+
+시트에 스크립트를 붙여서, **시트 주인 권한으로** 읽고 씁니다.
+
+1. 시트에서 **확장 프로그램 → Apps Script**
+2. 편집기의 내용을 모두 지우고 이 저장소의 [`apps-script/Code.gs`](apps-script/Code.gs) 내용을 **전부** 붙여넣습니다.
+3. 맨 위 `var SECRET = "..."` 를 길고 아무도 모르는 문자열로 바꿉니다. (예: 무작위 32자)
+4. 💾 저장 → 우측 상단 **배포 → 새 배포**
+   - 톱니바퀴 → **웹 앱**
+   - 설명: `ccw`
+   - **실행 계정: 나**
+   - **액세스 권한: 모든 사용자** ← 이게 아니면 로그인 화면이 돌아와 실패합니다
+   - **배포** → 권한 승인 (본인 계정 선택 → 고급 → 이동 → 허용)
+5. 나온 **웹 앱 URL**(`.../exec` 로 끝남)을 복사합니다.
+
+Vercel 환경변수:
+
+| 이름 | 값 |
+|---|---|
+| `APPS_SCRIPT_URL` | 5번의 `/exec` 주소 |
+| `APPS_SCRIPT_SECRET` | 3번에서 정한 문자열 |
+
+> 코드를 고쳐 다시 배포할 때는 **배포 관리 → 연필 → 버전: 새 버전 → 배포** 로 하세요.
+> "새 배포"를 다시 누르면 주소가 바뀝니다.
+
+---
+
+### B안 — 서비스 계정 (Sheets API 직접 호출)
+
+조직 정책이 서비스 계정 키 생성을 막지 않는 경우에만 됩니다.
+
+1. https://console.cloud.google.com/projectcreate → 프로젝트 `ccw-ai-sprint` → **만들기**
+   (위치가 `조직 없음` 인지 확인)
 2. https://console.cloud.google.com/apis/library/sheets.googleapis.com → **사용 설정**
-   (위쪽에서 방금 만든 프로젝트가 선택돼 있는지 확인)
 3. https://console.cloud.google.com/iam-admin/serviceaccounts → **서비스 계정 만들기**
-   - 이름: `ccw-sheets` → **만들고 계속하기** → 역할은 비워 둬도 됩니다 → **완료**
-4. 만들어진 계정을 클릭 → **키** 탭 → **키 추가 → 새 키 만들기 → JSON** → **만들기**
-   JSON 파일이 내려받아집니다. **이 파일이 곧 비밀번호입니다. 메신저로 공유하지 마세요.**
+   - 이름 `ccw-sheets` → **만들고 계속하기** → 역할 없이 → **완료**
+4. 계정 클릭 → **키** 탭 → **키 추가 → 새 키 만들기 → JSON** → **만들기**
+5. JSON 의 `client_email` 주소를 1-1 시트에 **편집자**로 공유합니다. (빠뜨리면 403)
 
-### 1-3. 시트를 서비스 계정에 공유
-JSON 파일을 열면 `"client_email": "ccw-sheets@....iam.gserviceaccount.com"` 이 있습니다.
-1-1 에서 만든 시트 → 우측 상단 **공유** → 이 이메일 주소를 붙여넣고 **편집자** 권한으로 공유합니다.
-
-> 이 단계를 빠뜨리면 `시트 오류 403` 이 납니다. 가장 흔한 실수입니다.
+Vercel 환경변수: `SHEET_ID`, `GOOGLE_SERVICE_ACCOUNT_EMAIL`, `GOOGLE_PRIVATE_KEY`
 
 ---
 
@@ -54,15 +85,14 @@ JSON 파일을 열면 `"client_email": "ccw-sheets@....iam.gserviceaccount.com"`
 
 | 이름 | 값 |
 |---|---|
-| `SHEET_ID` | 1-1 에서 복사한 긴 문자열 |
-| `GOOGLE_SERVICE_ACCOUNT_EMAIL` | JSON 의 `client_email` 값 |
-| `GOOGLE_PRIVATE_KEY` | JSON 의 `private_key` 값 **통째로** (`-----BEGIN PRIVATE KEY-----` 부터 `-----END PRIVATE KEY-----\n` 까지) |
+| `APPS_SCRIPT_URL` | A안 5번의 `/exec` 주소 |
+| `APPS_SCRIPT_SECRET` | A안 3번에서 정한 문자열 |
 | `FINALIST_PW` | 진출자 비밀번호 (예: `AWD-7743`) |
 | `ADMIN_PW` | 운영사무국 비밀번호 (예: `BMG-9245`) |
 | `PHONE_SALT` | 아무 긴 문자열. 휴대폰 번호를 해시할 때 씁니다 |
 
+> B안을 쓰신다면 `APPS_SCRIPT_*` 대신 `SHEET_ID` · `GOOGLE_SERVICE_ACCOUNT_EMAIL` · `GOOGLE_PRIVATE_KEY` 를 넣습니다.
 > `GOOGLE_PRIVATE_KEY` 는 JSON 에 적힌 그대로(줄바꿈이 `\n` 문자로 들어 있는 상태) 붙여넣으면 됩니다.
-> 코드가 알아서 실제 줄바꿈으로 되돌립니다.
 
 선택 사항 — 투표 기간을 코드 수정 없이 바꾸고 싶을 때:
 
@@ -90,8 +120,7 @@ Vercel 프로젝트 → **Settings → Domains** 에서 `ccw-ai-sprint.vercel.ap
 curl -H "x-ccw-pw: 운영사무국_비밀번호" https://ccw-ai-sprint.vercel.app/api/setup
 ```
 
-`{"ok":true,"store":"sheets"}` 가 나오면 끝입니다.
-`403` 이 나오면 1-3 의 시트 공유를 빠뜨린 것입니다.
+`{"ok":true,"store":"script"}` (또는 `"sheets"`) 가 나오면 끝입니다.
 
 ---
 
