@@ -1,3 +1,8 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<meta name="description" content="CCW AI 스프린트 파이널 스프린트 — 일정 안내, 대면 멘토링 예약, 결과물 제출">
 <title>AI와 함께 더 멀리 달리는 K-콘텐츠</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -39,7 +44,24 @@ button{font-family:inherit}
 .chip{font-family:"IBM Plex Mono",monospace;font-size:11px;padding:5px 12px;border-radius:999px;
   background:var(--viobg);border:1px solid var(--violine);color:var(--vio);white-space:nowrap}
 .greet{display:inline-flex;align-items:center;gap:8px;background:var(--bg2);
-  border:1px solid var(--line);border-radius:999px;padding:5px 13px;font-size:12.5px;color:var(--tx2)}
+  border:1px solid var(--line);border-radius:999px;padding:5px 13px;font-size:12.5px;color:var(--tx2);
+  white-space:nowrap;min-width:0;overflow:hidden;text-overflow:ellipsis}
+
+/* ---------------- 모바일 ---------------- */
+@media (max-width:640px){
+  .gnb .row{gap:8px;padding-block:10px}
+  .brand img{height:20px}
+  .brand b{font-size:12px}
+  .greet{font-size:11.5px;padding:4px 10px;max-width:46vw}
+  .gnb .chip{display:none}              /* 좁은 화면에서는 D-day 를 감춥니다 */
+  .tabs{top:41px}
+  .tabs .row{gap:0}
+  .tabs button{padding-inline:12px;font-size:13.5px}
+}
+/* 가로 스크롤이 생기지 않도록 */
+html,body{overflow-x:hidden}
+table{border-collapse:collapse}
+.tblw{-webkit-overflow-scrolling:touch}
 
 /* ---------------- 배너 ---------------- */
 .banner{position:relative;overflow:hidden;border-bottom:1px solid var(--line);
@@ -334,7 +356,7 @@ td.tk{color:var(--tx2);min-width:240px}
   padding:10px 12px;background:#fff;color:var(--tx);font-family:inherit}
 .addrow input{flex:1;min-width:150px;font-family:"IBM Plex Mono",monospace}
 .addrow select:focus,.addrow input:focus{outline:none;border-color:var(--vio)}
-.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:11px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:11px;max-width:760px}
 @media (max-width:760px){.kpis{grid-template-columns:1fr}}
 .kpi{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px}
 .kpi .k{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.14em;
@@ -388,6 +410,15 @@ td.tk{color:var(--tx2);min-width:240px}
   color:var(--tx3);margin:20px 0 9px;font-weight:600}
 .names{display:grid;grid-template-columns:repeat(5,1fr);gap:7px}
 @media (max-width:560px){.names{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:420px){
+  .slots{grid-template-columns:repeat(2,1fr)}
+  .b-keys{font-size:11.5px;line-height:1.9}
+  .sec-h{flex-wrap:wrap}
+  .sec-h .hint{width:100%;margin-left:0;margin-top:2px}
+}
+/* 손가락으로 누를 수 있는 크기 */
+.slot,.name,.btn,.tabs button,.subnav button{min-height:40px}
+input,select,textarea{font-size:16px}   /* iOS 자동 확대 방지 */
 .name{background:#fff;border:1px solid var(--line2);color:var(--tx);border-radius:9px;
   padding:11px 4px;font-size:13px;font-weight:700;cursor:pointer;transition:.15s}
 .name:hover{border-color:var(--vio)}
@@ -457,7 +488,7 @@ td.tk{color:var(--tx2);min-width:240px}
     <button role="tab" data-view="guide" aria-selected="true">과정안내</button>
     <button role="tab" data-view="mentoring" aria-selected="false">멘토링</button>
     <button role="tab" data-view="submit" aria-selected="false">제출</button>
-    <button role="tab" data-view="vote" aria-selected="false">투표</button>
+    <button role="tab" data-view="vote" aria-selected="false" data-vote-only>투표</button>
     <button role="tab" data-view="admin" aria-selected="false">관리</button>
   </div>
 </nav>
@@ -527,18 +558,12 @@ td.tk{color:var(--tx2);min-width:240px}
                   <td class="tk">작동하는 결과물과 한 장짜리 사용법(포스터) 제출</td></tr>
               <tr><td class="nm mono">11.21 (토)</td><td class="nm">전문가 심사</td>
                   <td class="tk">한국생산성본부 405호. 10인 발표 후 상위 3인 선정</td></tr>
-              <tr><td class="nm mono">11.23 (월)</td><td class="nm">청중 투표 오픈</td>
-                  <td class="tk">쇼케이스에 시연 영상과 설명자료 게시</td></tr>
               <tr><td class="nm mono">12.04 (금)</td><td class="nm">Final Sprint</td>
                   <td class="tk">홍릉 콘텐츠인재캠퍼스 로비. 부스 10개 · 피칭 · 시상 · 수료식</td></tr>
             </tbody>
           </table>
         </div>
-        <div class="callout warn">
-          <span aria-hidden="true">⚠</span>
-          <div><b>청중 투표는 12.4(금) 14:00에 마감</b>됩니다. 부스가 13:00에 열리므로 현장 투표 시간은 1시간뿐입니다.
-          <b>11.23(월)부터 사이트 투표를 먼저 열어</b> 표를 모읍니다.</div>
-        </div>
+
       </section>
 
       <section id="s-prize">
@@ -723,6 +748,7 @@ td.tk{color:var(--tx2);min-width:240px}
     누가 무엇을 냈는지는 구글폼 응답 시트에서 바로 확인해 주세요.</div>
   </div>
 
+  <div data-vote-only>
   <div class="sec-h" style="margin-top:30px"><span class="n">A</span><h2>청중 투표 집계</h2>
     <span class="hint">유효 표만 반영 · 11.23 오픈 · 12.4 14:00 마감</span></div>
   <div class="card pad"><div id="admVote"></div></div>
@@ -753,6 +779,13 @@ td.tk{color:var(--tx2);min-width:240px}
     동일 번호 중복은 엑셀에서 직접 확인하실 수 있도록 CSV에 번호를 그대로 담았습니다.
     공용 와이파이에서는 정상 투표도 함께 잡힐 수 있으니 최종 판단은 사무국이 해 주세요.</div>
   </div>
+  </div>
+
+  <div class="callout info" id="voteOffNote" hidden>
+    <span aria-hidden="true">▸</span>
+    <div><b>청중 투표는 11월 23일(월)에 엽니다.</b> 그때까지 투표 탭과 집계 화면은 닫아 두었습니다.
+    오픈 시점에 사무국 안내 없이 자동으로 열립니다.</div>
+  </div>
 
 </div>
 
@@ -779,13 +812,13 @@ td.tk{color:var(--tx2);min-width:240px}
     <div class="roles" id="roles">
       <button class="role" type="button" data-role="finalist" aria-pressed="false">
         <b>파이널 스프린트 진출자</b>
-        <span>과정안내 · 멘토링 예약 · 결과물 제출 · 투표</span></button>
+        <span>과정안내 · 멘토링 예약 · 결과물 제출</span></button>
       <button class="role" type="button" data-role="voter" aria-pressed="false">
         <b>투표 참여자</b>
         <span>과정안내 · 청중 투표</span></button>
       <button class="role" type="button" data-role="admin" aria-pressed="false">
         <b>운영사무국</b>
-        <span>예약 · 제출 · 투표 현황 관리</span></button>
+        <span>예약 · 운영 현황 관리</span></button>
     </div>
 
     <div id="stepFinalist" hidden>
@@ -1000,14 +1033,17 @@ function renderAdmin(){
     return;
   }
   var k = ADMIN.kpi;
-  $("kpis").innerHTML =
-    '<div class="kpi"><div class="k">대면 남은 자리</div><div class="v mono">' + k.faceOpen + ' / ' + k.faceTotal + '</div>'
-    + '<div class="s">10월 2일 · 선착순</div></div>'
-    + '<div class="kpi"><div class="k">총 투표</div><div class="v mono">' + k.votesTotal + '</div>'
-    + '<div class="s">참여 번호 ' + k.votersApprox + '개</div></div>'
-    + '<div class="kpi' + (k.autoExcluded ? ' alert' : '') + '"><div class="k">자동 제외</div>'
-    + '<div class="v mono">' + k.autoExcluded + '</div>'
-    + '<div class="s">' + k.flaggedIps + '개 IP · 5회 이상</div></div>';
+  var kpi = '<div class="kpi"><div class="k">대면 남은 자리</div><div class="v mono">'
+    + k.faceOpen + ' / ' + k.faceTotal + '</div>'
+    + '<div class="s">10월 2일 · 선착순</div></div>';
+  if (VOTE_ENABLED){
+    kpi += '<div class="kpi"><div class="k">총 투표</div><div class="v mono">' + k.votesTotal + '</div>'
+      + '<div class="s">참여 번호 ' + k.votersApprox + '개</div></div>'
+      + '<div class="kpi' + (k.autoExcluded ? ' alert' : '') + '"><div class="k">자동 제외</div>'
+      + '<div class="v mono">' + k.autoExcluded + '</div>'
+      + '<div class="s">' + k.flaggedIps + '개 IP · 5회 이상</div></div>';
+  }
+  $("kpis").innerHTML = kpi;
 
   var max = Math.max.apply(null, ADMIN.tally.map(function(r){ return r.net; })) || 1;
   $("admVote").innerHTML = ADMIN.tally.map(function(r){
@@ -1170,16 +1206,33 @@ function renderNames(){
 }
 
 /* ===================== 내비 ===================== */
+/* 청중 투표는 11월 23일에 엽니다. 그때 이 값만 true 로 바꾸면 탭과 투표 참여자
+   입장 칸이 함께 살아납니다. 화면과 기능은 그대로 두었습니다. */
+var VOTE_ENABLED = false;
+
 var VIEWS = ["guide","mentoring","submit","vote","admin"];
 var ROLE_TABS = {
-  finalist: ["guide","mentoring","submit","vote"],
+  finalist: VOTE_ENABLED ? ["guide","mentoring","submit","vote"] : ["guide","mentoring","submit"],
   voter:    ["guide","vote"],
-  admin:    ["guide","mentoring","submit","vote","admin"]
+  admin:    VOTE_ENABLED ? ["guide","mentoring","submit","vote","admin"]
+                         : ["guide","mentoring","submit","admin"]
 };
+
+/* 투표를 열기 전에는 투표 참여자 칸과 투표 관련 안내를 감춥니다. */
+(function(){
+  if (VOTE_ENABLED) return;
+  var r = document.querySelector('.role[data-role="voter"]');
+  if (r) r.hidden = true;
+  document.querySelectorAll("[data-vote-only]").forEach(function(el){ el.hidden = true; });
+  var off = document.getElementById("voteOffNote");
+  if (off) off.hidden = false;
+})();
+
 function applyRole(){
   var allow = ROLE_TABS[role] || ["guide"];
   document.querySelectorAll(".tabs button").forEach(function(b){
-    b.hidden = allow.indexOf(b.getAttribute("data-view")) === -1;
+    b.hidden = allow.indexOf(b.getAttribute("data-view")) === -1
+               || (!VOTE_ENABLED && b.hasAttribute("data-vote-only"));
   });
   document.querySelector(".cta").hidden = allow.indexOf("submit") === -1;
   go(allow[0]);
