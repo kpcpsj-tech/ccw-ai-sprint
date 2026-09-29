@@ -748,12 +748,23 @@ input,select,textarea{font-size:16px}   /* iOS 자동 확대 방지 */
     누가 무엇을 냈는지는 구글폼 응답 시트에서 바로 확인해 주세요.</div>
   </div>
 
+  <div class="sec-h" style="margin-top:30px"><span class="n">A</span><h2>대면 멘토링 예약 현황</h2>
+    <span class="hint">10월 2일(금) · 선착순</span>
+    <button class="btn ghost sm" type="button" data-csv="book" style="margin-left:auto">CSV 내려받기</button></div>
+  <div class="tblw">
+    <table style="min-width:520px">
+      <thead><tr><th>시간</th><th>예약자</th><th>신청 시각</th><th>상태</th></tr></thead>
+      <tbody id="admBook"></tbody>
+    </table>
+  </div>
+  <p id="admYet" style="font-size:13px;color:var(--tx2);margin-top:10px"></p>
+
   <div data-vote-only>
-  <div class="sec-h" style="margin-top:30px"><span class="n">A</span><h2>청중 투표 집계</h2>
+  <div class="sec-h" style="margin-top:30px"><span class="n">B</span><h2>청중 투표 집계</h2>
     <span class="hint">유효 표만 반영 · 11.23 오픈 · 12.4 14:00 마감</span></div>
   <div class="card pad"><div id="admVote"></div></div>
 
-  <div class="sec-h" style="margin-top:30px"><span class="n">B</span><h2>투표 원장 · 번호별 투표 내역</h2>
+  <div class="sec-h" style="margin-top:30px"><span class="n">C</span><h2>투표 원장 · 번호별 투표 내역</h2>
     <button class="btn ghost sm" type="button" data-csv="ballot" style="margin-left:auto">CSV 내려받기</button></div>
   <p style="color:var(--tx2);font-size:13px;margin-top:-4px">
     입력된 휴대폰 번호가 <b>누구에게 투표했는지</b> 한 건씩 기록됩니다. 아래는 최근 12건 미리보기이고,
@@ -765,7 +776,7 @@ input,select,textarea{font-size:16px}   /* iOS 자동 확대 방지 */
     </table>
   </div>
 
-  <div class="sec-h" style="margin-top:30px"><span class="n">C</span><h2>중복 의심 · 자동 제외</h2>
+  <div class="sec-h" style="margin-top:30px"><span class="n">D</span><h2>중복 의심 · 자동 제외</h2>
     <button class="btn ghost sm" type="button" data-csv="flag" style="margin-left:auto">CSV 내려받기</button></div>
   <div class="tblw">
     <table>
@@ -1044,6 +1055,40 @@ function renderAdmin(){
       + '<div class="s">' + k.flaggedIps + '개 IP · 5회 이상</div></div>';
   }
   $("kpis").innerHTML = kpi;
+
+  /* 대면 예약 — 비어 있는 시간대까지 한눈에 보이도록 전 시간대를 늘어놓습니다 */
+  var live = (ADMIN.bookings || []).filter(function(b){
+    return b.status === "확정" && b.method === "대면";
+  });
+  var bySlot = {};
+  live.forEach(function(b){ bySlot[b.slot] = b; });
+
+  $("admBook").innerHTML = SLOTS.map(function(sl){
+    if (!sl.ok){
+      return '<tr><td class="nm mono">' + sl.t + '</td>'
+        + '<td class="tk" style="color:var(--tx3)">' + sl.why + '</td><td></td><td></td></tr>';
+    }
+    var b = bySlot[sl.t];
+    if (!b){
+      return '<tr><td class="nm mono">' + sl.t + '</td>'
+        + '<td class="tk" style="color:var(--tx3)">—</td>'
+        + '<td class="mono" style="color:var(--tx3)">—</td>'
+        + '<td class="tk" style="color:var(--tx3)">비어 있음</td></tr>';
+    }
+    return '<tr><td class="nm mono">' + sl.t + '</td>'
+      + '<td class="nm">' + b.name + '</td>'
+      + '<td class="mono" style="font-size:12px;color:var(--tx2)">' + (b.at || "") + '</td>'
+      + '<td class="ok-y">확정</td></tr>';
+  }).join("");
+
+  var booked = {};
+  live.forEach(function(b){ booked[b.name] = 1; });
+  var yet = FINALISTS.filter(function(f){ return !booked[f.n]; }).map(function(f){ return f.n; });
+  $("admYet").innerHTML = yet.length
+    ? '아직 신청하지 않은 진출자 <b>' + yet.length + '명</b> — ' + yet.join(', ')
+    : '<b style="color:var(--ok)">진출자 10인이 모두 신청했습니다.</b>';
+
+  if (!VOTE_ENABLED) return;
 
   var max = Math.max.apply(null, ADMIN.tally.map(function(r){ return r.net; })) || 1;
   $("admVote").innerHTML = ADMIN.tally.map(function(r){
