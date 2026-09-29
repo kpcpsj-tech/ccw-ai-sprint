@@ -3,7 +3,8 @@
  * 진출자 비밀번호(x-ccw-pw)가 필요합니다. 10월 2일 대면 멘토링 1회 선착순.
  */
 import { read, appendUnique, setStatus, BOOKING_TAB } from "./_lib/store.js";
-import { FINALISTS, SLOTS, json, fail, readBody, checkPassword, newId, nowIso, kst } from "./_lib/util.js";
+import { FINALISTS, SLOTS, json, fail, readBody, checkPassword, newId, nowIso, kst,
+         normalizeSlot } from "./_lib/util.js";
 
 const FACE_DATE = "2026-10-02";
 
@@ -26,7 +27,7 @@ export default async function handler(req, res) {
       return json(res, 200, { ok: true, cancelled: mine.slot });
     }
 
-    const slot = String(body.slot || "").trim();
+    const slot = normalizeSlot(body.slot);
     const known = SLOTS.find((s) => s.time === slot && s.open);
     if (!known) return fail(res, 400, "선택할 수 없는 시간입니다.");
 

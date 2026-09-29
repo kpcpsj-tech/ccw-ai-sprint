@@ -90,6 +90,24 @@ export function maskIp(ip) {
 }
 
 /** 01012345678 / 010-1234-5678 → 01012345678. 형식이 아니면 null. */
+/**
+ * 시트에서 읽은 시간대 값을 "HH:MM" 으로 맞춥니다.
+ * 스프레드시트가 "17:00" 을 "5:00:00 PM" 이나 "오후 5:00" 으로 보여 줄 수 있어서,
+ * 어떤 형태로 오더라도 같은 슬롯으로 알아보게 합니다.
+ */
+export function normalizeSlot(v) {
+  const raw = String(v ?? "").trim();
+  if (!raw) return "";
+  const hm = /(\d{1,2})\s*:\s*(\d{2})/.exec(raw);
+  if (!hm) return raw;
+  let h = Number(hm[1]);
+  const pm = /(오후|PM)/i.test(raw);
+  const am = /(오전|AM)/i.test(raw);
+  if (pm && h < 12) h += 12;
+  if (am && h === 12) h = 0;
+  return `${String(h).padStart(2, "0")}:${hm[2]}`;
+}
+
 export function normalizePhone(v) {
   const d = String(v || "").replace(/\D/g, "");
   return /^01[016789]\d{7,8}$/.test(d) ? d : null;

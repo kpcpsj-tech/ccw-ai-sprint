@@ -12,6 +12,17 @@ const COLS = {
              "target_id", "target_name", "ip", "ip_masked", "status"]
 };
 const db = { bookings: [], votes: [] };
+
+// 실제 시트에 들어 있는 줄 (MOCK_SEED=1 일 때만). 시트가 "17:00" 을 시각으로 바꿔
+// 보여 주는 상황도 함께 흉내 냅니다.
+if (process.env.MOCK_SEED) {
+  db.bookings = [
+    { id:"a", name:"성원제", slot:"13:00", method:"대면", created_at:"2026-09-19T11:48:35.338Z", status:"취소" },
+    { id:"b", name:"전혜선", slot:"5:00:00 PM", method:"대면", created_at:"2026-09-20T09:22:34.024Z", status:"확정" },
+    { id:"c", name:"양영주", slot:"14:00",      method:"대면", created_at:"2026-09-21T01:13:09.853Z", status:"확정" },
+    { id:"d", name:"최예지", slot:"오후 4:00",  method:"대면", created_at:"2026-09-21T06:54:56.349Z", status:"확정" }
+  ];
+}
 const rows = (tab) => db[tab].map((r, i) => ({ ...r, _row: i + 2 }));
 
 http.createServer(async (req, res) => {

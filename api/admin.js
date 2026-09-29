@@ -7,7 +7,7 @@
  */
 import { read, BOOKING_TAB, VOTE_TAB } from "./_lib/store.js";
 import { FINALISTS, SLOTS, IP_FLAG_THRESHOLD, json, fail, checkPassword,
-         autoExcludedIds, toCsv, kst } from "./_lib/util.js";
+         autoExcludedIds, toCsv, kst, normalizeSlot } from "./_lib/util.js";
 
 export default async function handler(req, res) {
   if (req.method !== "GET") return fail(res, 405, "GET만 지원합니다.");
@@ -60,7 +60,7 @@ export default async function handler(req, res) {
       } else if (csv === "book") {
         name = "CCW_대면예약";
         rows = [["성명", "일자", "시간", "방식", "신청시각", "상태"]];
-        bookings.forEach((b) => rows.push([b.name, "2026-10-02", b.slot, b.method, kst(b.created_at), b.status]));
+        bookings.forEach((b) => rows.push([b.name, "2026-10-02", normalizeSlot(b.slot), b.method, kst(b.created_at), b.status]));
       } else {
         return fail(res, 400, "알 수 없는 CSV 종류입니다.");
       }
@@ -96,7 +96,7 @@ export default async function handler(req, res) {
       },
       tally,
       bookings: bookings
-        .map((b) => ({ ...b, at: kst(b.created_at) }))
+        .map((b) => ({ ...b, slot: normalizeSlot(b.slot), at: kst(b.created_at) }))
         .sort((a, b) => a.slot.localeCompare(b.slot)),
       ballot: ballot.slice(0, 50).map((v) => {
         const f = FINALISTS.find((x) => x.id === v.target_id) || {};

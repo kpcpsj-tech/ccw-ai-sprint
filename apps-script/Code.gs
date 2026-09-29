@@ -41,20 +41,26 @@ function sheetFor(tab) {
   return sh;
 }
 
-/** 시트를 [{col: value, _row: n}, ...] 로 읽습니다. */
+/**
+ * 시트를 [{col: value, _row: n}, ...] 로 읽습니다.
+ *
+ * getValues() 가 아니라 getDisplayValues() 를 씁니다. 스프레드시트는 "17:00" 같은 값을
+ * 시각 자료형으로 바꿔 저장하는데, getValues() 로 읽으면 Date 객체가 돌아와
+ * "1899-12-30T08:00:00.000Z" 처럼 변합니다. 그러면 예약한 시간대를 화면에서 찾지 못합니다.
+ * 화면에 보이는 문자열을 그대로 가져오는 편이 안전합니다.
+ */
 function readRows(tab) {
   var sh = sheetFor(tab);
   var last = sh.getLastRow();
   if (last < 2) return [];
   var cols = COLS[tab];
-  var values = sh.getRange(2, 1, last - 1, cols.length).getValues();
+  var values = sh.getRange(2, 1, last - 1, cols.length).getDisplayValues();
   var rows = [];
   for (var i = 0; i < values.length; i++) {
     var empty = true, o = { _row: i + 2 };
     for (var j = 0; j < cols.length; j++) {
       var v = values[i][j];
-      if (v instanceof Date) v = v.toISOString();
-      o[cols[j]] = v === null || v === undefined ? "" : String(v);
+      o[cols[j]] = v === null || v === undefined ? "" : String(v).trim();
       if (o[cols[j]] !== "") empty = false;
     }
     if (!empty) rows.push(o);
@@ -62,11 +68,15 @@ function readRows(tab) {
   return rows;
 }
 
+/** 새로 넣는 줄은 서식을 텍스트로 고정해, 시간이나 날짜로 바뀌지 않게 합니다. */
 function appendRow(tab, obj) {
   var sh = sheetFor(tab), cols = COLS[tab], row = [];
   for (var i = 0; i < cols.length; i++) row.push(obj[cols[i]] === undefined ? "" : String(obj[cols[i]]));
-  sh.appendRow(row);
-  return sh.getLastRow();
+  var at = Math.max(sh.getLastRow() + 1, 2);
+  var rng = sh.getRange(at, 1, 1, cols.length);
+  rng.setNumberFormat("@");
+  rng.setValues([row]);
+  return at;
 }
 
 function setStatus(tab, rowNumber, status) {
