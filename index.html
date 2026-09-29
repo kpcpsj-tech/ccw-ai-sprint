@@ -1286,7 +1286,8 @@ function go(v){
   var allow = ROLE_TABS[role] || ["guide"];
   if (allow.indexOf(v) === -1) v = allow[0];
   VIEWS.forEach(function(x){ $("v-" + x).hidden = x !== v; });
-  if (v === "admin") renderAdmin();
+  if (v === "admin"){ renderAdmin(); loadAdmin().catch(function(){}); }
+  if (v === "mentoring" || v === "admin") loadState().catch(function(){});
   document.querySelectorAll(".tabs button").forEach(function(b){
     b.setAttribute("aria-selected", b.getAttribute("data-view") === v ? "true" : "false");
   });
@@ -1492,6 +1493,44 @@ document.addEventListener("click", function(e){
   if (c) downloadCsv(c.getAttribute("data-csv"), c);
 });
 $("totop").addEventListener("click", function(){ window.scrollTo({ top:0, behavior:"smooth" }); });
+
+/* ===================== 자동 갱신 =====================
+   선착순이라 화면이 오래된 채로 남아 있으면 이미 찬 시간을 누르게 됩니다.
+   멘토링 화면을 보고 있는 동안에만, 그것도 창이 앞에 있을 때만 주기적으로
+   다시 읽습니다. 다른 탭에 가 있거나 다른 화면을 보고 있으면 쉬므로
+   시트 쪽에 부담이 가지 않습니다. */
+(function(){
+  var EVERY = 60000;   /* 1분 */
+  var last = Date.now();
+  var busyNow = false;
+
+  function watching(){
+    if (!role || $("ov").hidden === false) return false;
+    if (document.hidden) return false;
+    var v = $("v-mentoring");
+    return v && !v.hidden;
+  }
+
+  function refresh(reason){
+    if (busyNow || !watching()) return;
+    busyNow = true;
+    last = Date.now();
+    loadState()
+      .then(function(){ if (role === "admin") return loadAdmin(); })
+      .catch(function(){})
+      .then(function(){ busyNow = false; });
+  }
+
+  setInterval(function(){
+    if (Date.now() - last >= EVERY) refresh("주기");
+  }, 10000);
+
+  /* 다른 일을 보다 창으로 돌아왔을 때는 바로 한 번 읽습니다 */
+  document.addEventListener("visibilitychange", function(){
+    if (!document.hidden) refresh("복귀");
+  });
+  window.addEventListener("focus", function(){ refresh("복귀"); });
+})();
 
 /* ===================== 시작 ===================== */
 document.body.style.overflow = "hidden";
