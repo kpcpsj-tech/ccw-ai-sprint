@@ -27,6 +27,12 @@ export const SLOTS = (() => {
   return out;
 })();
 
+/**
+ * 대면 멘토링 접수 여부. 10월 2일 일정이 끝나 기본값은 마감입니다.
+ * 다시 열어야 하면 Vercel 환경변수 BOOKING_OPEN 을 true 로 두면 됩니다.
+ */
+export const BOOKING_OPEN = process.env.BOOKING_OPEN === "true";
+
 export const MAX_VOTES_PER_PHONE = 3;
 /** 같은 IP에서 이 수 이상 들어오면 자동 제외 */
 export const IP_FLAG_THRESHOLD = 5;

@@ -625,7 +625,13 @@ input,select,textarea{font-size:16px}   /* iOS 자동 확대 방지 */
       <h3 style="font-size:16px;font-weight:800">대면 · 10월 2일 (금)</h3>
       <p style="font-size:13px;color:var(--tx2);margin-top:7px">
         한국생산성본부 · 09:00 ~ 18:00 · 회당 1시간. 원하는 시간대를 선택하세요.</p>
-      <div class="callout warn" style="margin-top:12px">
+      <div class="callout warn" style="margin-top:12px" id="bookClosed" hidden>
+        <span aria-hidden="true">⚠</span>
+        <div><b>대면 멘토링 접수가 마감되었습니다.</b> 아래는 확정된 내역입니다.
+        변경이나 취소가 필요하시면 운영사무국(koccaccw@gmail.com)으로 연락해 주세요.
+        남은 멘토링은 비대면으로 신청하실 수 있습니다.</div>
+      </div>
+      <div class="callout warn" style="margin-top:12px" id="bookOpenNote">
         <span aria-hidden="true">⚠</span>
         <div><b>대면 멘토링은 10월 2일에만 가능하며, 이날 1회만 사용할 수 있습니다.</b>
         이 일자가 어려우시면 비대면 멘토링을 활용해 주세요.</div>
@@ -947,6 +953,7 @@ var $ = function(id){ return document.getElementById(id); };
 /* ===================== 서버 연동 ===================== */
 var API  = { pw: "" };                 /* 새로고침하면 다시 입력합니다 */
 var VOTEWIN = { state: "before", maxPerPhone: 3 };
+var BOOKOPEN = true;   /* 서버(/api/state)가 알려 줍니다 */
 var NETERR = "서버에 연결하지 못했습니다. 잠시 후 다시 시도해 주세요.";
 
 function api(path, opts){
@@ -1001,6 +1008,7 @@ function loadState(){
                       st: "확정", at: j.taken[t].at });
     });
     VOTEWIN = j.vote || VOTEWIN;
+    if (j.booking) BOOKOPEN = j.booking.open !== false;
     MAXV = VOTEWIN.maxPerPhone || 3;
     if (j.vote && j.vote.myVotes) votes = j.vote.myVotes.map(Number);
     syncMine(); renderSlots(); syncPick(); renderVoteState(); renderWall();
@@ -1167,29 +1175,41 @@ function renderSlots(){
     var owner = taken[s.t];
     var mineSlot = owner && who && owner === who;
     var state, lock;
-    if (!s.ok)          { state = s.why;            lock = true; }
-    else if (mineSlot)  { state = "내 예약";         lock = true; }
-    else if (owner)     { state = owner;            lock = true; }
-    else if (faceBooked) { state = "신청 마감"; lock = true; }
-    else                { state = "신청 가능";       lock = false; open++; }
+    if (!s.ok)           { state = s.why;      lock = true; }
+    else if (mineSlot)   { state = "내 예약";    lock = true; }
+    else if (owner)      { state = owner;       lock = true; }
+    else if (!BOOKOPEN)  { state = "마감";       lock = true; }
+    else if (faceBooked) { state = "신청 마감";  lock = true; }
+    else                 { state = "신청 가능";  lock = false; open++; }
     var cls = "slot" + (mineSlot ? " mine" : (owner || !s.ok ? " gone" : ""));
     return '<button class="' + cls + '" type="button" data-slot="' + i + '" aria-pressed="'
       + (picked === i ? "true" : "false") + '"' + (lock ? " disabled" : "") + '>'
       + s.t + '<small>' + state + '</small></button>';
   }).join("");
-  $("slotLeft").innerHTML = '남은 자리 <b class="mono">' + open + '</b>개 / 전체 '
-    + SLOTS.filter(function(x){ return x.ok; }).length + '개 · 선착순';
+  var total = SLOTS.filter(function(x){ return x.ok; }).length;
+  $("slotLeft").innerHTML = BOOKOPEN
+    ? '남은 자리 <b class="mono">' + open + '</b>개 / 전체 ' + total + '개 · 선착순'
+    : '<b style="color:var(--dan)">접수 마감</b> · 확정된 ' + Object.keys(taken).length
+      + '건만 표시합니다';
   $("pips").innerHTML = '<i class="' + (faceBooked ? "on" : "") + '"></i>';
   $("quotaTxt").textContent = "대면 " + (faceBooked ? 1 : 0) + " / 1회 사용";
+  $("book").hidden = !BOOKOPEN;
   $("book").disabled = picked === null || faceBooked;
   $("book").textContent = faceBooked ? "대면 1회를 사용했습니다" : "선택한 시간으로 신청";
+  var closed = $("bookClosed"), opened = $("bookOpenNote");
+  if (closed) closed.hidden = BOOKOPEN;
+  if (opened) opened.hidden = !BOOKOPEN;
 }
 function syncPick(){
   var m = myFace();
-  $("cancel").hidden = !m;
+  $("cancel").hidden = !m || !BOOKOPEN;
   if (m){
     $("pick").innerHTML = '<b style="color:var(--vio)">내 예약 · ' + m.when + '</b>'
       + ' · 한국생산성본부 · 1시간 <span style="color:var(--tx3)">(신청 ' + m.at + ')</span>';
+    return;
+  }
+  if (!BOOKOPEN){
+    $("pick").innerHTML = '<span style="color:var(--tx3)">신청하신 내역이 없습니다.</span>';
     return;
   }
   $("pick").innerHTML = picked === null

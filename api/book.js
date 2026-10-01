@@ -3,7 +3,7 @@
  * 진출자 비밀번호(x-ccw-pw)가 필요합니다. 10월 2일 대면 멘토링 1회 선착순.
  */
 import { read, appendUnique, setStatus, BOOKING_TAB } from "./_lib/store.js";
-import { FINALISTS, SLOTS, json, fail, readBody, checkPassword, newId, nowIso, kst,
+import { FINALISTS, SLOTS, BOOKING_OPEN, json, fail, readBody, checkPassword, newId, nowIso, kst,
          normalizeSlot } from "./_lib/util.js";
 
 const FACE_DATE = "2026-10-02";
@@ -13,6 +13,11 @@ export default async function handler(req, res) {
 
   const auth = checkPassword(req, "FINALIST_PW");
   if (!auth.ok) return fail(res, 401, auth.reason);
+
+  if (!BOOKING_OPEN)
+    return fail(res, 403,
+      "대면 멘토링 예약이 마감되었습니다. 변경이 필요하시면 운영사무국(koccaccw@gmail.com)으로 연락해 주세요.",
+      { closed: true });
 
   const body = await readBody(req);
   const name = String(body.name || "").trim();

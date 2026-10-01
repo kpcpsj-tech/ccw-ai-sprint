@@ -1,6 +1,6 @@
 /** GET /api/state — 누구나 볼 수 있는 현재 상태 (예약된 대면 슬롯, 투표 기간) */
 import { read, BOOKING_TAB, VOTE_TAB } from "./_lib/store.js";
-import { FINALISTS, SLOTS, MAX_VOTES_PER_PHONE, json, fail, votingWindow,
+import { FINALISTS, SLOTS, MAX_VOTES_PER_PHONE, BOOKING_OPEN, json, fail, votingWindow,
          normalizePhone, normalizeSlot, hashPhone, kst } from "./_lib/util.js";
 
 export default async function handler(req, res) {
@@ -32,6 +32,7 @@ export default async function handler(req, res) {
       finalists: FINALISTS,
       slots: SLOTS,
       taken,
+      booking: { open: BOOKING_OPEN },
       vote: { ...window, maxPerPhone: MAX_VOTES_PER_PHONE, myVotes }
     });
   } catch (e) {
