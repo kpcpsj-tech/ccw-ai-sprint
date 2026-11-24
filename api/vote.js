@@ -1,6 +1,6 @@
 /**
  * POST /api/vote   { phone, token, targets: [id, ...] }
- * 휴대폰 인증(/api/otp)으로 받은 토큰이 있어야 합니다. 한 번호당 최대 3표, 같은 대상에는 1표.
+ * 휴대폰 인증(/api/otp)으로 받은 토큰이 있어야 합니다. 한 번호당 정확히 3표(서로 다른 3명).
  */
 import { read, append, setStatus, VOTE_TAB } from "./_lib/store.js";
 import { checkToken } from "./_lib/otp.js";
@@ -24,8 +24,8 @@ export default async function handler(req, res) {
   const wanted = Array.isArray(body.targets) ? [...new Set(body.targets.map(String))] : [];
   if (wanted.some((t) => !FINALISTS.some((f) => f.id === t)))
     return fail(res, 400, "알 수 없는 투표 대상입니다.");
-  if (wanted.length > MAX_VOTES_PER_PHONE)
-    return fail(res, 400, `한 번호당 최대 ${MAX_VOTES_PER_PHONE}표까지 투표할 수 있습니다.`);
+  if (wanted.length !== MAX_VOTES_PER_PHONE)
+    return fail(res, 400, `결과물을 꼭 ${MAX_VOTES_PER_PHONE}개 골라 투표해 주세요.`);
 
   try {
     const hash = hashPhone(phone);

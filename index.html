@@ -788,7 +788,7 @@ input,select,textarea{font-size:16px}   /* iOS 자동 확대 방지 */
     <span class="hint">11.30(월) 00:00 오픈 · 12.4(금) 18:00 마감</span></div>
 
   <ol class="vsteps">
-    <li><b>1</b><span>마음에 드는 결과물을<br><strong>최대 3개</strong> 고릅니다</span></li>
+    <li><b>1</b><span>마음에 드는 결과물을<br><strong>꼭 3개</strong> 고릅니다</span></li>
     <li><b>2</b><span>맨 아래<br><strong>투표 확정</strong>을 누릅니다</span></li>
     <li><b>3</b><span>휴대폰 <strong>인증번호</strong>를 넣으면<br>투표 완료</span></li>
   </ol>
@@ -805,9 +805,9 @@ input,select,textarea{font-size:16px}   /* iOS 자동 확대 방지 */
   <div class="wrap vbar2-in">
     <div class="vbar2-l">
       <span class="pips" id="vpips"></span>
-      <span id="vcount">결과물을 골라 주세요 (0 / 3)</span>
+      <span id="vcount">결과물을 3개 골라 주세요 (0 / 3)</span>
     </div>
-    <button class="cta" type="button" id="confirmBtn" disabled>투표 확정 →</button>
+    <button class="cta" type="button" id="confirmBtn" disabled>투표 확정 (0/3) →</button>
   </div>
 </div>
 
@@ -855,7 +855,7 @@ input,select,textarea{font-size:16px}   /* iOS 자동 확대 방지 */
         <button class="btn ghost" type="button" data-close-vm>다시 고르기</button>
         <button class="btn" type="button" id="submitVote" disabled>투표 완료</button>
       </div>
-      <p class="mnote">같은 번호로 다시 투표하면 마감 전까지 마지막에 고른 결과물로 바뀝니다.
+      <p class="mnote">한 번호당 결과물 3개에 한 표씩 투표합니다. 같은 번호로 다시 투표하면 마감 전까지 마지막에 고른 3개로 바뀝니다.
         득표 현황은 공개하지 않으며, 결과는 12월 4일 데모데이에서 발표합니다.</p>
     </div>
 
@@ -1017,10 +1017,10 @@ function renderVoteState(){
   $("vpips").innerHTML = p;
   $("vcount").textContent = !voteLive()
     ? (VOTEWIN.state === "closed" ? "투표가 마감되었습니다" : "11월 30일(월) 00:00에 투표가 열립니다")
-    : (picks.length ? (picks.length + "개 골랐어요 (" + picks.length + " / " + MAXV + ")")
-                    : "결과물을 골라 주세요 (0 / " + MAXV + ")");
-  $("confirmBtn").disabled = !voteLive() || !picks.length;
-  $("confirmBtn").textContent = voteLive() ? ("투표 확정 (" + picks.length + ") →")
+    : (picks.length === MAXV ? "3개를 모두 골랐어요. 투표를 확정해 주세요"
+                             : "결과물을 " + (MAXV - picks.length) + "개 더 골라 주세요 (" + picks.length + " / " + MAXV + ")");
+  $("confirmBtn").disabled = !voteLive() || picks.length !== MAXV;
+  $("confirmBtn").textContent = voteLive() ? ("투표 확정 (" + picks.length + "/" + MAXV + ") →")
     : (VOTEWIN.state === "closed" ? "투표 마감" : "11.30 오픈");
 }
 
@@ -1135,7 +1135,7 @@ window.addEventListener("scroll", function(){
 
 /* ===================== 투표 확정 · 휴대폰 인증 ===================== */
 function openVm(){
-  if (!picks.length || !voteLive()) return;
+  if (picks.length !== MAXV || !voteLive()) return;
   $("picked").innerHTML = picks.map(function(r){
     var i = 0; FINALISTS.forEach(function(x, k){ if (x.r === r) i = k; });
     var p = FINALISTS[i];
