@@ -36,8 +36,8 @@ export const MAX_VOTES_PER_PHONE = 3;
 /** 같은 IP에서 이 수 이상 들어오면 자동 제외 */
 export const IP_FLAG_THRESHOLD = 5;
 /** 투표 기간 (KST) */
-export const VOTE_OPEN  = process.env.VOTE_OPEN  || "2026-11-23T00:00:00+09:00";
-export const VOTE_CLOSE = process.env.VOTE_CLOSE || "2026-12-04T14:00:00+09:00";
+export const VOTE_OPEN  = process.env.VOTE_OPEN  || "2026-11-30T00:00:00+09:00";
+export const VOTE_CLOSE = process.env.VOTE_CLOSE || "2026-12-04T18:00:00+09:00";
 
 /* ===================== 유틸 ===================== */
 

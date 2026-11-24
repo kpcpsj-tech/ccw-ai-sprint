@@ -10,7 +10,7 @@ export default async function handler(req, res) {
   if (req.method !== "POST") return fail(res, 405, "POST만 지원합니다.");
 
   const w = votingWindow();
-  if (w.state === "before") return fail(res, 403, "청중 투표는 11월 23일(월)에 열립니다.", { window: w });
+  if (w.state === "before") return fail(res, 403, "청중 투표는 11월 30일(월)에 열립니다.", { window: w });
   if (w.state === "closed") return fail(res, 403, "청중 투표가 마감되었습니다.", { window: w });
 
   const body = await readBody(req);

@@ -593,8 +593,8 @@ input,select,textarea{font-size:16px}   /* iOS 자동 확대 방지 */
         <div class="mrow"><span class="mk">평가</span>
           <b style="font-weight:700">전문가 최종평가 85% + 청중 투표 15%</b></div>
         <div class="mrow"><span class="mk">투표</span>
-          <b class="mono" style="font-weight:700">11.23 (월) ~ 12.04 (금)</b>
-          <b style="color:var(--ok);font-weight:700">진행 중</b></div>
+          <b class="mono" style="font-weight:700">11.30 (월) ~ 12.04 (금) 18:00</b>
+          <b id="voteState" style="font-weight:700"></b></div>
         <div class="mrow"><span class="mk">데모</span>
           <b style="font-weight:700">12.04 (금) 15:00 · 홍릉콘텐츠인재캠퍼스 2층</b>
           <button class="gcal" type="button" id="gcal">+ Google Calendar</button></div>
@@ -686,8 +686,8 @@ input,select,textarea{font-size:16px}   /* iOS 자동 확대 방지 */
                   <td class="tk">AI 도구 링크 · 피치덱 · 시연 영상 · 부스 포스터(A1)</td></tr>
               <tr><td class="nm mono">11.21 (토) 15:00~18:00</td><td class="nm">최종 피칭 · 전문가 평가</td>
                   <td class="tk">한국생산성본부 405호. 1인당 발표·시연 10분 + 질의응답 5분, 5인씩 두 차례(순서 무작위 추첨)</td></tr>
-              <tr><td class="nm mono">11.23 (월) ~</td><td class="nm">온라인 청중 투표</td>
-                  <td class="tk">이 사이트의 투표 탭에서 진행</td></tr>
+              <tr><td class="nm mono">11.30 (월) ~ 12.04 (금) 18:00</td><td class="nm">청중 투표</td>
+                  <td class="tk">이 사이트의 투표 탭에서 진행 (데모데이 현장 투표 포함)</td></tr>
               <tr><td class="nm mono">12.04 (금) 15:00~18:00</td><td class="nm">데모데이 부스 · 현장 투표</td>
                   <td class="tk">홍릉콘텐츠인재캠퍼스 2층 프로젝트 룸. 부스(이젤·노트북)에서 결과물 시연</td></tr>
               <tr><td class="nm mono">12.04 (금) 19:15</td><td class="nm">대표 발표</td>
@@ -841,7 +841,7 @@ input,select,textarea{font-size:16px}   /* iOS 자동 확대 방지 */
 <!-- ======================= 투표 ======================= -->
 <div class="view wrap" id="v-vote" hidden>
   <div class="sec-h"><span class="n">04</span><h2>청중 투표</h2>
-    <span class="hint">11.23(월) 오픈 · 12.4(금) 14:00 마감</span></div>
+    <span class="hint">11.30(월) 오픈 · 12.4(금) 18:00 마감</span></div>
 
   <div class="card pad" style="margin-bottom:14px">
     <div class="vrow">
@@ -903,7 +903,7 @@ input,select,textarea{font-size:16px}   /* iOS 자동 확대 방지 */
 
   <div data-vote-only>
   <div class="sec-h" style="margin-top:30px"><span class="n">B</span><h2>청중 투표 집계</h2>
-    <span class="hint">유효 표만 반영 · 11.23 오픈 · 12.4 14:00 마감</span></div>
+    <span class="hint">유효 표만 반영 · 11.30 오픈 · 12.4 18:00 마감</span></div>
   <div class="card pad"><div id="admVote"></div></div>
 
   <div class="sec-h" style="margin-top:30px"><span class="n">C</span><h2>투표 원장 · 번호별 투표 내역</h2>
@@ -936,7 +936,7 @@ input,select,textarea{font-size:16px}   /* iOS 자동 확대 방지 */
 
   <div class="callout info" id="voteOffNote" hidden>
     <span aria-hidden="true">▸</span>
-    <div><b>청중 투표는 11월 23일(월)에 엽니다.</b> 그때까지 투표 탭과 집계 화면은 닫아 두었습니다.
+    <div><b>청중 투표는 11월 30일(월)에 엽니다.</b> 그때까지 투표 탭과 집계 화면은 닫아 두었습니다.
     오픈 시점에 사무국 안내 없이 자동으로 열립니다.</div>
   </div>
 
@@ -1026,7 +1026,7 @@ input,select,textarea{font-size:16px}   /* iOS 자동 확대 방지 */
 
     <div id="stepVoter" hidden>
       <p class="authnote" style="margin-top:18px">
-        과정 안내와 청중 투표를 보실 수 있습니다. 투표는 <b>11월 23일(월)</b>에 열립니다.</p>
+        과정 안내와 청중 투표를 보실 수 있습니다. 투표는 <b>11월 30일(월)</b>부터 <b>12월 4일(금) 18:00</b>까지입니다.</p>
     </div>
 
     <div class="mfoot">
@@ -1065,7 +1065,7 @@ var HTL = [
   {d:"09.21", iso:"2026-09-21", l:"AI Boost 시작"},
   {d:"11.20", iso:"2026-11-20", l:"결과물 제출 마감"},
   {d:"11.21", iso:"2026-11-21", l:"최종 피칭 · 전문가 평가"},
-  {d:"11.23", iso:"2026-11-23", l:"온라인 청중 투표"},
+  {d:"11.30", iso:"2026-11-30", l:"청중 투표 시작"},
   {d:"12.04", iso:"2026-12-04", l:"데모데이 · 시상"}
 ];
 (function(){
@@ -1379,6 +1379,11 @@ function fmtPhone(v){
 }
 function validPhone(v){ return /^01[016789]-\d{3,4}-\d{4}$/.test(v); }
 function renderVoteState(){
+  var vs = $("voteState");
+  if (vs){
+    vs.textContent = VOTEWIN.state === "open" ? "진행 중" : (VOTEWIN.state === "closed" ? "마감" : "오픈 예정");
+    vs.style.color = VOTEWIN.state === "open" ? "var(--ok)" : "var(--tx3)";
+  }
   var b = $("voteBanner");
   if (b){
     b.querySelector("div").innerHTML = voteLive()
@@ -1387,7 +1392,7 @@ function renderVoteState(){
       : (VOTEWIN.state === "closed"
           ? '<b>청중 투표가 마감되었습니다.</b> 결과는 12월 4일 수료식에서 발표합니다.'
           : '<b>지금은 미리보기입니다.</b> 여기서 누른 표는 저장되지 않습니다. '
-            + '11월 23일(월)에 실제 투표가 열리고, 그 전에 제출된 시연 영상이 이 자리에 들어갑니다. '
+            + '11월 30일(월)에 실제 투표가 열립니다. '
             + '<b>득표 현황은 공개하지 않으며</b>, 결과는 12월 4일 수료식에서 발표합니다.');
   }
   $("vst").hidden = !verified;
@@ -1481,7 +1486,7 @@ function renderNames(){
 }
 
 /* ===================== 내비 ===================== */
-/* 청중 투표는 11월 23일에 엽니다. 그때 이 값만 true 로 바꾸면 탭과 투표 참여자
+/* 청중 투표는 11월 30일에 엽니다. 그때 이 값만 true 로 바꾸면 탭과 투표 참여자
    입장 칸이 함께 살아납니다. 화면과 기능은 그대로 두었습니다. */
 var VOTE_ENABLED = false;
 

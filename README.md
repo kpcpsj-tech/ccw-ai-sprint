@@ -98,8 +98,8 @@ Vercel 환경변수: `SHEET_ID`, `GOOGLE_SERVICE_ACCOUNT_EMAIL`, `GOOGLE_PRIVATE
 
 | 이름 | 기본값 |
 |---|---|
-| `VOTE_OPEN` | `2026-11-23T00:00:00+09:00` |
-| `VOTE_CLOSE` | `2026-12-04T14:00:00+09:00` |
+| `VOTE_OPEN` | `2026-11-30T00:00:00+09:00` |
+| `VOTE_CLOSE` | `2026-12-04T18:00:00+09:00` |
 
 4. **Deploy** 를 누릅니다.
 
