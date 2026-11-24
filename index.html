@@ -379,7 +379,32 @@ td.tk{color:var(--tx2);min-width:240px}
 .vc.voted{border-color:var(--c1);box-shadow:0 0 0 1px var(--c1)}
 .vs{position:relative;width:100%;max-width:100%;aspect-ratio:16/9;overflow:hidden;
   background:#090808;display:grid;place-items:center}
-.vs iframe,.vs video{position:absolute;inset:0;width:100%;height:100%;border:0}
+.vs.live,.vs.shot{aspect-ratio:16/10;background:#fff}
+.vs.live iframe{position:absolute;left:0;top:0;width:1280px;height:800px;border:0;background:#fff;
+  transform:scale(var(--s,.3));transform-origin:0 0;pointer-events:none}
+.vs .pan{position:absolute;inset:0;background-size:100% auto;background-position:50% 0;background-repeat:no-repeat;
+  animation:pan 16s ease-in-out infinite alternate}
+@keyframes pan{0%,12%{background-position:50% 0;transform:scale(1)}88%,100%{background-position:50% 100%;transform:scale(1.04)}}
+.vlive{position:absolute;left:10px;top:10px;z-index:2;display:inline-flex;align-items:center;gap:6px;
+  font:800 10px var(--lat);letter-spacing:.12em;color:#fff;background:rgba(11,11,18,.78);
+  border:1px solid rgba(255,255,255,.18);border-radius:100px;padding:4px 10px 4px 8px}
+.vlive i{width:7px;height:7px;border-radius:50%;background:#ff4d6d;animation:blinkL 1.4s ease-in-out infinite}
+@keyframes blinkL{50%{opacity:.25}}
+.vs .vtag{z-index:2;top:10px;bottom:auto}
+.vopen{position:absolute;right:10px;bottom:10px;z-index:2;font:800 12px var(--kr);color:#fff;text-decoration:none;
+  background:rgba(124,77,255,.92);border-radius:100px;padding:7px 13px;box-shadow:0 6px 16px -6px rgba(0,0,0,.6);
+  transition:transform .2s,background .2s}
+.vopen:hover{background:var(--c3);transform:translateY(-1px)}
+.vopen:focus-visible{outline:2px solid #fff;outline-offset:2px}
+.viewer{z-index:96;padding:clamp(0px,2vw,24px)}
+.vwin{display:flex;flex-direction:column;width:min(1320px,100%);height:min(900px,100%);background:var(--bg2);
+  border:1px solid var(--line);border-radius:22px;overflow:hidden;box-shadow:0 30px 80px -20px rgba(0,0,0,.85)}
+@media (max-width:560px){.vwin{border-radius:0;height:100%}}
+.vhead{display:flex;align-items:center;gap:10px;padding:10px 12px 10px 14px;border-bottom:1px solid var(--line)}
+.vhead .vlive{position:static;flex:none}
+.vhead b{flex:1;min-width:0;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media (max-width:560px){#vwOpen{display:none}}
+#vwF{flex:1;width:100%;border:0;background:#fff}
 .vs .up{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.1);
   border:1px dashed rgba(255,255,255,.36);color:#fff;border-radius:100px;padding:9px 15px;
   font-size:12px;font-weight:700;cursor:pointer}
@@ -902,6 +927,20 @@ input,select,textarea{font-size:16px}   /* iOS 자동 확대 방지 */
   </div>
 </footer>
 
+<!-- ======================= 결과물 크게 보기 ======================= -->
+<div class="ov viewer" id="viewer" hidden>
+  <div class="vwin" role="dialog" aria-modal="true" aria-labelledby="vwT">
+    <div class="vhead">
+      <span class="vlive"><i></i>LIVE</span>
+      <b id="vwT"></b>
+      <a class="btn ghost sm" id="vwOpen" href="#" target="_blank" rel="noopener">새 창으로 열기 ↗</a>
+      <button class="btn sm" type="button" id="vwClose">닫기 ✕</button>
+    </div>
+    <iframe id="vwF" title="결과물 크게 보기" referrerpolicy="no-referrer"
+      sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-downloads"></iframe>
+  </div>
+</div>
+
 <!-- ======================= 진출자 확인 모달 ======================= -->
 <div class="ov" id="ov">
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle">
@@ -977,16 +1016,19 @@ document.getElementById("logoOrgs").src = d(L_ORGS);
 
 /* ===================== 데이터 ===================== */
 var FINALISTS = [
-  {r:1,  n:"성원제", c:4, t:"자동영상편집 (타임라인 기준)"},
-  {r:2,  n:"전혜선", c:5, t:"정산합시다 — 웹소설 정산 효율화 사이트"},
-  {r:3,  n:"최예지", c:5, t:"레퍼런스를 기획 방향으로 번역하는 AI 콘텐츠 디렉터"},
-  {r:4,  n:"신은정", c:5, t:"K-IP 1page report"},
-  {r:5,  n:"김민지", c:2, t:"해외 콘텐츠 배급 통합 대시보드"},
-  {r:6,  n:"양영주", c:3, t:"웹소설 퍼블리싱 & 투고 자동화 에이전트"},
-  {r:7,  n:"남가현", c:4, t:"가현 피디 스튜디오"},
-  {r:8,  n:"조은지", c:5, t:"ScenePulse — 업로드 영상 반응 추이 분석"},
-  {r:9,  n:"박성현", c:5, t:"contest brief"},
-  {r:10, n:"조하늘", c:4, t:"라이츠가이드 대시보드"}
+  /* u: 결과물 주소 · live: 투표 카드 안에 실제 사이트를 띄울 수 있음
+     (false 는 사이트가 다른 페이지 안에 들어가는 것을 막아 둔 경우 → 화면 사진으로 대신)
+     k: 신규 / 현업 */
+  {r:1,  n:"성원제", c:4, k:"신규", t:"자동영상편집 (타임라인 기준)",               u:"https://ggul-studio.vercel.app/", live:true},
+  {r:2,  n:"전혜선", c:5, k:"신규", t:"정산합시다 — 웹소설 정산 효율화 사이트",     u:"https://webnovel-pi.vercel.app/intro.html", live:true},
+  {r:3,  n:"최예지", c:5, k:"신규", t:"레퍼런스를 기획 방향으로 번역하는 AI 콘텐츠 디렉터", u:"https://own-take.vercel.app/studio", live:true},
+  {r:4,  n:"신은정", c:5, k:"신규", t:"K-IP 1page report",                          u:"https://frontend-one-chi-92.vercel.app/", live:true},
+  {r:5,  n:"김민지", c:2, k:"현업", t:"해외 콘텐츠 배급 통합 대시보드",             u:"https://pink-mu-one.vercel.app/", live:false},
+  {r:6,  n:"양영주", c:3, k:"현업", t:"웹소설 퍼블리싱 & 투고 자동화 에이전트",     u:"https://novelwing.app", live:false},
+  {r:7,  n:"남가현", c:4, k:"신규", t:"가현 피디 스튜디오",                         u:"https://k-condex.ghghgh02.workers.dev/", live:false},
+  {r:8,  n:"조은지", c:5, k:"신규", t:"ScenePulse — 업로드 영상 반응 추이 분석",    u:"https://refy-ten.vercel.app/", live:true},
+  {r:9,  n:"박성현", c:5, k:"신규", t:"contest brief",                              u:"https://room-for-parker-live.vercel.app", live:true},
+  {r:10, n:"조하늘", c:4, k:"",     t:"라이츠가이드 대시보드",                      u:"", live:false}
 ];
 var HTL = [
   {d:"09.21", l:"AI Boost 시작", s:"now"},
@@ -1329,23 +1371,79 @@ function renderVoteState(){
     $("vleft").textContent = "남은 표 " + (MAXV - votes.length);
   }
 }
-function renderWall(){
-  $("wall").innerHTML = FINALISTS.map(function(p, i){
-    var mine = votes.indexOf(p.r) !== -1;
-    var stage = '<span class="vm" aria-hidden="true"><i></i><i></i>'
-      + '<span class="bk"><b></b><b></b><b></b></span></span><span class="vtag">영상 자리</span>'
-      + '<span class="vbar" aria-hidden="true"><i style="animation-delay:-' + (i*1.1) + 's"></i></span>';
-    var label = !verified ? "번호 확인 필요" : "투표";
-    var dis = (!mine && (!verified || votes.length >= MAXV)) ? " disabled" : "";
-    return '<article class="vc play' + (mine?" voted":"") + '" style="--ac:' + TINT[i] + '">'
-      + '<div class="vs">' + stage + '</div>'
-      + '<div class="vb"><div class="vwho">' + p.n + ' · ' + p.c + '기</div>'
-      + '<div class="vttl">' + p.t + '</div>'
-      + '<div class="vact"><button class="vbtn" type="button" data-v="' + p.r + '" aria-pressed="'
-      + (mine?"true":"false") + '"' + dis + '>' + (mine ? "투표함 ✓" : label) + '</button>'
-      + '</div></div></article>';
-  }).join("");
+function stageHtml(p, i){
+  var open = p.u ? '<a class="vopen" href="' + p.u + '" target="_blank" rel="noopener" data-view-site="' + p.r + '">크게 보기 ↗</a>' : '';
+  if (p.u && p.live){
+    return '<div class="vs live"><iframe src="' + p.u + '" loading="lazy" tabindex="-1" aria-hidden="true"'
+      + ' title="' + p.n + ' 결과물 미리보기" referrerpolicy="no-referrer"'
+      + ' sandbox="allow-scripts allow-same-origin allow-forms"></iframe>'
+      + '<span class="vlive"><i></i>LIVE</span>' + open + '</div>';
+  }
+  if (p.u){
+    return '<div class="vs shot"><span class="pan" style="background-image:url(assets/sites/' + p.r + '.webp)"></span>'
+      + '<span class="vtag">화면 미리보기</span>' + open + '</div>';
+  }
+  return '<div class="vs"><span class="vm" aria-hidden="true"><i></i><i></i>'
+    + '<span class="bk"><b></b><b></b><b></b></span></span><span class="vtag">결과물 준비 중</span>'
+    + '<span class="vbar" aria-hidden="true"><i style="animation-delay:-' + (i*1.1) + 's"></i></span></div>';
 }
+function renderWall(){
+  var w = $("wall");
+  if (!w.getAttribute("data-built")){
+    w.innerHTML = FINALISTS.map(function(p, i){
+      return '<article class="vc play" data-card="' + p.r + '" style="--ac:' + TINT[i] + '">'
+        + stageHtml(p, i)
+        + '<div class="vb"><div class="vwho">' + p.n + ' · ' + p.c + '기' + (p.k ? ' · ' + p.k : '') + '</div>'
+        + '<div class="vttl">' + p.t + '</div>'
+        + '<div class="vact"><button class="vbtn" type="button" data-v="' + p.r + '"></button></div></div></article>';
+    }).join("");
+    w.setAttribute("data-built", "1");
+    fitStages();
+  }
+  FINALISTS.forEach(function(p){
+    var card = w.querySelector('[data-card="' + p.r + '"]'), b = card.querySelector(".vbtn");
+    var mine = votes.indexOf(p.r) !== -1;
+    card.classList.toggle("voted", mine);
+    b.setAttribute("aria-pressed", mine ? "true" : "false");
+    b.disabled = !mine && (!verified || votes.length >= MAXV);
+    b.textContent = mine ? "투표함 ✓" : (!verified ? "번호 확인 필요" : "투표");
+  });
+}
+/* 사이트는 PC 화면(1280px) 그대로 띄운 뒤 카드 폭에 맞게 줄입니다. */
+function fitStages(){
+  document.querySelectorAll(".vs.live").forEach(function(v){
+    v.style.setProperty("--s", (v.clientWidth / 1280).toFixed(4));
+  });
+}
+if (window.ResizeObserver) new ResizeObserver(fitStages).observe($("wall"));
+else window.addEventListener("resize", fitStages);
+
+/* 크게 보기: 카드 안에 띄울 수 있는 사이트는 이 화면 위에서 직접 써 볼 수 있게 크게 엽니다. */
+function openViewer(p){
+  $("vwT").textContent = p.n + " · " + p.t;
+  $("vwOpen").href = p.u;
+  $("vwF").src = p.u;
+  $("viewer").hidden = false;
+  document.body.style.overflow = "hidden";
+  $("vwClose").focus();
+}
+function closeViewer(){
+  $("viewer").hidden = true;
+  $("vwF").src = "about:blank";
+  document.body.style.overflow = "";
+}
+document.addEventListener("click", function(e){
+  var a = e.target.closest("[data-view-site]");
+  if (a){
+    var p = FINALISTS.filter(function(x){ return String(x.r) === a.getAttribute("data-view-site"); })[0];
+    if (p && p.live){ e.preventDefault(); openViewer(p); }
+    return;
+  }
+  if (e.target.id === "viewer" || e.target.closest("#vwClose")) closeViewer();
+});
+document.addEventListener("keydown", function(e){
+  if (e.key === "Escape" && !$("viewer").hidden) closeViewer();
+});
 function renderNames(){
   $("names").innerHTML = FINALISTS.map(function(p){
     return '<button class="name" type="button" data-who="' + p.n + '" aria-pressed="'

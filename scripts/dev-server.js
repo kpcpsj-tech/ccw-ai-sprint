@@ -8,7 +8,7 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const PORT = Number(process.env.PORT || 3000);
 const TYPES = { ".html": "text/html; charset=utf-8", ".css": "text/css; charset=utf-8",
                 ".js": "text/javascript; charset=utf-8", ".png": "image/png",
-                ".svg": "image/svg+xml", ".ico": "image/x-icon" };
+                ".svg": "image/svg+xml", ".webp": "image/webp", ".jpg": "image/jpeg", ".ico": "image/x-icon" };
 
 const server = http.createServer(async (req, res) => {
   const url = new URL(req.url, "http://localhost");
