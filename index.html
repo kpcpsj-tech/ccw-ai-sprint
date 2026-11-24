@@ -143,13 +143,16 @@ table{border-collapse:collapse}
 .share{width:50px;height:50px;border-radius:50%;background:transparent;border:1.5px solid var(--line2);
   color:var(--tx);font-size:16px;cursor:pointer;flex:none;transition:.2s}
 .share:hover{border-color:var(--tx);background:var(--tx);color:var(--bg)}
-.cta{display:inline-flex;align-items:center;justify-content:center;gap:8px;font:800 15px var(--kr);
-  padding:15px 26px;border-radius:100px;border:1.5px solid var(--blue);cursor:pointer;
-  background:var(--blue);color:#fff;min-width:180px;transition:background .25s,transform .25s,color .25s;
-  animation:ping 2.6s ease-out infinite}
-.cta:hover{background:var(--tx);border-color:var(--tx);color:#fff;transform:translateY(-2px)}
-.cta:focus-visible{outline:2px solid var(--vio);outline-offset:3px}
-@keyframes ping{0%{box-shadow:0 0 0 0 rgba(47,111,186,.5)}70%,100%{box-shadow:0 0 0 12px rgba(47,111,186,0)}}
+.cta{display:inline-flex;align-items:center;justify-content:center;gap:8px;font:800 16px var(--kr);
+  padding:16px 32px;border-radius:100px;border:0;cursor:pointer;min-width:190px;
+  color:#fff;background:linear-gradient(180deg,#3a3435 0%,#221e1f 55%,#141112 100%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.22),0 6px 0 #000,0 14px 22px -8px rgba(34,30,31,.55);
+  transform:translateY(0);transition:transform .12s,box-shadow .12s}
+.cta:hover{transform:translateY(-2px);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.22),0 8px 0 #000,0 18px 26px -8px rgba(34,30,31,.55)}
+.cta:active{transform:translateY(5px);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 1px 0 #000,0 4px 8px -4px rgba(34,30,31,.5)}
+.cta:focus-visible{outline:3px solid var(--blue);outline-offset:4px}
 @media (max-width:820px){.cta{flex:1}}
 
 
@@ -282,6 +285,7 @@ td.tk{color:var(--tx2);min-width:240px}
 .nd{flex:none;width:112px;text-align:center}
 .nd .dot{width:26px;height:26px;border-radius:50%;margin:0 auto;display:grid;place-items:center;
   font-size:11px;font-weight:700;background:var(--bg3);color:var(--tx3);border:1.5px solid var(--line2)}
+.nd.done .dot{background:var(--tx);border-color:var(--tx);color:#fff}
 .nd.now .dot{background:var(--blue);border-color:var(--blue);box-shadow:0 0 0 6px rgba(47,111,186,.16)}
 .nd .dt{font:800 15px var(--lat);letter-spacing:-.02em;margin-top:10px}
 .nd .lb{font-size:12px;color:var(--tx2);margin-top:3px;line-height:1.45}
@@ -335,9 +339,8 @@ td.tk{color:var(--tx2);min-width:240px}
 .fb-lock{display:inline-block;margin-left:7px;padding:2px 9px;border-radius:100px;
   background:var(--bg3);border:1px solid var(--line2);color:var(--tx2);
   font:700 10px var(--lat);letter-spacing:.06em;vertical-align:middle}
-.cta:disabled{background:var(--bg3);border-color:var(--bg3);color:var(--tx3);
-  cursor:not-allowed;box-shadow:none;animation:none}
-.cta:disabled:hover{background:var(--bg3);color:var(--tx3);transform:none}
+.cta:disabled{background:var(--bg3);color:var(--tx3);cursor:not-allowed;box-shadow:none;transform:none}
+.cta:disabled:hover{background:var(--bg3);color:var(--tx3);transform:none;box-shadow:none}
 .formbox{position:relative;overflow:hidden;isolation:isolate;display:flex;gap:24px;align-items:center;flex-wrap:wrap;margin-top:18px;
   background:var(--bg2);border-radius:26px;padding:clamp(24px,3.4vw,36px)}
 .formbox:before{content:'';position:absolute;z-index:-1;width:260px;height:260px;border-radius:50%;
@@ -560,7 +563,7 @@ input,select,textarea{font-size:16px}   /* iOS 자동 확대 방지 */
   <div class="wrap row">
     <div class="brand">
       <span class="lg" aria-hidden="true"><b></b><b></b><b></b><b></b><b></b></span>
-      <span class="bt">AI:SPRINT<small>CCW 5TH · FINAL SPRINT</small></span>
+      <span class="bt">AI SPRINT<small>CCW 5TH · FINAL SPRINT</small></span>
       <img id="logoCcw" alt="CCW">
     </div>
     <div class="sp"></div>
@@ -574,32 +577,30 @@ input,select,textarea{font-size:16px}   /* iOS 자동 확대 방지 */
   <div class="wrap hero">
     <div class="art">
       <div class="kv" data-kv role="img" aria-label="CCW AI SPRINT 키비주얼"></div>
-      <div class="dday" aria-hidden="true"><div><b id="ddayBig">D-0</b><span>12.04 FRI</span></div></div>
     </div>
     <div class="hero-text">
       <div class="eyebrow"><i></i>CCW AI 스프린트 · Final Sprint 2026</div>
-      <h1 class="b-title" aria-label="AI SPRINT">AI<span class="c">:</span>SPRINT</h1>
+      <h1 class="b-title">AI SPRINT</h1>
       <div class="ruled" aria-hidden="true"></div>
       <div class="fromto">
         <div><small>FROM.</small>21ST SEP<br>2026</div>
         <div class="r"><small>FINAL SPRINT.</small>4TH DEC<br>2026</div>
       </div>
       <p class="lead"><b>AI와 함께 더 멀리 달리는 K-콘텐츠</b><br>
-        <span class="b-keys">결선 <span>·</span> K-콘텐츠 수출 <span>·</span> AI 도구 제작 <span>·</span>
-        후속 멘토링 <span>·</span> 데모데이 <span>·</span> 청중 투표</span></p>
+        <span class="b-keys">콘텐츠 수출 마케터가 업무 현장의 문제를 AI로 직접 해결한 도구들입니다.
+        써 보고 마음에 드는 결과물에 투표해 주세요.</span></p>
       <div class="b-meta">
-        <div class="mrow"><span class="mk">시상</span>
-          <b style="font-weight:700">전문가 심사 + 청중 투표 반영</b></div>
-        <div class="mrow"><span class="mk">기간</span>
-          <b class="mono" style="font-weight:700">2026.09.21 ~ 2026.12.04</b>
-          <button class="gcal" type="button" id="gcal">+ Google Calendar</button></div>
-        <div class="mrow"><span class="mk">참여</span>
-          <b style="font-weight:700">진출자 10명</b>
-          <span style="color:var(--tx3)">·</span>
+        <div class="mrow"><span class="mk">평가</span>
+          <b style="font-weight:700">전문가 최종평가 85% + 청중 투표 15%</b></div>
+        <div class="mrow"><span class="mk">투표</span>
+          <b class="mono" style="font-weight:700">11.23 (월) ~ 12.04 (금)</b>
           <b style="color:var(--ok);font-weight:700">진행 중</b></div>
+        <div class="mrow"><span class="mk">데모</span>
+          <b style="font-weight:700">12.04 (금) 15:00 · 홍릉콘텐츠인재캠퍼스 2층</b>
+          <button class="gcal" type="button" id="gcal">+ Google Calendar</button></div>
       </div>
       <div class="b-side">
-        <button class="cta" type="button" data-go="submit">결과물 제출하기 →</button>
+        <button class="cta" type="button" data-go="vote">투표하기 →</button>
         <button class="share" type="button" id="share" aria-label="공유하기">↗</button>
       </div>
     </div>
@@ -623,114 +624,126 @@ input,select,textarea{font-size:16px}   /* iOS 자동 확대 방지 */
   <div class="doc-layout">
     <aside class="subnav" id="subnav">
       <button data-sec="overview" aria-current="true"><span class="si">☰</span>개요</button>
-      <button data-sec="rules"><span class="si">▤</span>규칙</button>
+      <button data-sec="steps"><span class="si">▤</span>진행 단계</button>
       <button data-sec="sched"><span class="si">◷</span>일정</button>
+      <button data-sec="eval"><span class="si">✓</span>평가</button>
       <button data-sec="prize"><span class="si">✦</span>시상</button>
     </aside>
 
     <div class="doc">
       <section id="s-overview">
-        <h3>배경</h3>
-        <p>콘텐츠 수출 마케터가 업무 현장에서 해결하고 싶은 문제를 구체화하고, AI를 활용해
-          <b>실제로 작동하는 도구</b>로 구현할 수 있도록 지원하는 과정입니다.</p>
-        <p>개인의 필요에서 출발한 AI 도구를 사용자 피드백과 전문가 멘토링을 통해 다른 사람도
-          활용할 수 있는 실용적인 솔루션으로 발전시킵니다.</p>
-        <p>완성된 솔루션을 시연·전시하고 전문가와 관람객의 평가를 통해 현장 활용 가능성과 유용성을
-          검증함으로써, K-콘텐츠 수출 마케팅에서의 AI 활용 가능성을 확장합니다.</p>
+        <h3>과제 주제</h3>
+        <p><b>AI와 함께 더 멀리 달리는 K-콘텐츠</b> — 콘텐츠 수출 마케터가 업무 현장에서 해결하고 싶은 문제를
+          AI를 활용해 <b>실제로 작동하는 도구</b>로 구현합니다.</p>
+        <p>해커톤에서 만든 MVP를 후속 멘토링과 사용자 피드백으로 고도화해, 다른 사람이 직접 실행해 볼 수 있는
+          현업 배포본 수준까지 끌어올리는 것이 목표입니다. 완성한 결과물은 전문가 평가와 청중 투표로 검증하고,
+          K-콘텐츠 수출 마케팅의 AI 활용 우수사례로 소개합니다.</p>
 
         <h4>추진 경과</h4>
         <div class="funnel">
           <div class="fn"><div class="v mono">60</div><div class="l">지원</div></div>
           <div class="fn"><div class="v mono">31</div><div class="l">교육 선발</div></div>
-          <div class="fn hl"><div class="v mono">10</div><div class="l">파이널 스프린트 진출</div></div>
+          <div class="fn hl"><div class="v mono">10</div><div class="l">파이널리스트 선발</div></div>
         </div>
         <ul class="cl">
           <li><b>선발</b> — 60명 지원, 필수요건 검토와 평가위원 3인 평가를 거쳐 31명 선발</li>
-          <li><b>교육</b> — 클로드 활용 바이브코딩(8.8), n8n 업무 자동화(8.9) 각 09:00~18:00</li>
-          <li><b>해커톤</b> — AI Build(8.14), 참가자별 개별 결과물(MVP) 제작·시연</li>
-          <li><b>중간선발</b> — 제출 결과물 심사를 거쳐 파이널 스프린트 진출자 10인 선발</li>
+          <li><b>교육</b> — 클로드 활용 바이브코딩(8.8), n8n 업무 자동화(8.9)</li>
+          <li><b>해커톤</b> — AI Build(8.14), 31명이 개별 결과물(MVP)을 제작·시연하고 파이널리스트 10인 선발</li>
+          <li><b>고도화</b> — AI Boost 후속 멘토링(9.21~11.20)으로 현업 배포본 수준까지 개선</li>
         </ul>
       </section>
 
-      <section id="s-rules">
-        <h3>규칙</h3>
+      <section id="s-steps">
+        <h3>진행 단계</h3>
         <ul class="cl">
-          <li><b>제출 원칙</b> — 기획 단계의 산출물이 아닌, 실제로 작동하는 결과물을 제출합니다.</li>
-          <li><b>제출 기한</b> — 전문가 사전평가용 제출물(a~c)은 2026. 11. 20.(금)까지.
-            평가 의견을 반영한 데모데이용 최종본(d~e)은 별도 안내드립니다.</li>
-          <li><b>멘토링</b> — 1인당 2회, 회당 1시간. 대면·비대면 여부와 관계없이 동일하게 적용합니다.</li>
-          <li><b>과제 변경</b> — 해커톤 당시 시간이 부족해 다루지 못한 과제를 다시 진행하거나, 과제를 변경하는 것도 가능합니다.</li>
-          <li class="no"><b>대면 일정 불참</b> — 11.21 전문가 심사와 12.4 수료식 피칭은 대면 일정으로,
-            부득이하게 참석이 어려운 경우 불참할 수 있으나 <b>평가 대상에서 제외</b>됩니다.</li>
-          <li class="no"><b>노쇼</b> — 사전 공유 없이 멘토링에 불참한 경우, 추가 멘토링 기회가 부여되지 않습니다.</li>
+          <li><b>1단계 · AI Build 해커톤 (8. 14.)</b> — 선발 교육생 31명이 개별 AI 결과물(MVP)을 제작·시연하고,
+            전문가 평가위원 3인 심사로 파이널리스트 10인을 선발했습니다.
+            평가기준: 실현 가능성 30점 · 유용성 50점 · 문제해결 접근 방법의 우수성 20점</li>
+          <li><b>2단계 · AI Boost 후속 멘토링 (9. 21. ~ 11. 20.)</b> — 1인당 1:1 멘토링 2회(회당 1시간 내외,
+            대면·비대면 병행, 멘토 홍준재). 해커톤 과제를 다시 진행하거나 바꿀 수 있고, 다른 사람에게 써 보게 한 뒤
+            막히는 지점을 보완합니다. 클로드(Claude) 프로 팀 플랜 지원(9. 21. ~ 11. 21.)</li>
+          <li><b>3단계 · 최종 피칭 및 전문가 최종평가 (11. 21.)</b> — 작동하는 AI 도구로 10분 내외 발표·시연,
+            전문가 평가위원 3인의 5분 내외 질의응답과 평가. 상위 1인을 데모데이 대표 발표자로 우선 선정합니다.</li>
+          <li><b>4단계 · Final Sprint 데모데이 (12. 4.)</b> — CCW 5기 수료식과 연계해 결과물을 부스에서 전시·시연하고,
+            온라인·현장 청중 투표를 합산해 최종 우수 교육생을 시상합니다.</li>
+          <li class="no"><b>대면 일정 불참</b> — 11. 21. 최종 피칭과 12. 4. 데모데이는 대면 행사입니다.
+            참석이 어려우면 불참할 수 있으나 <b>평가 대상에서 제외</b>됩니다.</li>
         </ul>
       </section>
 
       <section id="s-sched">
         <h3>일정</h3>
-        <p>AI Boost 멘토링은 9월 21일부터 두 달간 진행되며, 그 뒤 제출 → 심사 → 투표 → 데모데이로 이어집니다.</p>
+        <p>제출 → 전문가 최종평가 → 청중 투표 → 데모데이 순서로 이어집니다.</p>
         <div class="htl">
           <div class="htl-t">주요 일정</div>
           <div class="htl-row" id="htl"></div>
         </div>
         <div class="tblw" style="margin-top:14px">
           <table style="min-width:540px">
-            <thead><tr><th>시기</th><th>구분</th><th>내용</th></tr></thead>
+            <thead><tr><th>일시</th><th>구분</th><th>내용</th></tr></thead>
             <tbody>
-              <tr><td class="nm mono">09.21 ~ 11.20</td><td class="nm">AI Boost</td>
-                  <td class="tk">설계 상담부터 제작까지 후속 멘토링. 대면·비대면 병행, 1인당 2회</td></tr>
-              <tr><td class="nm mono">11.20 (금)</td><td class="nm">결과물 제출</td>
-                  <td class="tk">작동하는 결과물과 한 장짜리 사용법(포스터) 제출</td></tr>
-              <tr><td class="nm mono">11.21 (토)</td><td class="nm">전문가 심사</td>
-                  <td class="tk">한국생산성본부 405호. 10인 발표 후 상위 3인 선정</td></tr>
-              <tr><td class="nm mono">12.04 (금)</td><td class="nm">Final Sprint</td>
-                  <td class="tk">홍릉 콘텐츠인재캠퍼스 로비. 부스 10개 · 피칭 · 시상 · 수료식</td></tr>
+              <tr><td class="nm mono">11.20 (금) 13:00</td><td class="nm">결과물 제출 마감</td>
+                  <td class="tk">AI 도구 링크 · 피치덱 · 시연 영상 · 부스 포스터(A1)</td></tr>
+              <tr><td class="nm mono">11.21 (토) 15:00~18:00</td><td class="nm">최종 피칭 · 전문가 평가</td>
+                  <td class="tk">한국생산성본부 405호. 1인당 발표·시연 10분 + 질의응답 5분, 5인씩 두 차례(순서 무작위 추첨)</td></tr>
+              <tr><td class="nm mono">11.23 (월) ~</td><td class="nm">온라인 청중 투표</td>
+                  <td class="tk">이 사이트의 투표 탭에서 진행</td></tr>
+              <tr><td class="nm mono">12.04 (금) 15:00~18:00</td><td class="nm">데모데이 부스 · 현장 투표</td>
+                  <td class="tk">홍릉콘텐츠인재캠퍼스 2층 프로젝트 룸. 부스(이젤·노트북)에서 결과물 시연</td></tr>
+              <tr><td class="nm mono">12.04 (금) 19:15</td><td class="nm">대표 발표</td>
+                  <td class="tk">전문가 최종평가 1위의 대표 시연(5분 이내), CCW 5기 수료식 연계</td></tr>
+              <tr><td class="nm mono">12.04 (금) 19:30</td><td class="nm">시상</td>
+                  <td class="tk">전문가 평가와 온라인·현장 투표 집계 결과 합산</td></tr>
             </tbody>
           </table>
         </div>
+        <p style="font-size:13px">* 세부 일정은 상황에 따라 변동될 수 있습니다.</p>
+      </section>
 
+      <section id="s-eval">
+        <h3>평가</h3>
+        <p>최종 순위는 <b>전문가 최종평가 85% + 청중 투표 15%</b>(온라인 투표 + 데모데이 현장 투표)를 합산해 결정합니다.
+          전문가 평가는 평가위원 점수의 산술평균(95점)에 운영사무국의 공지사항 준수 점수(5점)를 더한 100점 만점입니다.</p>
+        <div class="tblw" style="margin-top:14px">
+          <table style="min-width:620px">
+            <thead><tr><th>구분</th><th>평가 항목</th><th>세부 기준</th><th>배점</th></tr></thead>
+            <tbody>
+              <tr><td class="nm" rowspan="3">문제와 가치<br><span class="tag">35점</span></td><td class="nm">문제 정의</td>
+                  <td class="tk">실제로 겪는 문제에서 출발했으며, 해결할 문제와 목표 사용자가 명확한가</td><td class="mono">10</td></tr>
+              <tr><td class="nm">문제의 보편성</td><td class="tk">다른 현업 담당자도 겪는 문제이며, 그 근거가 타당한가</td><td class="mono">10</td></tr>
+              <tr><td class="nm">비즈니스 가치</td><td class="tk">시간·비용 절감을 넘어 매출·성과·의사결정 품질 등 실질적 가치를 만드는가</td><td class="mono">15</td></tr>
+              <tr><td class="nm" rowspan="3">실제 작동과 사용성<br><span class="tag">40점</span></td><td class="nm">작동 완성도</td>
+                  <td class="tk">실제로 작동하며, 핵심 기능이 처음부터 끝까지 오류 없이 수행되는가</td><td class="mono">15</td></tr>
+              <tr><td class="nm">타인 사용성</td><td class="tk">처음 쓰는 사람도 쉽게 활용할 수 있고, 필요한 설정·자료 준비 방법이 명확히 안내되어 있는가</td><td class="mono">10</td></tr>
+              <tr><td class="nm">실사용 검증</td><td class="tk">본인 또는 다른 사용자가 실제 업무에 써 본 기록이 있고, 막힌 지점을 보완했는가</td><td class="mono">15</td></tr>
+              <tr><td class="nm" rowspan="3">AI 활용과 고도화<br><span class="tag">20점</span></td><td class="nm">AI 활용 설계</td>
+                  <td class="tk">추론·요약·생성·자동화 등 AI 기능을 문제에 맞게 선택하고 활용했는가</td><td class="mono">10</td></tr>
+              <tr><td class="nm">AI 운영 관리</td><td class="tk">데이터 신뢰도·보안·비용 측면에서 현업에서 지속 운영이 가능한가</td><td class="mono">5</td></tr>
+              <tr><td class="nm">고도화 수준</td><td class="tk">피치덱에 제시한 해커톤 대비 개선점이 명확하며 시연에서 확인되는가</td><td class="mono">5</td></tr>
+              <tr><td class="nm">정량평가<br><span class="tag">5점</span></td><td class="nm">공지사항 준수</td>
+                  <td class="tk">제출물 종류·형식과 마감기한(11. 20.)을 지켰는가 (미충족 항목마다 -1점, 운영사무국 평가)</td><td class="mono">5</td></tr>
+            </tbody>
+          </table>
+        </div>
       </section>
 
       <section id="s-prize">
         <h3>시상</h3>
-        <p>전문가 심사 결과와 디지털 쇼케이스 사이트를 통한 <b>청중 투표 결과를 함께 반영</b>하여
-          소정의 상품을 수여합니다.</p>
-
+        <p>전문가 최종평가(85%)와 청중 투표(15%)를 합산해 최종 우수 교육생을 선정하고, 12월 4일 데모데이에서 시상합니다.</p>
         <div class="tblw" style="margin-top:14px">
           <table style="min-width:420px">
-            <thead><tr><th>구분</th><th>시상 규모</th></tr></thead>
+            <thead><tr><th>구분</th><th>상품</th></tr></thead>
             <tbody>
               <tr><td class="nm">합산 최종 1위</td><td class="tk mono">약 100만원 상당</td></tr>
               <tr><td class="nm">합산 최종 2~3위</td><td class="tk mono">약 50만원 상당</td></tr>
-              <tr><td class="nm">인기상 (청중 투표 1위)</td><td class="tk mono">약 20~30만원 상당</td></tr>
+              <tr><td class="nm">인기상 (청중 투표 1위)</td><td class="tk mono">약 30만원 상당 · 1~3위 선정자 제외</td></tr>
             </tbody>
           </table>
-        </div>
-
-        <h4>클로드 지원 기간</h4>
-        <p>결선 10인 전원에게 클로드(Claude)를 지원합니다. 기간 내에 결과물 제작과 고도화를 마쳐 주세요.</p>
-        <div class="crange">
-          <div class="it"><span class="k">시작</span><b class="mono">2026. 09. 21</b></div>
-          <div class="ar">→</div>
-          <div class="it"><span class="k">종료</span><b class="mono">2026. 11. 21</b></div>
-          <div class="it dur"><span class="k">기간</span><b class="mono">2개월</b></div>
         </div>
         <ul class="cl">
-          <li>계정 발급·문의는 운영사무국(koccaccw@gmail.com)으로 연락해 주세요.</li>
-          <li>종료일 이후에는 지원이 자동으로 끝납니다. 결과물 제출(11.20) 전에 작업을 마쳐 주세요.</li>
+          <li><b>대표 발표</b> — 전문가 최종평가 1위가 CCW 5기 수료식에서 5분 내외로 대표 시연합니다(당일 참석 가능 여부 고려).</li>
+          <li>문의는 운영사무국(koccaccw@gmail.com)으로 연락해 주세요.</li>
         </ul>
-
-        <h4>그 밖의 지원</h4>
-        <div class="tblw" style="margin-top:12px">
-          <table style="min-width:480px">
-            <thead><tr><th>구분</th><th>내용</th></tr></thead>
-            <tbody>
-              <tr><td class="nm">인쇄물</td><td class="tk">부스 포스터 디자인 템플릿과 원고 양식 제공, 인쇄까지 지원 (리플렛 등 추가 자료는 본인 부담)</td></tr>
-              <tr><td class="nm">홈페이지</td><td class="tk">디지털 쇼케이스 제공 — 결과물 전시 및 청중 투표</td></tr>
-              <tr><td class="nm">멘토링</td><td class="tk">1인 2회, 회당 1시간, 대면·비대면 병행</td></tr>
-            </tbody>
-          </table>
-        </div>
       </section>
     </div>
   </div>
@@ -801,30 +814,28 @@ input,select,textarea{font-size:16px}   /* iOS 자동 확대 방지 */
 <!-- ======================= 제출 ======================= -->
 <div class="view wrap" id="v-submit" hidden>
   <div class="sec-h"><span class="n">03</span><h2>결과물 제출</h2>
-    <span class="hint">1차 마감 2026. 11. 20 (금)</span></div>
+    <span class="hint">마감 2026. 11. 20 (금) 13:00</span></div>
   <p style="color:var(--tx2);font-size:14px;max-width:66ch">
     기획 단계의 산출물이 아니라 <b>실제로 작동하는 결과물</b>을 제출하는 것이 원칙입니다.
-    제출은 <b>두 번</b>에 나눠 받습니다. 11월 20일에 전문가 평가용으로 한 번 받고,
-    평가 의견을 반영해 고친 <b>최종본을 데모데이 전에 한 번 더</b> 받습니다.
-    마감 전까지는 몇 번이든 다시 제출하실 수 있고, 마지막 제출분이 평가 대상이 됩니다.</p>
+    제출자료 네 가지는 <b>11월 20일(금) 13:00</b>까지 받았습니다.
+    그중 <b>AI 도구와 시연 영상</b>은 11월 21일 전문가 피드백을 반영해 데모데이 전까지 고칠 수 있고,
+    <b>부스 포스터</b>는 인쇄를 위해 제출 이후 수정할 수 없습니다.</p>
   <div style="margin-top:14px"><span class="chip mono" id="dSubmit">마감까지</span></div>
 
   <div id="subs" style="margin-top:18px"></div>
 
   <div class="formbox">
     <div class="fb-main">
-      <div class="fb-k">제출 폼 <span class="fb-lock">준비 중</span></div>
-      <h3>CCW AI Sprint 최종 결과물 제출</h3>
-      <p>제출물을 하나의 구글폼에서 한 번에 제출합니다. 폼은 아직 열리지 않았습니다.
-        열리는 즉시 이 버튼이 활성화되고, 진출자 10인에게 따로 안내드립니다.</p>
+      <div class="fb-k">제출 <span class="fb-lock">마감</span></div>
+      <h3>수정본은 운영사무국으로 보내 주세요</h3>
+      <p>AI 도구나 시연 영상을 고치셨다면 데모데이 전까지 운영사무국(koccaccw@gmail.com)으로
+        알려 주세요. 데모데이 부스에는 마지막으로 받은 수정본을 사용합니다.</p>
     </div>
     <button class="cta" id="formBtn" type="button" disabled aria-disabled="true">
-      제출 폼 준비 중 <span aria-hidden="true">🔒</span></button>
+      제출 마감 <span aria-hidden="true">🔒</span></button>
   </div>
   <p class="authnote" style="margin-top:12px">
-    전문가 사전평가용 제출물(a~c)의 마감은 2026년 11월 20일(금)입니다.
-    데모데이용 최종본(d~e)의 양식과 마감은 별도로 안내드립니다.
-    폼이 열리기 전까지는 제출 항목만 미리 확인해 주세요.</p>
+    공지된 제출물 종류·형식과 마감기한 준수 여부는 전문가 평가의 정량평가(5점)에 반영됩니다.</p>
 </div>
 
 <!-- ======================= 투표 ======================= -->
@@ -935,7 +946,7 @@ input,select,textarea{font-size:16px}   /* iOS 자동 확대 방지 */
 <footer class="foot">
   <button class="totop" type="button" id="totop" aria-label="맨 위로">↑</button>
   <div class="wrap">
-    <div class="foot-big" aria-hidden="true">AI:SPRINT <i></i><i></i><i></i><i></i><i></i></div>
+    <div class="foot-big" aria-hidden="true">AI SPRINT <i></i><i></i><i></i><i></i><i></i></div>
   </div>
   <div class="wrap foot-in">
     <img id="logoOrgs" alt="문화체육관광부 · 한국콘텐츠진흥원">
@@ -1051,35 +1062,33 @@ var FINALISTS = [
   {r:9,  n:"박성현", c:5, k:"신규", t:"빠꺼의 방",                              u:"https://room-for-parker-live.vercel.app", live:true}
 ];
 var HTL = [
-  {d:"09.21", l:"AI Boost 시작", s:"now"},
-  {d:"11.20", l:"결과물 제출 마감", s:""},
-  {d:"11.21", l:"전문가 심사", s:""},
-  {d:"11.23", l:"청중 투표 오픈", s:""},
-  {d:"12.04", l:"Final Sprint", s:""}
+  {d:"09.21", iso:"2026-09-21", l:"AI Boost 시작"},
+  {d:"11.20", iso:"2026-11-20", l:"결과물 제출 마감"},
+  {d:"11.21", iso:"2026-11-21", l:"최종 피칭 · 전문가 평가"},
+  {d:"11.23", iso:"2026-11-23", l:"온라인 청중 투표"},
+  {d:"12.04", iso:"2026-12-04", l:"데모데이 · 시상"}
 ];
+(function(){
+  var now = Date.now(), cur = 0;
+  HTL.forEach(function(n, i){ if (Date.parse(n.iso + "T00:00:00+09:00") <= now) cur = i; });
+  HTL.forEach(function(n, i){ n.s = i === cur ? "now" : (i < cur ? "done" : ""); });
+})();
 var SUB_PHASES = [
-  { n:"01", t:"최종 피칭 및 전문가 사전평가", due:"2026. 11. 20 (금) 마감",
+  { n:"01", t:"최종 피칭 및 전문가 평가 제출물", due:"2026. 11. 20 (금) 13:00 마감",
+    note:"작동하는 AI 도구와 시연 영상은 11월 21일 피드백을 반영해 <b>데모데이 전까지 수정</b>할 수 있습니다. "
+       + "부스 포스터는 인쇄를 위해 <b>제출 이후 수정할 수 없습니다.</b>",
     items:[
-      { i:"a", t:"작동하는 AI 도구", q:"접속 링크 또는 실행 파일", d:[
-        "제작한 AI 솔루션의 접속 링크 또는 실행 파일",
-        "타인이 직접 실행해 볼 수 있는 상태여야 합니다"]},
-      { i:"b", t:"설명자료 (피치덱)", q:"발표용 자료", d:[
-        "해결하려는 문제, 목표 사용자, AI 솔루션의 핵심 기능, 이용 방법 및 기대 효과 등을 포함합니다"]},
-      { i:"c", t:"시연 영상", q:"5분 내외", d:[
-        "목적과 입력 내용, 사용 절차 등을 포함한 5분 내외 영상",
-        "현장 사고에 대비한 백업으로 활용하며, 데모데이 부스에서 영상 루핑으로 사용합니다"]}
-    ]},
-  { n:"02", t:"파이널 스프린트 데모데이", due:"12. 4 (금) 부스 활용",
-    note:"11월 21일 전문가 평가에서 받은 의견을 반영해 결과물을 고치고 싶으시면, "
-       + "이 단계에서 <b>최종본을 다시 제출</b>하시면 됩니다. 데모데이 부스에는 여기서 받은 최종본을 사용합니다. "
-       + "고칠 부분이 없다면 앞서 내신 내용이 그대로 쓰입니다.",
-    items:[
-      { i:"d", t:"AI 도구 및 시연 영상", q:"제공 양식", d:[
-        "개발한 AI 솔루션의 주요 내용을 한눈에 확인할 수 있도록 제공하는 양식에 맞춰 작성합니다",
-        "12. 4.(금) 데모데이의 청중평가 부스에 활용합니다"]},
-      { i:"e", t:"설명자료 (포스터)", q:"제공 양식", d:[
-        "개발한 AI 솔루션의 주요 내용을 한눈에 확인할 수 있도록 제공하는 양식에 맞춰 작성합니다",
-        "12. 4.(금) 데모데이의 청중평가 부스에 활용합니다"]}
+      { i:"1", t:"작동하는 AI 도구", q:"접속 링크 또는 실행 파일 · 11/21 이후 수정 가능", d:[
+        "타인이 직접 실행해 볼 수 있는 상태여야 합니다",
+        "기획 단계의 산출물이 아닌, 실제로 작동하는 결과물이어야 합니다"]},
+      { i:"2", t:"설명자료 (피치덱)", q:"분량 제한 없음", d:[
+        "해커톤 대비 개선점, 해결하려는 문제, 목표 사용자, AI 솔루션의 핵심 기능, 이용 방법 및 기대 효과 등을 포함합니다"]},
+      { i:"3", t:"시연 영상", q:"5분 내외 · 11/21 이후 수정 가능", d:[
+        "목적과 입력 내용, 사용 절차 등을 포함합니다",
+        "시연 오류에 대비한 백업이자, 12. 4.(금) 데모데이 부스에서 영상 루핑으로 활용합니다"]},
+      { i:"4", t:"데모데이 부스 포스터", q:"A1 (594×841mm, 세로형) · 제출 이후 수정 불가", d:[
+        "PPT 파일로 제출합니다(일러스트·포토샵 가능)",
+        "프로젝트명, 어필하고 싶은 핵심 기능, 기대 효과 등 주요 내용을 담아 데모데이 부스에 전시합니다"]}
     ]}
 ];
 
@@ -1500,7 +1509,7 @@ function applyRole(){
     b.hidden = allow.indexOf(b.getAttribute("data-view")) === -1
                || (!VOTE_ENABLED && b.hasAttribute("data-vote-only"));
   });
-  document.querySelector(".cta").hidden = allow.indexOf("submit") === -1;
+  document.querySelector(".cta").hidden = allow.indexOf("vote") === -1;
   go(allow[0]);
 }
 function go(v){
@@ -1527,7 +1536,7 @@ $("subnav").addEventListener("click", function(e){
   var t = $("s-" + b.getAttribute("data-sec"));
   if (t) t.scrollIntoView({ behavior:"smooth", block:"start" });
 });
-var SECS = ["overview","rules","sched","prize"];
+var SECS = ["overview","steps","sched","eval","prize"];
 window.addEventListener("scroll", function(){
   if ($("v-guide").hidden) return;
   var best = 0;
@@ -1702,12 +1711,21 @@ $("vreset").addEventListener("click", function(){
   renderVoteState(); renderWall();
 });
 $("gcal").addEventListener("click", function(){
-  var b = this; b.textContent = "캘린더에 추가됨 ✓";
-  setTimeout(function(){ b.textContent = "+ Google Calendar"; }, 2000);
+  var u = "https://calendar.google.com/calendar/render?action=TEMPLATE"
+    + "&text=" + encodeURIComponent("CCW AI Sprint 데모데이")
+    + "&dates=20261204T060000Z/20261204T103000Z"
+    + "&location=" + encodeURIComponent("홍릉콘텐츠인재캠퍼스 2층 프로젝트 룸")
+    + "&details=" + encodeURIComponent("부스 시연 15:00~18:00 · 대표 발표 19:15 · 시상 19:30\n" + location.origin);
+  window.open(u, "_blank", "noopener");
 });
 $("share").addEventListener("click", function(){
-  var b = this; b.textContent = "✓";
-  setTimeout(function(){ b.textContent = "↗"; }, 1400);
+  var b = this, url = location.origin + "/";
+  var done = function(){ b.textContent = "✓"; setTimeout(function(){ b.textContent = "↗"; }, 1400); };
+  if (navigator.share){
+    navigator.share({ title: "CCW AI SPRINT 청중 투표", url: url }).catch(function(){});
+  } else if (navigator.clipboard){
+    navigator.clipboard.writeText(url).then(function(){ done(); alert("주소를 복사했습니다.\n" + url); });
+  } else { prompt("이 주소를 복사해 공유해 주세요.", url); }
 });
 document.addEventListener("click", function(e){
   var c = e.target.closest("[data-csv]");
@@ -1757,8 +1775,7 @@ $("totop").addEventListener("click", function(){ window.scrollTo({ top:0, behavi
 document.body.style.overflow = "hidden";
 function dlabel(n){ return n > 0 ? "D-" + n : (n === 0 ? "D-DAY" : "D+" + (-n)); }
 $("dday").textContent = "Final Sprint " + dlabel(dday("2026-12-04"));
-$("ddayBig").textContent = dlabel(dday("2026-12-04"));
-$("dSubmit").textContent = dday("2026-11-20") >= 0 ? "마감까지 " + dlabel(dday("2026-11-20")) : "1차 제출 마감됨";
+$("dSubmit").textContent = dday("2026-11-20") >= 0 ? "마감까지 " + dlabel(dday("2026-11-20")) : "제출 마감됨";
 
 /* ===================== 키비주얼 (CON:TINUE 디자인) ===================== */
 (function(){
