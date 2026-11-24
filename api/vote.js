@@ -1,8 +1,9 @@
 /**
- * POST /api/vote   { phone, targets: [id, ...] }
- * 비밀번호 없이 누구나. 한 번호당 최대 3표, 같은 대상에는 1표.
+ * POST /api/vote   { phone, token, targets: [id, ...] }
+ * 휴대폰 인증(/api/otp)으로 받은 토큰이 있어야 합니다. 한 번호당 최대 3표, 같은 대상에는 1표.
  */
 import { read, append, setStatus, VOTE_TAB } from "./_lib/store.js";
+import { checkToken } from "./_lib/otp.js";
 import { FINALISTS, MAX_VOTES_PER_PHONE, json, fail, readBody, votingWindow,
          normalizePhone, maskPhone, hashPhone, clientIp, maskIp, newId, nowIso } from "./_lib/util.js";
 
@@ -16,6 +17,9 @@ export default async function handler(req, res) {
   const body = await readBody(req);
   const phone = normalizePhone(body.phone);
   if (!phone) return fail(res, 400, "휴대폰 번호 형식이 올바르지 않습니다. (예: 010-1234-5678)");
+
+  if (!checkToken(body.token, hashPhone(phone)))
+    return fail(res, 401, "휴대폰 인증이 만료되었습니다. 번호를 다시 인증해 주세요.", { reauth: true });
 
   const wanted = Array.isArray(body.targets) ? [...new Set(body.targets.map(String))] : [];
   if (wanted.some((t) => !FINALISTS.some((f) => f.id === t)))

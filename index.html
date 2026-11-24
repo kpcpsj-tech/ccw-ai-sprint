@@ -548,6 +548,15 @@ input,select,textarea{font-size:16px}   /* iOS 자동 확대 방지 */
 .ck .cv b{color:var(--tx);font-weight:800;display:block;margin-bottom:2px}
 .req{font:800 10px var(--lat);letter-spacing:.08em;color:var(--dan);margin-left:6px}
 .opt{font:800 10px var(--lat);letter-spacing:.08em;color:var(--tx3);margin-left:6px}
+.lnk{background:none;border:0;padding:0;margin-left:4px;font:700 12.5px var(--kr);color:var(--blue);
+  text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.privbox{background:var(--bg);border:1px solid var(--line);border-radius:16px;padding:6px 14px;font-size:12.5px;color:var(--tx2)}
+.privbox table{min-width:0;font-size:12.5px}
+.privbox th{width:110px;font:800 12px var(--kr);color:var(--tx);text-transform:none;letter-spacing:0;vertical-align:top;border-bottom:1px solid var(--line)}
+.privbox td{padding:10px 8px;line-height:1.6}
+.vpanel .vform{margin-top:12px;flex-wrap:wrap}
+.vpanel .vform input{background:var(--bg)}
+#code{letter-spacing:.3em;width:180px}
 .mfoot{display:flex;gap:9px;margin-top:22px}
 .mfoot .btn{flex:1;padding:14px 18px;font-size:14.5px}
 .mnote{font-size:12px;color:var(--tx3);margin-top:14px;line-height:1.65}
@@ -611,16 +620,13 @@ input,select,textarea{font-size:16px}   /* iOS 자동 확대 방지 */
 <!-- ======================= 탭 ======================= -->
 <nav class="tabs">
   <div class="wrap row" role="tablist" aria-label="메뉴">
-    <button role="tab" data-view="guide" aria-selected="true">과정안내</button>
-    <button role="tab" data-view="mentoring" aria-selected="false">멘토링</button>
-    <button role="tab" data-view="submit" aria-selected="false">제출</button>
-    <button role="tab" data-view="vote" aria-selected="false" data-vote-only>투표</button>
-    <button role="tab" data-view="admin" aria-selected="false">관리</button>
+    <button role="tab" data-view="vote" aria-selected="true">청중 투표</button>
+    <button role="tab" data-view="guide" aria-selected="false">과정 안내</button>
   </div>
 </nav>
 
 <!-- ======================= 과정안내 ======================= -->
-<div class="view wrap" id="v-guide">
+<div class="view wrap" id="v-guide" hidden>
   <div class="doc-layout">
     <aside class="subnav" id="subnav">
       <button data-sec="overview" aria-current="true"><span class="si">☰</span>개요</button>
@@ -749,117 +755,56 @@ input,select,textarea{font-size:16px}   /* iOS 자동 확대 방지 */
   </div>
 </div>
 
-<!-- ======================= 멘토링 ======================= -->
-<div class="view wrap" id="v-mentoring" hidden>
-  <div class="sec-h"><span class="n">02</span><h2>후속 멘토링 예약</h2>
-    <span class="hint">1인 2회 · 회당 1시간</span></div>
-  <div class="quota">
-    <span>내 멘토링</span>
-    <span class="pips" id="pips"><i></i></span>
-    <span class="mono" id="quotaTxt" aria-live="polite">대면 0 / 1회 사용</span>
-  </div>
-  <div class="grid2">
-    <div class="card pad">
-      <h3 style="font-size:16px;font-weight:800">대면 · 10월 2일 (금)</h3>
-      <p style="font-size:13px;color:var(--tx2);margin-top:7px">
-        한국생산성본부 · 09:00 ~ 18:00 · 회당 1시간. 원하는 시간대를 선택하세요.</p>
-      <div class="callout warn" style="margin-top:12px" id="bookClosed" hidden>
-        <span aria-hidden="true">⚠</span>
-        <div><b>대면 멘토링 접수가 마감되었습니다.</b> 아래는 확정된 내역입니다.
-        변경이나 취소가 필요하시면 운영사무국(koccaccw@gmail.com)으로 연락해 주세요.
-        남은 멘토링은 비대면으로 신청하실 수 있습니다.</div>
-      </div>
-      <div class="callout warn" style="margin-top:12px" id="bookOpenNote">
-        <span aria-hidden="true">⚠</span>
-        <div><b>대면 멘토링은 10월 2일에만 가능하며, 이날 1회만 사용할 수 있습니다.</b>
-        이 일자가 어려우시면 비대면 멘토링을 활용해 주세요.</div>
-      </div>
-      <div class="slotbar">
-        <span id="slotLeft">남은 자리</span>
-        <span class="lg"><i class="lg-o"></i>신청 가능</span>
-        <span class="lg"><i class="lg-x"></i>마감</span>
-        <span class="lg"><i class="lg-m"></i>내 예약</span>
-      </div>
-      <div class="slots" id="slots"></div>
-      <div id="pick" style="margin-top:14px;font-size:13px;color:var(--tx2)">시간대를 선택해 주세요.</div>
-      <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
-        <button class="btn sm" id="book" disabled>선택한 시간으로 신청</button>
-        <button class="btn sm danger" id="cancel" hidden>예약 취소</button>
-      </div>
-    </div>
-    <div class="card pad">
-      <h3 style="font-size:16px;font-weight:800">비대면 · 상시 예약</h3>
-      <p style="font-size:13px;color:var(--tx2);margin-top:7px">
-        강사가 등록한 가능 시간 중에서 고르는 방식입니다. 정규과정이 끝난 뒤라
-        <b>야간·주말 슬롯</b>이 많습니다.</p>
-      <div style="background:var(--bg2);border:1px solid var(--line);border-radius:11px;padding:14px;margin-top:14px">
-        <div class="mono" style="font-size:10.5px;color:var(--tx3);letter-spacing:.1em">WHATTIME.CO.KR</div>
-        <div style="font-size:13.5px;font-weight:700;margin-top:5px">scopelabs / ccw-05</div>
-        <a class="btn sm" style="display:inline-block;margin-top:12px;text-decoration:none;color:#fff"
-           href="https://whattime.co.kr/scopelabs/ccw-05" target="_blank" rel="noopener">되는시간에서 예약하기 ↗</a>
-      </div>
-      <ul class="cl">
-        <li>대면·비대면 관계없이 <b>1인당 총 2회</b>로 동일합니다.</li>
-        <li class="no"><b>사전 공유 없이 불참(노쇼)</b>하면 추가 기회가 부여되지 않습니다.</li>
-      </ul>
-    </div>
-  </div>
-  <div class="callout info">
-    <span aria-hidden="true">▸</span>
-    <div><b>설계 단계부터 상담 범위입니다.</b> 해커톤 때 시간이 부족해 다루지 못한 과제를 다시 잡거나,
-    과제를 바꾸는 것도 가능합니다. 다른 사람에게 도구를 써보게 한 뒤 막히는 지점을 가져오면 가장 효율적입니다.</div>
-  </div>
-</div>
-
-<!-- ======================= 제출 ======================= -->
-<div class="view wrap" id="v-submit" hidden>
-  <div class="sec-h"><span class="n">03</span><h2>결과물 제출</h2>
-    <span class="hint">마감 2026. 11. 20 (금) 13:00</span></div>
-  <p style="color:var(--tx2);font-size:14px;max-width:66ch">
-    기획 단계의 산출물이 아니라 <b>실제로 작동하는 결과물</b>을 제출하는 것이 원칙입니다.
-    제출자료 네 가지는 <b>11월 20일(금) 13:00</b>까지 받았습니다.
-    그중 <b>AI 도구와 시연 영상</b>은 11월 21일 전문가 피드백을 반영해 데모데이 전까지 고칠 수 있고,
-    <b>부스 포스터</b>는 인쇄를 위해 제출 이후 수정할 수 없습니다.</p>
-  <div style="margin-top:14px"><span class="chip mono" id="dSubmit">마감까지</span></div>
-
-  <div id="subs" style="margin-top:18px"></div>
-
-  <div class="formbox">
-    <div class="fb-main">
-      <div class="fb-k">제출 <span class="fb-lock">마감</span></div>
-      <h3>수정본은 운영사무국으로 보내 주세요</h3>
-      <p>AI 도구나 시연 영상을 고치셨다면 데모데이 전까지 운영사무국(koccaccw@gmail.com)으로
-        알려 주세요. 데모데이 부스에는 마지막으로 받은 수정본을 사용합니다.</p>
-    </div>
-    <button class="cta" id="formBtn" type="button" disabled aria-disabled="true">
-      제출 마감 <span aria-hidden="true">🔒</span></button>
-  </div>
-  <p class="authnote" style="margin-top:12px">
-    공지된 제출물 종류·형식과 마감기한 준수 여부는 전문가 평가의 정량평가(5점)에 반영됩니다.</p>
-</div>
-
 <!-- ======================= 투표 ======================= -->
-<div class="view wrap" id="v-vote" hidden>
-  <div class="sec-h"><span class="n">04</span><h2>청중 투표</h2>
-    <span class="hint">11.30(월) 오픈 · 12.4(금) 18:00 마감</span></div>
+<div class="view wrap" id="v-vote">
+  <div class="sec-h"><span class="n">01</span><h2>청중 투표</h2>
+    <span class="hint">11.30(월) 00:00 오픈 · 12.4(금) 18:00 마감</span></div>
 
-  <div class="card pad" style="margin-bottom:14px">
+  <div class="card pad vpanel" style="margin-bottom:14px">
     <div class="vrow">
       <div class="vl">
-        <h3 style="font-size:16px;font-weight:800">투표하려면 휴대폰 번호를 입력하세요</h3>
-        <p style="font-size:13px;color:var(--tx2);margin-top:7px;max-width:56ch">
-          <b>한 번호당 3표</b>까지 참여할 수 있고, 같은 결과물에는 한 표만 가능합니다.
-          입력하신 번호는 중복 확인 용도로만 쓰이며 결과 발표 후 폐기합니다.
-          동일 번호·동일 IP에서 반복 투표가 확인되면 집계에서 제외될 수 있습니다.</p>
-      </div>
-      <div class="vform" id="vform">
-        <input type="tel" id="phone" inputmode="numeric" maxlength="13" placeholder="010-0000-0000" aria-label="휴대폰 번호">
-        <button class="btn" type="button" id="verify">확인</button>
+        <h3 style="font-size:18px;font-weight:800">휴대폰 인증 후 투표할 수 있어요</h3>
+        <p style="font-size:13.5px;color:var(--tx2);margin-top:7px;max-width:58ch">
+          <b>한 번호당 3표</b>까지, 같은 결과물에는 한 표만 가능합니다.
+          인증한 번호로 다시 들어오면 마감 전까지 표를 바꿀 수 있습니다.
+          <b>득표 현황은 공개하지 않으며</b>, 결과는 12월 4일 데모데이에서 발표합니다.</p>
       </div>
     </div>
-    <div id="voteMsg" style="font-size:13px;margin-top:10px"></div>
+
+    <div id="vstep">
+      <div class="agree" style="margin-top:16px">
+        <label class="ck"><input type="checkbox" id="vck">
+          <span class="cv"><b>개인정보 수집·이용에 동의합니다<span class="req">필수</span></b>
+          휴대폰 번호와 접속 IP를 본인 확인과 중복 투표 방지, 결과 집계에만 사용합니다.
+          <button type="button" class="lnk" id="privMore" aria-expanded="false">자세히 보기</button></span></label>
+        <div class="privbox" id="privBox" hidden>
+          <table>
+            <tbody>
+              <tr><th>수집 항목</th><td>휴대폰 번호, 접속 IP 주소, 투표 내역(투표 대상 · 시각)</td></tr>
+              <tr><th>수집 · 이용 목적</th><td>본인 확인(인증번호 문자 발송), 중복 투표 방지, 청중 투표 결과 집계</td></tr>
+              <tr><th>보유 · 이용 기간</th><td><b>결과 발표 후 1개월(2027. 1. 4.)까지</b> 보관한 뒤 파기합니다.
+                휴대폰 번호는 암호화(해시)해 저장하며, 운영 기록에는 가운데 자리를 가린 번호만 남습니다.</td></tr>
+              <tr><th>동의 거부 권리</th><td>동의하지 않을 수 있으며, 이 경우 청중 투표에 참여할 수 없습니다.</td></tr>
+              <tr><th>문의</th><td>CCW 운영사무국 · koccaccw@gmail.com</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="vform" id="vform">
+        <input type="tel" id="phone" inputmode="numeric" maxlength="13" placeholder="010-0000-0000" aria-label="휴대폰 번호" autocomplete="tel">
+        <button class="btn" type="button" id="sendCode">인증번호 받기</button>
+      </div>
+      <div class="vform" id="codeRow" hidden>
+        <input type="text" id="code" inputmode="numeric" maxlength="6" placeholder="인증번호 6자리" aria-label="인증번호" autocomplete="one-time-code">
+        <button class="btn" type="button" id="verify">확인</button>
+        <span class="mono" id="codeTimer" style="font-size:13px;color:var(--tx3);align-self:center"></span>
+      </div>
+    </div>
+
+    <div id="voteMsg" style="font-size:13.5px;margin-top:12px" aria-live="polite"></div>
     <div class="vst" id="vst" hidden>
-      <span class="ok">✓ 확인됨</span>
+      <span class="ok">✓ 인증됨</span>
       <span class="mono" id="vphone"></span>
       <span class="pips" id="vpips"></span>
       <span class="mono" id="vleft">남은 표 3</span>
@@ -868,78 +813,10 @@ input,select,textarea{font-size:16px}   /* iOS 자동 확대 방지 */
   </div>
 
   <div class="callout info" style="margin-top:0;margin-bottom:14px" id="voteBanner">
-    <span aria-hidden="true">▸</span>
-    <div><b>지금 보이는 영상 자리는 예시입니다.</b> 11월 20일 제출된 시연 영상을 운영사무국이 게시하면
-    이 자리에 실제 영상이 들어갑니다. 투표 방식을 미리 확인해 보실 수 있도록 열어 둔 화면입니다.
-    <b>득표 현황은 공개하지 않으며</b>, 결과는 12월 4일 수료식에서 발표합니다.</div>
+    <span aria-hidden="true">▸</span><div></div>
   </div>
 
   <div class="wall" id="wall"></div>
-</div>
-
-<!-- ======================= 관리 ======================= -->
-<div class="view wrap" id="v-admin" hidden>
-  <div class="sec-h"><span class="n">05</span><h2>운영 현황</h2>
-    <span class="hint">운영사무국 전용</span></div>
-
-  <div class="kpis" id="kpis"></div>
-
-  <div class="callout info" style="margin-top:18px">
-    <span aria-hidden="true">▸</span>
-    <div><b>결과물 제출 현황은 이 화면에서 관리하지 않습니다.</b> 제출은 구글폼으로 받으므로
-    누가 무엇을 냈는지는 구글폼 응답 시트에서 바로 확인해 주세요.</div>
-  </div>
-
-  <div class="sec-h" style="margin-top:30px"><span class="n">A</span><h2>대면 멘토링 예약 현황</h2>
-    <span class="hint">10월 2일(금) · 선착순</span>
-    <button class="btn ghost sm" type="button" data-csv="book" style="margin-left:auto">CSV 내려받기</button></div>
-  <div class="tblw">
-    <table style="min-width:520px">
-      <thead><tr><th>시간</th><th>예약자</th><th>신청 시각</th><th>상태</th></tr></thead>
-      <tbody id="admBook"></tbody>
-    </table>
-  </div>
-  <p id="admYet" style="font-size:13px;color:var(--tx2);margin-top:10px"></p>
-
-  <div data-vote-only>
-  <div class="sec-h" style="margin-top:30px"><span class="n">B</span><h2>청중 투표 집계</h2>
-    <span class="hint">유효 표만 반영 · 11.30 오픈 · 12.4 18:00 마감</span></div>
-  <div class="card pad"><div id="admVote"></div></div>
-
-  <div class="sec-h" style="margin-top:30px"><span class="n">C</span><h2>투표 원장 · 번호별 투표 내역</h2>
-    <button class="btn ghost sm" type="button" data-csv="ballot" style="margin-left:auto">CSV 내려받기</button></div>
-  <p style="color:var(--tx2);font-size:13px;margin-top:-4px">
-    입력된 휴대폰 번호가 <b>누구에게 투표했는지</b> 한 건씩 기록됩니다. 아래는 최근 12건 미리보기이고,
-    CSV에는 <b id="ballotN">0</b>건 전체가 담깁니다.</p>
-  <div class="tblw" style="margin-top:12px">
-    <table style="min-width:620px">
-      <thead><tr><th>투표 시각</th><th>휴대폰 번호</th><th>투표 대상</th><th>과제명</th><th>IP</th><th>판정</th></tr></thead>
-      <tbody id="admBallot"></tbody>
-    </table>
-  </div>
-
-  <div class="sec-h" style="margin-top:30px"><span class="n">D</span><h2>중복 의심 · 자동 제외</h2>
-    <button class="btn ghost sm" type="button" data-csv="flag" style="margin-left:auto">CSV 내려받기</button></div>
-  <div class="tblw">
-    <table>
-      <thead><tr><th>IP</th><th>사용된 번호</th><th>표 수</th><th>최근 시각</th><th>판정</th></tr></thead>
-      <tbody id="admFlag"></tbody>
-    </table>
-  </div>
-  <div class="callout warn">
-    <span aria-hidden="true">⚠</span>
-    <div><b>같은 IP에서 5회 이상 들어온 표는 자동으로 제외</b>하고 위 집계에서 뺐습니다.
-    동일 번호 중복은 엑셀에서 직접 확인하실 수 있도록 CSV에 번호를 그대로 담았습니다.
-    공용 와이파이에서는 정상 투표도 함께 잡힐 수 있으니 최종 판단은 사무국이 해 주세요.</div>
-  </div>
-  </div>
-
-  <div class="callout info" id="voteOffNote" hidden>
-    <span aria-hidden="true">▸</span>
-    <div><b>청중 투표는 11월 30일(월)에 엽니다.</b> 그때까지 투표 탭과 집계 화면은 닫아 두었습니다.
-    오픈 시점에 사무국 안내 없이 자동으로 열립니다.</div>
-  </div>
-
 </div>
 
 <!-- ======================= 푸터 ======================= -->
@@ -969,71 +846,6 @@ input,select,textarea{font-size:16px}   /* iOS 자동 확대 방지 */
     </div>
     <iframe id="vwF" title="결과물 크게 보기" referrerpolicy="no-referrer"
       sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-downloads"></iframe>
-  </div>
-</div>
-
-<!-- ======================= 진출자 확인 모달 ======================= -->
-<div class="ov" id="ov">
-  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle">
-    <div class="eyebrow"><i></i>CCW AI Sprint</div>
-    <h3 id="mTitle">어떤 자격으로 들어오셨나요?</h3>
-    <p class="msub">선택한 자격에 따라 보이는 메뉴가 달라집니다.</p>
-
-    <div class="roles" id="roles">
-      <button class="role" type="button" data-role="finalist" aria-pressed="false">
-        <b>파이널 스프린트 진출자</b>
-        <span>과정안내 · 멘토링 예약 · 결과물 제출</span></button>
-      <button class="role" type="button" data-role="voter" aria-pressed="false">
-        <b>투표 참여자</b>
-        <span>과정안내 · 청중 투표</span></button>
-      <button class="role" type="button" data-role="admin" aria-pressed="false">
-        <b>운영사무국</b>
-        <span>예약 · 운영 현황 관리</span></button>
-    </div>
-
-    <div id="stepFinalist" hidden>
-      <div class="mlab">본인 선택</div>
-      <div class="names" id="names"></div>
-
-      <div class="mlab">진출자 비밀번호</div>
-      <div class="authrow">
-        <input type="password" id="finalPw" maxlength="32" placeholder="사무국이 안내한 비밀번호"
-               aria-label="진출자 비밀번호" autocomplete="off"
-               autocapitalize="none" autocorrect="off" spellcheck="false">
-      </div>
-      <p class="authnote" id="authNote">사무국이 진출자에게만 개별 안내한 비밀번호입니다.</p>
-
-      <div class="mlab">결과물 공개 동의</div>
-      <div class="agree">
-        <label class="ck"><input type="checkbox" id="ck1">
-          <span class="cv"><b>결과물 게시에 동의합니다<span class="req">필수</span></b>
-          성명·과제명·결과물 요약을 디지털 쇼케이스 사이트에 게시합니다.</span></label>
-        <label class="ck"><input type="checkbox" id="ck2">
-          <span class="cv"><b>시연 영상·포스터 활용에 동의합니다<span class="req">필수</span></b>
-          제출한 시연 영상과 포스터를 쇼케이스 전시와 데모데이 현장에 활용합니다.</span></label>
-      </div>
-    </div>
-
-    <div id="stepAdmin" hidden>
-      <div class="mlab">운영사무국 인증</div>
-      <div class="authrow">
-        <input type="password" id="adminPw" maxlength="32" placeholder="운영사무국 비밀번호"
-               aria-label="운영사무국 비밀번호" autocomplete="off"
-               autocapitalize="none" autocorrect="off" spellcheck="false">
-      </div>
-      <p class="authnote" id="adminNote">운영사무국에만 공유하는 비밀번호입니다.</p>
-    </div>
-
-    <div id="stepVoter" hidden>
-      <p class="authnote" style="margin-top:18px">
-        과정 안내와 청중 투표를 보실 수 있습니다. 투표는 <b>11월 30일(월)</b>부터 <b>12월 4일(금) 18:00</b>까지입니다.</p>
-    </div>
-
-    <div class="mfoot">
-      <button class="btn" type="button" id="enterBtn" disabled>들어가기</button>
-    </div>
-    <p class="mnote">동의 내역은 운영사무국에 기록되며, 언제든 사무국(koccaccw@gmail.com)으로 철회를
-      요청할 수 있습니다. 목록에 본인이 없거나 확인이 어려우면 사무국으로 연락해 주세요.</p>
   </div>
 </div>
 
@@ -1073,47 +885,24 @@ var HTL = [
   HTL.forEach(function(n, i){ if (Date.parse(n.iso + "T00:00:00+09:00") <= now) cur = i; });
   HTL.forEach(function(n, i){ n.s = i === cur ? "now" : (i < cur ? "done" : ""); });
 })();
-var SUB_PHASES = [
-  { n:"01", t:"최종 피칭 및 전문가 평가 제출물", due:"2026. 11. 20 (금) 13:00 마감",
-    note:"작동하는 AI 도구와 시연 영상은 11월 21일 피드백을 반영해 <b>데모데이 전까지 수정</b>할 수 있습니다. "
-       + "부스 포스터는 인쇄를 위해 <b>제출 이후 수정할 수 없습니다.</b>",
-    items:[
-      { i:"1", t:"작동하는 AI 도구", q:"접속 링크 또는 실행 파일 · 11/21 이후 수정 가능", d:[
-        "타인이 직접 실행해 볼 수 있는 상태여야 합니다",
-        "기획 단계의 산출물이 아닌, 실제로 작동하는 결과물이어야 합니다"]},
-      { i:"2", t:"설명자료 (피치덱)", q:"분량 제한 없음", d:[
-        "해커톤 대비 개선점, 해결하려는 문제, 목표 사용자, AI 솔루션의 핵심 기능, 이용 방법 및 기대 효과 등을 포함합니다"]},
-      { i:"3", t:"시연 영상", q:"5분 내외 · 11/21 이후 수정 가능", d:[
-        "목적과 입력 내용, 사용 절차 등을 포함합니다",
-        "시연 오류에 대비한 백업이자, 12. 4.(금) 데모데이 부스에서 영상 루핑으로 활용합니다"]},
-      { i:"4", t:"데모데이 부스 포스터", q:"A1 (594×841mm, 세로형) · 제출 이후 수정 불가", d:[
-        "PPT 파일로 제출합니다(일러스트·포토샵 가능)",
-        "프로젝트명, 어필하고 싶은 핵심 기능, 기대 효과 등 주요 내용을 담아 데모데이 부스에 전시합니다"]}
-    ]}
-];
-
-var SLOTS = [];
-for (var h = 9; h <= 17; h++){
-  if (h === 12) { SLOTS.push({t:"12:00", ok:false, why:"점심"}); continue; }
-  SLOTS.push({t:(h<10?"0":"")+h+":00", ok:true});
-}
 var TINT = ["#f9b23c","#ea4a35","#4fae5a","#2f6fba","#9b5bb0","#f9b23c","#ea4a35","#4fae5a","#2f6fba"];
 
 /* ===================== 상태 ===================== */
-var who = null, role = null, picked = null, booked = 0, faceBooked = false;
-var MAXV = 3, verified = false, myPhone = "", votes = [];
+var MAXV = 3, verified = false, myPhone = "", myToken = "", votes = [];
+var ticket = "", codeUntil = 0, codeTimerId = null;
 var $ = function(id){ return document.getElementById(id); };
-
-/* ===================== 서버 연동 ===================== */
-var API  = { pw: "" };                 /* 새로고침하면 다시 입력합니다 */
-var VOTEWIN = { state: "before", maxPerPhone: 3 };
-var BOOKOPEN = true;   /* 서버(/api/state)가 알려 줍니다 */
+var VOTEWIN = { state: "before", maxPerPhone: 3, sms: true };
 var NETERR = "서버에 연결하지 못했습니다. 잠시 후 다시 시도해 주세요.";
+
+/* 새로고침해도 인증이 유지되도록 이 브라우저 탭에만 잠깐 기억합니다 (3시간 뒤 만료). */
+var SS = { get: function(k){ try { return sessionStorage.getItem(k); } catch (e) { return null; } },
+           set: function(k, v){ try { sessionStorage.setItem(k, v); } catch (e) {} },
+           del: function(k){ try { sessionStorage.removeItem(k); } catch (e) {} } };
 
 function api(path, opts){
   opts = opts || {};
   var h = { "content-type": "application/json" };
-  if (API.pw) h["x-ccw-pw"] = API.pw;
+  if (myToken) h["x-vote-token"] = myToken;
   opts.headers = h;
   if (opts.body && typeof opts.body !== "string") opts.body = JSON.stringify(opts.body);
   return fetch(path, opts).then(function(r){
@@ -1127,6 +916,7 @@ function api(path, opts){
 }
 function note(el, msg, kind){
   if (!el) return;
+  if (!msg){ el.innerHTML = ""; return; }
   var c = kind === "bad" ? "dan" : kind === "ok" ? "ok" : "tx2";
   el.innerHTML = '<b style="color:var(--' + c + ')">' + msg + '</b>';
 }
@@ -1137,6 +927,7 @@ function busy(btn, on, idle){
   else btn.textContent = idle || btn.dataset.idle || btn.textContent;
 }
 function dday(iso){ return Math.ceil((new Date(iso + "T23:59:59+09:00") - new Date()) / 86400000); }
+function dlabel(n){ return n > 0 ? "D-" + n : (n === 0 ? "D-DAY" : "D+" + (-n)); }
 
 /* ===================== 렌더 ===================== */
 function renderHtl(){
@@ -1148,236 +939,27 @@ function renderHtl(){
   });
   $("htl").innerHTML = o;
 }
-/* 예약 현황 — /api/state 에서 채웁니다 */
-var BOOKINGS = [];
-var ADMIN = null;   /* /api/admin 응답 */
 
-/* 현재 상태를 서버에서 가져옵니다 */
 function loadState(){
   var q = (verified && myPhone) ? ("?phone=" + encodeURIComponent(myPhone)) : "";
   return api("/api/state" + q).then(function(j){
-    BOOKINGS = [];
-    Object.keys(j.taken || {}).forEach(function(t){
-      BOOKINGS.push({ n: j.taken[t].name, when: "10.02 (금) " + t, how: "대면",
-                      st: "확정", at: j.taken[t].at });
-    });
     VOTEWIN = j.vote || VOTEWIN;
-    if (j.booking) BOOKOPEN = j.booking.open !== false;
     MAXV = VOTEWIN.maxPerPhone || 3;
-    if (j.vote && j.vote.myVotes) votes = j.vote.myVotes.map(Number);
-    syncMine(); renderSlots(); syncPick(); renderVoteState(); renderWall();
+    if (verified && VOTEWIN.myVotes) votes = VOTEWIN.myVotes.map(Number);
+    renderVoteState(); renderWall();
     return j;
   });
 }
-
-/* 실제 집계는 투표 기간에만. 그 전에는 화면 안에서만 도는 미리보기입니다. */
 function voteLive(){ return VOTEWIN.state === "open"; }
 
-/* ---- CSV (서버가 만들어 보내줍니다) ---- */
-function downloadCsv(kind, btn){
-  var idle = btn.textContent;
-  busy(btn, true);
-  fetch("/api/admin?csv=" + kind, { headers: { "x-ccw-pw": API.pw } })
-    .then(function(r){
-      if (!r.ok) throw new Error("내려받기에 실패했습니다 (" + r.status + ")");
-      var label = { ballot: "투표원장", flag: "중복의심", book: "대면예약" }[kind] || kind;
-      var d = new Date(), z = function(n){ return (n < 10 ? "0" : "") + n; };
-      var name = "CCW_" + label + "_" + d.getFullYear() + z(d.getMonth() + 1) + z(d.getDate())
-               + "_" + z(d.getHours()) + z(d.getMinutes()) + ".csv";
-      return r.blob().then(function(b){ return { blob: b, name: name }; });
-    })
-    .then(function(f){
-      var url = URL.createObjectURL(f.blob);
-      var a = document.createElement("a");
-      a.href = url; a.download = f.name;
-      document.body.appendChild(a); a.click();
-      setTimeout(function(){ URL.revokeObjectURL(url); a.remove(); }, 1000);
-      busy(btn, false, idle);
-    })
-    .catch(function(e){ busy(btn, false, idle); alert(e.message); });
-}
-
-function loadAdmin(){
-  return api("/api/admin").then(function(j){ ADMIN = j; renderAdmin(); });
-}
-function renderAdmin(){
-  if (!ADMIN){
-    $("kpis").innerHTML = '<div class="kpi"><div class="k">불러오는 중</div><div class="v mono">…</div></div>';
-    return;
-  }
-  var k = ADMIN.kpi;
-  var kpi = '<div class="kpi"><div class="k">대면 남은 자리</div><div class="v mono">'
-    + k.faceOpen + ' / ' + k.faceTotal + '</div>'
-    + '<div class="s">10월 2일 · 선착순</div></div>';
-  if (VOTE_ENABLED){
-    kpi += '<div class="kpi"><div class="k">총 투표</div><div class="v mono">' + k.votesTotal + '</div>'
-      + '<div class="s">참여 번호 ' + k.votersApprox + '개</div></div>'
-      + '<div class="kpi' + (k.autoExcluded ? ' alert' : '') + '"><div class="k">자동 제외</div>'
-      + '<div class="v mono">' + k.autoExcluded + '</div>'
-      + '<div class="s">' + k.flaggedIps + '개 IP · 5회 이상</div></div>';
-  }
-  $("kpis").innerHTML = kpi;
-
-  /* 대면 예약 — 비어 있는 시간대까지 한눈에 보이도록 전 시간대를 늘어놓습니다 */
-  var live = (ADMIN.bookings || []).filter(function(b){
-    return b.status === "확정" && b.method === "대면";
-  });
-  var bySlot = {};
-  live.forEach(function(b){ bySlot[b.slot] = b; });
-
-  $("admBook").innerHTML = SLOTS.map(function(sl){
-    if (!sl.ok){
-      return '<tr><td class="nm mono">' + sl.t + '</td>'
-        + '<td class="tk" style="color:var(--tx3)">' + sl.why + '</td><td></td><td></td></tr>';
-    }
-    var b = bySlot[sl.t];
-    if (!b){
-      return '<tr><td class="nm mono">' + sl.t + '</td>'
-        + '<td class="tk" style="color:var(--tx3)">—</td>'
-        + '<td class="mono" style="color:var(--tx3)">—</td>'
-        + '<td class="tk" style="color:var(--tx3)">비어 있음</td></tr>';
-    }
-    return '<tr><td class="nm mono">' + sl.t + '</td>'
-      + '<td class="nm">' + b.name + '</td>'
-      + '<td class="mono" style="font-size:12px;color:var(--tx2)">' + (b.at || "") + '</td>'
-      + '<td class="ok-y">확정</td></tr>';
-  }).join("");
-
-  var booked = {};
-  live.forEach(function(b){ booked[b.name] = 1; });
-  var yet = FINALISTS.filter(function(f){ return !booked[f.n]; }).map(function(f){ return f.n; });
-  $("admYet").innerHTML = yet.length
-    ? '아직 신청하지 않은 진출자 <b>' + yet.length + '명</b> — ' + yet.join(', ')
-    : '<b style="color:var(--ok)">진출자 10인이 모두 신청했습니다.</b>';
-
-  if (!VOTE_ENABLED) return;
-
-  var max = Math.max.apply(null, ADMIN.tally.map(function(r){ return r.net; })) || 1;
-  $("admVote").innerHTML = ADMIN.tally.map(function(r){
-    return '<div class="bar-row" title="' + r.task + '"><div class="bn">' + r.name + '</div>'
-      + '<div class="bt"><i style="width:' + Math.round(r.net / max * 100) + '%"></i></div>'
-      + '<div class="bv">' + r.net + '표'
-      + (r.excluded ? ' <span style="color:var(--dan)">-' + r.excluded + '</span>' : '') + '</div></div>';
-  }).join("") || '<p style="color:var(--tx2);font-size:13px">아직 들어온 표가 없습니다.</p>';
-
-  $("ballotN").textContent = ADMIN.ballotCount;
-  $("admBallot").innerHTML = ADMIN.ballot.slice(0, 12).map(function(b){
-    return '<tr><td class="nm mono" style="font-size:12px">' + b.at + '</td>'
-      + '<td class="nm mono" style="font-size:12px">' + b.phone + '</td>'
-      + '<td class="nm">' + b.name + '</td>'
-      + '<td class="tk" style="font-size:12.5px">' + b.task + '</td>'
-      + '<td class="mono" style="font-size:11.5px;color:var(--tx3)">' + b.ip + '</td>'
-      + '<td class="' + (b.ok ? "ok-y" : "ok-n") + '"'
-      + (b.ok ? '' : ' style="color:var(--dan);font-weight:700"') + '>'
-      + (b.ok ? "유효" : "자동제외") + '</td></tr>';
-  }).join("") || '<tr><td colspan="6" class="tk" style="color:var(--tx3)">아직 들어온 표가 없습니다.</td></tr>';
-
-  $("admFlag").innerHTML = ADMIN.flags.map(function(f){
-    return '<tr><td class="nm mono">' + f.ip + '</td>'
-      + '<td class="tk mono" style="font-size:12px">' + f.phones.join(", ") + '</td>'
-      + '<td class="mono">' + f.n + '표</td>'
-      + '<td class="mono" style="color:var(--tx3)">' + f.at + '</td>'
-      + '<td class="ok-n" style="color:var(--dan);font-weight:700">자동 제외</td></tr>';
-  }).join("") || '<tr><td colspan="5" class="tk" style="color:var(--tx3)">중복 의심 IP가 없습니다.</td></tr>';
-}
-
-function renderSubs(){
-  var o = SUB_PHASES.map(function(ph){
-    var cards = ph.items.map(function(s){
-      return '<div class="sub">'
-        + '<div class="sub-t"><span class="sub-n">' + s.i + '</span>'
-        + '<div><h4>' + s.t + '</h4><div class="rq">' + s.q + '</div></div></div>'
-        + '<ul class="ds">' + s.d.map(function(x){ return '<li>' + x + '</li>'; }).join("") + '</ul>'
-        + '</div>';
-    }).join("");
-    return '<div class="subph"><span class="sp-n mono">' + ph.n + '</span>'
-      + '<h3>' + ph.t + '</h3><span class="sp-due mono">' + ph.due + '</span></div>'
-      + (ph.note ? '<p class="sp-note">' + ph.note + '</p>' : '')
-      + '<div class="subs">' + cards + '</div>';
-  }).join("");
-
-  $("subs").innerHTML = o;
-}
-function syncMine(){
-  var mine = BOOKINGS.filter(function(r){ return r.n === who && r.st !== "취소"; });
-  booked = mine.length;
-  faceBooked = mine.some(function(r){ return r.how === "대면"; });
-}
-function myFace(){
-  var m = null;
-  BOOKINGS.forEach(function(r){
-    if (r.n === who && r.how === "대면" && r.st !== "취소") m = r;
-  });
-  return m;
-}
-function openFace(){
-  var t = faceTaken(), n = 0;
-  SLOTS.forEach(function(x){ if (x.ok && !t[x.t]) n++; });
-  return n;
-}
-function faceTaken(){
-  var t = {};
-  BOOKINGS.forEach(function(r){
-    if (r.how === "대면" && r.st !== "취소") t[r.when.replace("10.02 (금) ", "")] = r.n;
-  });
-  return t;
-}
-function renderSlots(){
-  var taken = faceTaken();
-  var open = 0;
-  $("slots").innerHTML = SLOTS.map(function(s, i){
-    var owner = taken[s.t];
-    var mineSlot = owner && who && owner === who;
-    var state, lock;
-    if (!s.ok)           { state = s.why;      lock = true; }
-    else if (mineSlot)   { state = "내 예약";    lock = true; }
-    else if (owner)      { state = owner;       lock = true; }
-    else if (!BOOKOPEN)  { state = "마감";       lock = true; }
-    else if (faceBooked) { state = "신청 마감";  lock = true; }
-    else                 { state = "신청 가능";  lock = false; open++; }
-    var cls = "slot" + (mineSlot ? " mine" : (owner || !s.ok ? " gone" : ""));
-    return '<button class="' + cls + '" type="button" data-slot="' + i + '" aria-pressed="'
-      + (picked === i ? "true" : "false") + '"' + (lock ? " disabled" : "") + '>'
-      + s.t + '<small>' + state + '</small></button>';
-  }).join("");
-  var total = SLOTS.filter(function(x){ return x.ok; }).length;
-  $("slotLeft").innerHTML = BOOKOPEN
-    ? '남은 자리 <b class="mono">' + open + '</b>개 / 전체 ' + total + '개 · 선착순'
-    : '<b style="color:var(--dan)">접수 마감</b> · 확정된 ' + Object.keys(taken).length
-      + '건만 표시합니다';
-  $("pips").innerHTML = '<i class="' + (faceBooked ? "on" : "") + '"></i>';
-  $("quotaTxt").textContent = "대면 " + (faceBooked ? 1 : 0) + " / 1회 사용";
-  $("book").hidden = !BOOKOPEN;
-  $("book").disabled = picked === null || faceBooked;
-  $("book").textContent = faceBooked ? "대면 1회를 사용했습니다" : "선택한 시간으로 신청";
-  var closed = $("bookClosed"), opened = $("bookOpenNote");
-  if (closed) closed.hidden = BOOKOPEN;
-  if (opened) opened.hidden = !BOOKOPEN;
-}
-function syncPick(){
-  var m = myFace();
-  $("cancel").hidden = !m || !BOOKOPEN;
-  if (m){
-    $("pick").innerHTML = '<b style="color:var(--vio)">내 예약 · ' + m.when + '</b>'
-      + ' · 한국생산성본부 · 1시간 <span style="color:var(--tx3)">(신청 ' + m.at + ')</span>';
-    return;
-  }
-  if (!BOOKOPEN){
-    $("pick").innerHTML = '<span style="color:var(--tx3)">신청하신 내역이 없습니다.</span>';
-    return;
-  }
-  $("pick").innerHTML = picked === null
-    ? "시간대를 선택해 주세요."
-    : '<b>10월 2일 (금) ' + SLOTS[picked].t + " ~ " + (Number(SLOTS[picked].t.slice(0,2))+1)
-      + ':00</b> · 한국생산성본부 · 1시간';
-}
 function fmtPhone(v){
-  var n = v.replace(/\D/g, "").slice(0, 11);
-  if (n.length < 4) return n;
-  if (n.length < 8) return n.slice(0,3) + "-" + n.slice(3);
-  return n.slice(0,3) + "-" + n.slice(3,7) + "-" + n.slice(7);
+  var d = String(v || "").replace(/\D/g, "").slice(0, 11);
+  if (d.length < 4) return d;
+  if (d.length < 8) return d.slice(0, 3) + "-" + d.slice(3);
+  return d.slice(0, 3) + "-" + d.slice(3, d.length - 4) + "-" + d.slice(-4);
 }
 function validPhone(v){ return /^01[016789]-\d{3,4}-\d{4}$/.test(v); }
+
 function renderVoteState(){
   var vs = $("voteState");
   if (vs){
@@ -1385,18 +967,18 @@ function renderVoteState(){
     vs.style.color = VOTEWIN.state === "open" ? "var(--ok)" : "var(--tx3)";
   }
   var b = $("voteBanner");
-  if (b){
-    b.querySelector("div").innerHTML = voteLive()
-      ? '<b>청중 투표가 열려 있습니다.</b> 한 번호당 3표까지, 같은 결과물에는 한 표만 가능합니다. '
-        + '<b>득표 현황은 공개하지 않으며</b>, 결과는 12월 4일 수료식에서 발표합니다.'
-      : (VOTEWIN.state === "closed"
-          ? '<b>청중 투표가 마감되었습니다.</b> 결과는 12월 4일 수료식에서 발표합니다.'
-          : '<b>지금은 미리보기입니다.</b> 여기서 누른 표는 저장되지 않습니다. '
-            + '11월 30일(월)에 실제 투표가 열립니다. '
-            + '<b>득표 현황은 공개하지 않으며</b>, 결과는 12월 4일 수료식에서 발표합니다.');
-  }
+  b.querySelector("div").innerHTML = voteLive()
+    ? '<b>청중 투표가 열려 있습니다.</b> 카드의 <b>크게 보기</b>로 결과물을 직접 써 보고, 마음에 드는 결과물에 투표해 주세요.'
+    : (VOTEWIN.state === "closed"
+        ? '<b>청중 투표가 마감되었습니다.</b> 참여해 주셔서 감사합니다. 결과는 12월 4일 데모데이에서 발표합니다.'
+        : '<b>투표는 11월 30일(월) 00:00에 열립니다.</b> 그 전에도 아래 결과물은 미리 둘러보실 수 있습니다.');
+
+  var open = voteLive();
+  $("vstep").hidden = verified;
+  $("sendCode").disabled = !open;
+  if (!open && !verified) $("sendCode").textContent = VOTEWIN.state === "closed" ? "투표 마감" : "11.30 오픈";
+  else if (!ticket) $("sendCode").textContent = VOTEWIN.sms === false ? "확인" : "인증번호 받기";
   $("vst").hidden = !verified;
-  $("vform").style.display = verified ? "none" : "flex";
   if (verified){
     $("vphone").textContent = myPhone;
     var p = "";
@@ -1405,6 +987,8 @@ function renderVoteState(){
     $("vleft").textContent = "남은 표 " + (MAXV - votes.length);
   }
 }
+
+/* ---- 투표 카드 ---- */
 function stageHtml(p, i){
   var open = p.u ? '<a class="vopen" href="' + p.u + '" target="_blank" rel="noopener" data-view-site="' + p.r + '">크게 보기 ↗</a>' : '';
   if (p.u && p.live && !p.shot){
@@ -1417,9 +1001,7 @@ function stageHtml(p, i){
     return '<div class="vs shot"><span class="pan" style="background-image:url(assets/sites/' + p.r + '.webp)"></span>'
       + '<span class="vtag">화면 미리보기</span>' + open + '</div>';
   }
-  return '<div class="vs"><span class="vm" aria-hidden="true"><i></i><i></i>'
-    + '<span class="bk"><b></b><b></b><b></b></span></span><span class="vtag">결과물 준비 중</span>'
-    + '<span class="vbar" aria-hidden="true"><i style="animation-delay:-' + (i*1.1) + 's"></i></span></div>';
+  return '<div class="vs"><span class="vtag">결과물 준비 중</span></div>';
 }
 function renderWall(){
   var w = $("wall");
@@ -1439,8 +1021,10 @@ function renderWall(){
     var mine = votes.indexOf(p.r) !== -1;
     card.classList.toggle("voted", mine);
     b.setAttribute("aria-pressed", mine ? "true" : "false");
-    b.disabled = !mine && (!verified || votes.length >= MAXV);
-    b.textContent = mine ? "투표함 ✓" : (!verified ? "번호 확인 필요" : "투표");
+    b.disabled = !voteLive() || (!mine && (!verified || votes.length >= MAXV));
+    b.textContent = mine ? "투표함 ✓ (누르면 취소)"
+      : (!voteLive() ? (VOTEWIN.state === "closed" ? "투표 마감" : "11.30 오픈")
+      : (!verified ? "휴대폰 인증 후 투표" : (votes.length >= MAXV ? "3표를 모두 썼어요" : "투표하기")));
   });
 }
 /* 사이트는 PC 화면(1280px) 그대로 띄운 뒤 카드 폭에 맞게 줄입니다. */
@@ -1466,67 +1050,23 @@ function closeViewer(){
   $("vwF").src = "about:blank";
   document.body.style.overflow = "";
 }
-document.addEventListener("click", function(e){
-  var a = e.target.closest("[data-view-site]");
-  if (a){
-    var p = FINALISTS.filter(function(x){ return String(x.r) === a.getAttribute("data-view-site"); })[0];
-    if (p && p.live){ e.preventDefault(); openViewer(p); }
-    return;
-  }
-  if (e.target.id === "viewer" || e.target.closest("#vwClose")) closeViewer();
-});
 document.addEventListener("keydown", function(e){
   if (e.key === "Escape" && !$("viewer").hidden) closeViewer();
 });
-function renderNames(){
-  $("names").innerHTML = FINALISTS.map(function(p){
-    return '<button class="name" type="button" data-who="' + p.n + '" aria-pressed="'
-      + (who === p.n ? "true" : "false") + '">' + p.n + '</button>';
-  }).join("");
-}
 
 /* ===================== 내비 ===================== */
-/* 청중 투표는 11월 30일에 엽니다. 그때 이 값만 true 로 바꾸면 탭과 투표 참여자
-   입장 칸이 함께 살아납니다. 화면과 기능은 그대로 두었습니다. */
-var VOTE_ENABLED = false;
-
-var VIEWS = ["guide","mentoring","submit","vote","admin"];
-var ROLE_TABS = {
-  finalist: VOTE_ENABLED ? ["guide","mentoring","submit","vote"] : ["guide","mentoring","submit"],
-  voter:    ["guide","vote"],
-  admin:    VOTE_ENABLED ? ["guide","mentoring","submit","vote","admin"]
-                         : ["guide","mentoring","submit","admin"]
-};
-
-/* 투표를 열기 전에는 투표 참여자 칸과 투표 관련 안내를 감춥니다. */
-(function(){
-  if (VOTE_ENABLED) return;
-  var r = document.querySelector('.role[data-role="voter"]');
-  if (r) r.hidden = true;
-  document.querySelectorAll("[data-vote-only]").forEach(function(el){ el.hidden = true; });
-  var off = document.getElementById("voteOffNote");
-  if (off) off.hidden = false;
-})();
-
-function applyRole(){
-  var allow = ROLE_TABS[role] || ["guide"];
-  document.querySelectorAll(".tabs button").forEach(function(b){
-    b.hidden = allow.indexOf(b.getAttribute("data-view")) === -1
-               || (!VOTE_ENABLED && b.hasAttribute("data-vote-only"));
-  });
-  document.querySelector(".cta").hidden = allow.indexOf("vote") === -1;
-  go(allow[0]);
-}
-function go(v){
-  var allow = ROLE_TABS[role] || ["guide"];
-  if (allow.indexOf(v) === -1) v = allow[0];
+var VIEWS = ["vote","guide"];
+function go(v, noScroll){
+  if (VIEWS.indexOf(v) === -1) v = "vote";
   VIEWS.forEach(function(x){ $("v-" + x).hidden = x !== v; });
-  if (v === "admin"){ renderAdmin(); loadAdmin().catch(function(){}); }
-  if (v === "mentoring" || v === "admin") loadState().catch(function(){});
   document.querySelectorAll(".tabs button").forEach(function(b){
     b.setAttribute("aria-selected", b.getAttribute("data-view") === v ? "true" : "false");
   });
-  window.scrollTo({ top: 0, behavior: "smooth" });
+  if (v === "vote") fitStages();
+  if (!noScroll){
+    var t = document.querySelector(".tabs");
+    window.scrollTo({ top: t.getBoundingClientRect().top + window.scrollY - 62, behavior: "smooth" });
+  }
 }
 document.querySelector(".tabs").addEventListener("click", function(e){
   var b = e.target.closest("button[data-view]");
@@ -1554,167 +1094,107 @@ window.addEventListener("scroll", function(){
   });
 }, { passive:true });
 
-/* ===================== 이벤트 ===================== */
+/* ===================== 휴대폰 인증 ===================== */
+function setVerified(phone, token){
+  verified = true; myPhone = phone; myToken = token; votes = [];
+  ticket = ""; clearInterval(codeTimerId);
+  SS.set("ccwVote", JSON.stringify({ p: phone, t: token, at: Date.now() }));
+  note($("voteMsg"), "인증되었습니다. 마음에 드는 결과물에 투표해 주세요.", "ok");
+  return loadState().catch(function(){ renderVoteState(); renderWall(); });
+}
+function resetAuth(msg){
+  verified = false; myPhone = ""; myToken = ""; votes = []; ticket = "";
+  clearInterval(codeTimerId);
+  SS.del("ccwVote");
+  $("phone").value = ""; $("code").value = ""; $("codeRow").hidden = true;
+  $("phone").disabled = false;
+  note($("voteMsg"), msg || "", msg ? "bad" : "");
+  renderVoteState(); renderWall();
+}
+function startTimer(){
+  clearInterval(codeTimerId);
+  var tick = function(){
+    var s = Math.max(0, Math.round((codeUntil - Date.now()) / 1000));
+    $("codeTimer").textContent = s ? (Math.floor(s / 60) + ":" + ("0" + s % 60).slice(-2)) : "시간 초과";
+    if (!s) clearInterval(codeTimerId);
+  };
+  tick(); codeTimerId = setInterval(tick, 1000);
+}
+$("phone").addEventListener("input", function(){ this.value = fmtPhone(this.value); });
+$("phone").addEventListener("keydown", function(e){ if (e.key === "Enter") $("sendCode").click(); });
+$("code").addEventListener("input", function(){ this.value = this.value.replace(/\D/g, "").slice(0, 6); });
+$("code").addEventListener("keydown", function(e){ if (e.key === "Enter") $("verify").click(); });
+$("privMore").addEventListener("click", function(e){
+  e.preventDefault();
+  var open = $("privBox").hidden;
+  $("privBox").hidden = !open;
+  this.setAttribute("aria-expanded", open ? "true" : "false");
+  this.textContent = open ? "접기" : "자세히 보기";
+});
+$("sendCode").addEventListener("click", function(){
+  var v = $("phone").value.trim(), btn = this;
+  if (!$("vck").checked){ note($("voteMsg"), "개인정보 수집·이용에 동의해 주세요.", "bad"); return; }
+  if (!validPhone(v)){
+    note($("voteMsg"), "휴대폰 번호를 확인해 주세요. (예: 010-1234-5678)", "bad");
+    $("phone").focus(); return;
+  }
+  busy(btn, true);
+  api("/api/otp", { method: "POST", body: { action: "send", phone: v } })
+    .then(function(j){
+      if (j.sms === false){ busy(btn, false, "확인"); return setVerified(v, j.token); }
+      ticket = j.ticket; codeUntil = Date.now() + 5 * 60 * 1000;
+      $("codeRow").hidden = false; $("code").value = j.mockCode || ""; $("code").focus();
+      startTimer();
+      note($("voteMsg"), v + " 으로 인증번호를 보냈습니다. 문자로 받은 6자리를 넣어 주세요.", "ok");
+      busy(btn, false, "다시 받기");
+    })
+    .catch(function(e){ busy(btn, false); note($("voteMsg"), e.message, "bad"); });
+});
+$("verify").addEventListener("click", function(){
+  var v = $("phone").value.trim(), c = $("code").value.trim(), btn = this;
+  if (c.length !== 6){ note($("voteMsg"), "문자로 받은 인증번호 6자리를 넣어 주세요.", "bad"); return; }
+  busy(btn, true);
+  api("/api/otp", { method: "POST", body: { action: "verify", phone: v, code: c, ticket: ticket } })
+    .then(function(j){ busy(btn, false, "확인"); return setVerified(v, j.token); })
+    .catch(function(e){ busy(btn, false, "확인"); note($("voteMsg"), e.message, "bad"); });
+});
+$("vreset").addEventListener("click", function(){ resetAuth(); });
+
+/* ===================== 투표 ===================== */
 document.addEventListener("click", function(e){
   var g = e.target.closest("[data-go]");
   if (g){ go(g.getAttribute("data-go")); return; }
 
-  var w = e.target.closest("[data-who]");
-  if (w){ who = w.getAttribute("data-who"); renderNames(); syncModal(); return; }
-
-  var s = e.target.closest("[data-slot]");
-  if (s){ picked = Number(s.getAttribute("data-slot")); renderSlots(); syncPick(); return; }
+  var a = e.target.closest("[data-view-site]");
+  if (a){
+    var p = FINALISTS.filter(function(x){ return String(x.r) === a.getAttribute("data-view-site"); })[0];
+    if (p && p.live){ e.preventDefault(); openViewer(p); }
+    return;
+  }
+  if (e.target.id === "viewer" || e.target.closest("#vwClose")){ closeViewer(); return; }
 
   var v = e.target.closest("[data-v]");
   if (v){
+    if (!voteLive() || !verified) return;
     var r = Number(v.getAttribute("data-v")), k = votes.indexOf(r);
     var before = votes.slice();
     if (k !== -1) votes.splice(k, 1);
-    else if (verified && votes.length < MAXV) votes.push(r);
+    else if (votes.length < MAXV) votes.push(r);
     else return;
     renderVoteState(); renderWall();
-
-    /* 투표 기간에만 서버에 기록합니다. 그 전에는 화면 안에서만 도는 미리보기입니다. */
-    if (!voteLive()) return;
-    api("/api/vote", { method: "POST", body: { phone: myPhone, targets: votes } })
+    api("/api/vote", { method: "POST", body: { phone: myPhone, token: myToken, targets: votes } })
+      .then(function(){
+        note($("voteMsg"), votes.length ? ("투표가 저장되었습니다. (" + votes.length + " / " + MAXV + "표)") : "투표를 모두 취소했습니다.", "ok");
+      })
       .catch(function(err){
         votes = before;
+        if (err.data && err.data.reauth) return resetAuth(err.message);
         renderVoteState(); renderWall();
         note($("voteMsg"), err.message, "bad");
       });
   }
 });
 
-/* 비밀번호는 서버(환경변수)에만 있습니다. 화면 코드에는 들어 있지 않습니다. */
-var HINT_F = '사무국이 진출자에게만 개별 안내한 비밀번호입니다.';
-var HINT_A = '운영사무국에만 공유하는 비밀번호입니다.';
-var PWLEN = 4;   /* 들어가기 버튼을 열어 주는 최소 길이. 실제 확인은 서버가 합니다. */
-
-function setRole(r){
-  role = r;
-  document.querySelectorAll(".role").forEach(function(x){
-    x.setAttribute("aria-pressed", x.getAttribute("data-role") === r ? "true" : "false");
-  });
-  $("stepFinalist").hidden = r !== "finalist";
-  $("stepAdmin").hidden    = r !== "admin";
-  $("stepVoter").hidden    = r !== "voter";
-  $("enterBtn").textContent = r === "voter" ? "투표하러 들어가기" : "들어가기";
-  $("finalPw").value = ""; $("adminPw").value = "";
-  $("authNote").innerHTML = HINT_F;
-  $("adminNote").innerHTML = HINT_A;
-  syncModal();
-}
-$("roles").addEventListener("click", function(e){
-  var t = e.target.closest("[data-role]");
-  if (t) setRole(t.getAttribute("data-role"));
-});
-
-function syncModal(){
-  var okay = false;
-  if (role === "voter") okay = true;
-  else if (role === "admin") okay = normPw($("adminPw").value).length >= PWLEN;
-  else if (role === "finalist")
-    okay = !!who && normPw($("finalPw").value).length >= PWLEN
-           && $("ck1").checked && $("ck2").checked;
-  $("enterBtn").disabled = !okay;
-}
-["ck1","ck2"].forEach(function(id){ $(id).addEventListener("change", syncModal); });
-function normPw(v){ return String(v || "").toUpperCase().replace(/[^A-Z0-9]/g, ""); }
-function pwWatch(inputId, noteId, hint){
-  $(inputId).addEventListener("input", function(){
-    this.value = this.value.replace(/\s/g, "").slice(0, 32);
-    $(noteId).innerHTML = hint;
-    syncModal();
-  });
-  $(inputId).addEventListener("keydown", function(e){
-    if (e.key === "Enter" && !$("enterBtn").disabled) $("enterBtn").click();
-  });
-}
-pwWatch("finalPw", "authNote", HINT_F);
-pwWatch("adminPw", "adminNote", HINT_A);
-
-function enterSite(){
-  $("ov").hidden = true;
-  document.body.style.overflow = "";
-  var g = $("greet");
-  g.hidden = false;
-  g.textContent = role === "finalist" ? (who + " 님 · 진출자")
-                : role === "admin"    ? "운영사무국"
-                : "투표 참여자";
-  applyRole();
-  loadState().catch(function(e){ note($("pick"), e.message, "bad"); });
-  if (role === "admin") loadAdmin().catch(function(e){ note($("kpis"), e.message, "bad"); });
-}
-
-$("enterBtn").addEventListener("click", function(){
-  var btn = this;
-  if (role === "voter"){ API.pw = ""; enterSite(); return; }
-
-  var noteId = role === "admin" ? "adminNote" : "authNote";
-  API.pw = (role === "admin" ? $("adminPw") : $("finalPw")).value;
-  busy(btn, true);
-  api("/api/auth", { method: "POST", body: { role: role } })
-    .then(function(){ busy(btn, false, "들어가기"); enterSite(); })
-    .catch(function(e){
-      API.pw = "";
-      busy(btn, false, role === "voter" ? "투표하러 들어가기" : "들어가기");
-      note($(noteId), e.message, "bad");
-    });
-});
-
-$("book").addEventListener("click", function(){
-  if (picked === null || faceBooked) return;
-  var btn = this, slot = SLOTS[picked].t;
-  busy(btn, true);
-  api("/api/book", { method: "POST", body: { action: "create", name: who, slot: slot } })
-    .then(function(){
-      picked = null;
-      return loadState().then(function(){
-        note($("pick"), "10월 2일 " + slot + " 으로 신청되었습니다.", "ok");
-      });
-    })
-    .catch(function(e){
-      note($("pick"), e.message, "bad");
-      picked = null;
-      return loadState().catch(function(){});
-    })
-    .then(function(){ busy(btn, false); renderSlots(); });
-});
-
-$("cancel").addEventListener("click", function(){
-  var btn = this;
-  if (!myFace()) return;
-  busy(btn, true);
-  api("/api/book", { method: "POST", body: { action: "cancel", name: who } })
-    .then(function(){
-      picked = null;
-      return loadState().then(function(){
-        note($("pick"), "예약을 취소했습니다. 남은 자리에서 다시 선택하실 수 있습니다.", "bad");
-      });
-    })
-    .catch(function(e){ note($("pick"), e.message, "bad"); })
-    .then(function(){ busy(btn, false, "예약 취소"); });
-});
-$("phone").addEventListener("input", function(){ this.value = fmtPhone(this.value); });
-$("phone").addEventListener("keydown", function(e){ if (e.key === "Enter") $("verify").click(); });
-$("verify").addEventListener("click", function(){
-  var v = $("phone").value.trim(), btn = this;
-  if (!validPhone(v)){
-    $("phone").focus();
-    $("phone").style.borderColor = "var(--dan)";
-    setTimeout(function(){ $("phone").style.borderColor = ""; }, 1400);
-    return;
-  }
-  verified = true; myPhone = v; votes = [];
-  busy(btn, true);
-  loadState()
-    .catch(function(){ renderVoteState(); renderWall(); })
-    .then(function(){ busy(btn, false, "확인"); });
-});
-$("vreset").addEventListener("click", function(){
-  verified = false; myPhone = ""; votes = []; $("phone").value = "";
-  renderVoteState(); renderWall();
-});
 $("gcal").addEventListener("click", function(){
   var u = "https://calendar.google.com/calendar/render?action=TEMPLATE"
     + "&text=" + encodeURIComponent("CCW AI Sprint 데모데이")
@@ -1732,57 +1212,9 @@ $("share").addEventListener("click", function(){
     navigator.clipboard.writeText(url).then(function(){ done(); alert("주소를 복사했습니다.\n" + url); });
   } else { prompt("이 주소를 복사해 공유해 주세요.", url); }
 });
-document.addEventListener("click", function(e){
-  var c = e.target.closest("[data-csv]");
-  if (c) downloadCsv(c.getAttribute("data-csv"), c);
-});
 $("totop").addEventListener("click", function(){ window.scrollTo({ top:0, behavior:"smooth" }); });
 
-/* ===================== 자동 갱신 =====================
-   선착순이라 화면이 오래된 채로 남아 있으면 이미 찬 시간을 누르게 됩니다.
-   멘토링 화면을 보고 있는 동안에만, 그것도 창이 앞에 있을 때만 주기적으로
-   다시 읽습니다. 다른 탭에 가 있거나 다른 화면을 보고 있으면 쉬므로
-   시트 쪽에 부담이 가지 않습니다. */
-(function(){
-  var EVERY = 60000;   /* 1분 */
-  var last = Date.now();
-  var busyNow = false;
-
-  function watching(){
-    if (!role || $("ov").hidden === false) return false;
-    if (document.hidden) return false;
-    var v = $("v-mentoring");
-    return v && !v.hidden;
-  }
-
-  function refresh(reason){
-    if (busyNow || !watching()) return;
-    busyNow = true;
-    last = Date.now();
-    loadState()
-      .then(function(){ if (role === "admin") return loadAdmin(); })
-      .catch(function(){})
-      .then(function(){ busyNow = false; });
-  }
-
-  setInterval(function(){
-    if (Date.now() - last >= EVERY) refresh("주기");
-  }, 10000);
-
-  /* 다른 일을 보다 창으로 돌아왔을 때는 바로 한 번 읽습니다 */
-  document.addEventListener("visibilitychange", function(){
-    if (!document.hidden) refresh("복귀");
-  });
-  window.addEventListener("focus", function(){ refresh("복귀"); });
-})();
-
-/* ===================== 시작 ===================== */
-document.body.style.overflow = "hidden";
-function dlabel(n){ return n > 0 ? "D-" + n : (n === 0 ? "D-DAY" : "D+" + (-n)); }
-$("dday").textContent = "Final Sprint " + dlabel(dday("2026-12-04"));
-$("dSubmit").textContent = dday("2026-11-20") >= 0 ? "마감까지 " + dlabel(dday("2026-11-20")) : "제출 마감됨";
-
-/* ===================== 키비주얼 (CON:TINUE 디자인) ===================== */
+/* ===================== 키비주얼 ===================== */
 (function(){
   var burst = '<svg class="burst" viewBox="0 0 200 200" aria-hidden="true"><g stroke="#221e1f" stroke-width=".55" opacity=".7">';
   for (var i = 0; i < 48; i++){
@@ -1791,14 +1223,23 @@ $("dSubmit").textContent = dday("2026-11-20") >= 0 ? "마감까지 " + dlabel(dd
       + '" x2="' + (100 + Math.cos(a) * 100).toFixed(1) + '" y2="' + (100 + Math.sin(a) * 100).toFixed(1) + '"/>';
   }
   burst += '</g></svg>';
-  var trail = '<div class="trail" aria-hidden="true">';
-  for (var j = 0; j < 9; j++) trail += '<i style="left:' + (j * 2.6) + 'cqw;opacity:' + (.15 + j * .1).toFixed(2) + '"></i>';
-  trail += '</div>';
   document.querySelectorAll("[data-kv]").forEach(function(el){
-    el.innerHTML = burst + trail + '<i class="circ ct"></i><i class="circ cr"></i><i class="circ cg"></i><i class="circ cb"></i><i class="circ cp"></i>'
+    el.innerHTML = burst + '<i class="circ ct"></i><i class="circ cr"></i><i class="circ cg"></i><i class="circ cb"></i><i class="circ cp"></i>'
       + '<p class="word w1" aria-hidden="true">CCW</p><p class="word w2" aria-hidden="true">05</p>';
   });
 })();
-renderHtl(); renderNames(); renderSubs(); renderSlots(); syncPick();
-renderVoteState(); renderWall();
+
+/* ===================== 시작 ===================== */
+$("dday").textContent = "Final Sprint " + dlabel(dday("2026-12-04"));
+renderHtl(); renderVoteState(); renderWall(); go("vote", true);
+(function(){
+  var saved = null;
+  try { saved = JSON.parse(SS.get("ccwVote") || "null"); } catch (e) {}
+  if (saved && saved.p && saved.t && Date.now() - saved.at < 3 * 60 * 60 * 1000){
+    verified = true; myPhone = saved.p; myToken = saved.t;
+  }
+  loadState().catch(function(e){ note($("voteMsg"), e.message, "bad"); });
+})();
+/* 창으로 돌아오면 투표 기간 상태를 다시 읽습니다 (오픈 · 마감 시각을 넘긴 경우 대비) */
+document.addEventListener("visibilitychange", function(){ if (!document.hidden) loadState().catch(function(){}); });
 </script>
