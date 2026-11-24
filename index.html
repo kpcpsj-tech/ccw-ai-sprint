@@ -554,9 +554,36 @@ input,select,textarea{font-size:16px}   /* iOS 자동 확대 방지 */
 .privbox table{min-width:0;font-size:12.5px}
 .privbox th{width:110px;font:800 12px var(--kr);color:var(--tx);text-transform:none;letter-spacing:0;vertical-align:top;border-bottom:1px solid var(--line)}
 .privbox td{padding:10px 8px;line-height:1.6}
-.vpanel .vform{margin-top:12px;flex-wrap:wrap}
-.vpanel .vform input{background:var(--bg)}
-#code{letter-spacing:.3em;width:180px}
+.vsteps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.vsteps li{display:flex;gap:12px;align-items:center;background:var(--bg2);border-radius:18px;padding:14px 16px;font-size:13.5px;line-height:1.5;color:var(--tx2)}
+.vsteps li b{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font:800 15px var(--lat);color:#fff;background:var(--yellow)}
+.vsteps li:nth-child(2) b{background:var(--red)}
+.vsteps li:nth-child(3) b{background:var(--blue)}
+.vsteps strong{color:var(--tx)}
+@media (max-width:700px){.vsteps{grid-template-columns:1fr}.vsteps br{display:none}}
+.vbar2{position:sticky;bottom:0;z-index:44;margin-top:-1px;padding:12px 0 calc(12px + env(safe-area-inset-bottom));
+  background:color-mix(in srgb,var(--bg) 90%,transparent);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
+  border-top:1px solid var(--line)}
+.vbar2[hidden]{display:none}
+.vbar2-in{display:flex;align-items:center;gap:14px;justify-content:space-between}
+.vbar2-l{display:flex;align-items:center;gap:12px;font-size:14px;font-weight:700;min-width:0}
+.vbar2 .pips i{width:14px;height:14px}
+.vbar2 .cta{min-width:170px;padding:14px 26px;animation:none}
+@media (max-width:520px){.vbar2-in{flex-direction:column;align-items:stretch;gap:10px}.vbar2-l{justify-content:center}}
+.vc.picked{border-color:var(--ac);box-shadow:0 0 0 2px var(--ac)}
+.vbtn.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+.picked{list-style:none;margin:14px 0 0;padding:0;display:flex;flex-direction:column;gap:8px}
+.picked li{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:14px;background:var(--bg2);font-size:14px}
+.picked li i{flex:none;width:12px;height:12px;border-radius:50%;background:var(--ac)}
+.picked li b{font-weight:800}
+.picked li span{color:var(--tx2);font-size:13px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.done-dots{display:flex;justify-content:center;margin:8px 0 16px}
+.done-dots i{width:30px;height:30px;border-radius:50%;mix-blend-mode:multiply;margin-left:-8px}
+.done-dots i:nth-child(1){background:var(--yellow);margin-left:0}.done-dots i:nth-child(2){background:var(--red)}
+.done-dots i:nth-child(3){background:var(--green)}.done-dots i:nth-child(4){background:var(--blue)}.done-dots i:nth-child(5){background:var(--purple)}
+#vmodal .vform{flex-wrap:nowrap}
+#vmodal .vform input{flex:1;min-width:0;width:auto}
+#code{letter-spacing:.3em}
 .mfoot{display:flex;gap:9px;margin-top:22px}
 .mfoot .btn{flex:1;padding:14px 18px;font-size:14.5px}
 .mnote{font-size:12px;color:var(--tx3);margin-top:14px;line-height:1.65}
@@ -760,18 +787,38 @@ input,select,textarea{font-size:16px}   /* iOS 자동 확대 방지 */
   <div class="sec-h"><span class="n">01</span><h2>청중 투표</h2>
     <span class="hint">11.30(월) 00:00 오픈 · 12.4(금) 18:00 마감</span></div>
 
-  <div class="card pad vpanel" style="margin-bottom:14px">
-    <div class="vrow">
-      <div class="vl">
-        <h3 style="font-size:18px;font-weight:800">휴대폰 인증 후 투표할 수 있어요</h3>
-        <p style="font-size:13.5px;color:var(--tx2);margin-top:7px;max-width:58ch">
-          <b>한 번호당 3표</b>까지, 같은 결과물에는 한 표만 가능합니다.
-          인증한 번호로 다시 들어오면 마감 전까지 표를 바꿀 수 있습니다.
-          <b>득표 현황은 공개하지 않으며</b>, 결과는 12월 4일 데모데이에서 발표합니다.</p>
-      </div>
-    </div>
+  <ol class="vsteps">
+    <li><b>1</b><span>마음에 드는 결과물을<br><strong>최대 3개</strong> 고릅니다</span></li>
+    <li><b>2</b><span>맨 아래<br><strong>투표 확정</strong>을 누릅니다</span></li>
+    <li><b>3</b><span>휴대폰 <strong>인증번호</strong>를 넣으면<br>투표 완료</span></li>
+  </ol>
 
-    <div id="vstep">
+  <div class="callout info" style="margin-top:14px;margin-bottom:14px" id="voteBanner">
+    <span aria-hidden="true">▸</span><div></div>
+  </div>
+
+  <div class="wall" id="wall"></div>
+</div>
+
+<!-- 투표 확정 바 (화면 맨 아래 고정) -->
+<div class="vbar2" id="vbar2">
+  <div class="wrap vbar2-in">
+    <div class="vbar2-l">
+      <span class="pips" id="vpips"></span>
+      <span id="vcount">결과물을 골라 주세요 (0 / 3)</span>
+    </div>
+    <button class="cta" type="button" id="confirmBtn" disabled>투표 확정 →</button>
+  </div>
+</div>
+
+<!-- 투표 확정 · 휴대폰 인증 창 -->
+<div class="ov" id="vmodal" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="vmT">
+    <div id="vmForm">
+      <div class="eyebrow"><i></i>투표 확정</div>
+      <h3 id="vmT">이 결과물에 투표합니다</h3>
+      <ul class="picked" id="picked"></ul>
+
       <div class="agree" style="margin-top:16px">
         <label class="ck"><input type="checkbox" id="vck">
           <span class="cv"><b>개인정보 수집·이용에 동의합니다<span class="req">필수</span></b>
@@ -791,32 +838,34 @@ input,select,textarea{font-size:16px}   /* iOS 자동 확대 방지 */
         </div>
       </div>
 
-      <div class="vform" id="vform">
+      <div class="mlab">휴대폰 번호</div>
+      <div class="vform">
         <input type="tel" id="phone" inputmode="numeric" maxlength="13" placeholder="010-0000-0000" aria-label="휴대폰 번호" autocomplete="tel">
         <button class="btn" type="button" id="sendCode">인증번호 받기</button>
       </div>
-      <div class="vform" id="codeRow" hidden>
-        <input type="text" id="code" inputmode="numeric" maxlength="6" placeholder="인증번호 6자리" aria-label="인증번호" autocomplete="one-time-code">
-        <button class="btn" type="button" id="verify">확인</button>
-        <span class="mono" id="codeTimer" style="font-size:13px;color:var(--tx3);align-self:center"></span>
+      <div id="codeBox" hidden>
+        <div class="mlab">인증번호 <span class="mono" id="codeTimer" style="margin-left:6px;color:var(--blue)"></span></div>
+        <div class="vform">
+          <input type="text" id="code" inputmode="numeric" maxlength="6" placeholder="문자로 받은 6자리" aria-label="인증번호" autocomplete="one-time-code">
+        </div>
       </div>
+      <div id="voteMsg" style="font-size:13.5px;margin-top:12px" aria-live="polite"></div>
+
+      <div class="mfoot">
+        <button class="btn ghost" type="button" data-close-vm>다시 고르기</button>
+        <button class="btn" type="button" id="submitVote" disabled>투표 완료</button>
+      </div>
+      <p class="mnote">같은 번호로 다시 투표하면 마감 전까지 마지막에 고른 결과물로 바뀝니다.
+        득표 현황은 공개하지 않으며, 결과는 12월 4일 데모데이에서 발표합니다.</p>
     </div>
 
-    <div id="voteMsg" style="font-size:13.5px;margin-top:12px" aria-live="polite"></div>
-    <div class="vst" id="vst" hidden>
-      <span class="ok">✓ 인증됨</span>
-      <span class="mono" id="vphone"></span>
-      <span class="pips" id="vpips"></span>
-      <span class="mono" id="vleft">남은 표 3</span>
-      <button class="btn ghost sm" type="button" id="vreset">번호 변경</button>
+    <div id="vmDone" hidden style="text-align:center;padding:10px 0 4px">
+      <div class="done-dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+      <h3>투표가 완료되었습니다</h3>
+      <p class="msub" id="doneSub"></p>
+      <div class="mfoot"><button class="btn" type="button" data-close-vm>확인</button></div>
     </div>
   </div>
-
-  <div class="callout info" style="margin-top:0;margin-bottom:14px" id="voteBanner">
-    <span aria-hidden="true">▸</span><div></div>
-  </div>
-
-  <div class="wall" id="wall"></div>
 </div>
 
 <!-- ======================= 푸터 ======================= -->
@@ -888,21 +937,15 @@ var HTL = [
 var TINT = ["#f9b23c","#ea4a35","#4fae5a","#2f6fba","#9b5bb0","#f9b23c","#ea4a35","#4fae5a","#2f6fba"];
 
 /* ===================== 상태 ===================== */
-var MAXV = 3, verified = false, myPhone = "", myToken = "", votes = [];
+var MAXV = 3, picks = [];                 /* 고른 결과물 (확정 전에는 이 화면 안에만 있음) */
 var ticket = "", codeUntil = 0, codeTimerId = null;
 var $ = function(id){ return document.getElementById(id); };
 var VOTEWIN = { state: "before", maxPerPhone: 3, sms: true };
 var NETERR = "서버에 연결하지 못했습니다. 잠시 후 다시 시도해 주세요.";
 
-/* 새로고침해도 인증이 유지되도록 이 브라우저 탭에만 잠깐 기억합니다 (3시간 뒤 만료). */
-var SS = { get: function(k){ try { return sessionStorage.getItem(k); } catch (e) { return null; } },
-           set: function(k, v){ try { sessionStorage.setItem(k, v); } catch (e) {} },
-           del: function(k){ try { sessionStorage.removeItem(k); } catch (e) {} } };
-
 function api(path, opts){
   opts = opts || {};
   var h = { "content-type": "application/json" };
-  if (myToken) h["x-vote-token"] = myToken;
   opts.headers = h;
   if (opts.body && typeof opts.body !== "string") opts.body = JSON.stringify(opts.body);
   return fetch(path, opts).then(function(r){
@@ -941,11 +984,9 @@ function renderHtl(){
 }
 
 function loadState(){
-  var q = (verified && myPhone) ? ("?phone=" + encodeURIComponent(myPhone)) : "";
-  return api("/api/state" + q).then(function(j){
+  return api("/api/state").then(function(j){
     VOTEWIN = j.vote || VOTEWIN;
     MAXV = VOTEWIN.maxPerPhone || 3;
-    if (verified && VOTEWIN.myVotes) votes = VOTEWIN.myVotes.map(Number);
     renderVoteState(); renderWall();
     return j;
   });
@@ -966,26 +1007,21 @@ function renderVoteState(){
     vs.textContent = VOTEWIN.state === "open" ? "진행 중" : (VOTEWIN.state === "closed" ? "마감" : "오픈 예정");
     vs.style.color = VOTEWIN.state === "open" ? "var(--ok)" : "var(--tx3)";
   }
-  var b = $("voteBanner");
-  b.querySelector("div").innerHTML = voteLive()
-    ? '<b>청중 투표가 열려 있습니다.</b> 카드의 <b>크게 보기</b>로 결과물을 직접 써 보고, 마음에 드는 결과물에 투표해 주세요.'
+  $("voteBanner").querySelector("div").innerHTML = voteLive()
+    ? '<b>청중 투표가 열려 있습니다.</b> 카드의 <b>크게 보기</b>로 결과물을 직접 써 보고, 마음에 드는 결과물을 골라 주세요.'
     : (VOTEWIN.state === "closed"
         ? '<b>청중 투표가 마감되었습니다.</b> 참여해 주셔서 감사합니다. 결과는 12월 4일 데모데이에서 발표합니다.'
         : '<b>투표는 11월 30일(월) 00:00에 열립니다.</b> 그 전에도 아래 결과물은 미리 둘러보실 수 있습니다.');
-
-  var open = voteLive();
-  $("vstep").hidden = verified;
-  $("sendCode").disabled = !open;
-  if (!open && !verified) $("sendCode").textContent = VOTEWIN.state === "closed" ? "투표 마감" : "11.30 오픈";
-  else if (!ticket) $("sendCode").textContent = VOTEWIN.sms === false ? "확인" : "인증번호 받기";
-  $("vst").hidden = !verified;
-  if (verified){
-    $("vphone").textContent = myPhone;
-    var p = "";
-    for (var i = 0; i < MAXV; i++) p += '<i class="' + (i < votes.length ? "on" : "") + '"></i>';
-    $("vpips").innerHTML = p;
-    $("vleft").textContent = "남은 표 " + (MAXV - votes.length);
-  }
+  var p = "";
+  for (var i = 0; i < MAXV; i++) p += '<i class="' + (i < picks.length ? "on" : "") + '"></i>';
+  $("vpips").innerHTML = p;
+  $("vcount").textContent = !voteLive()
+    ? (VOTEWIN.state === "closed" ? "투표가 마감되었습니다" : "11월 30일(월) 00:00에 투표가 열립니다")
+    : (picks.length ? (picks.length + "개 골랐어요 (" + picks.length + " / " + MAXV + ")")
+                    : "결과물을 골라 주세요 (0 / " + MAXV + ")");
+  $("confirmBtn").disabled = !voteLive() || !picks.length;
+  $("confirmBtn").textContent = voteLive() ? ("투표 확정 (" + picks.length + ") →")
+    : (VOTEWIN.state === "closed" ? "투표 마감" : "11.30 오픈");
 }
 
 /* ---- 투표 카드 ---- */
@@ -1018,13 +1054,13 @@ function renderWall(){
   }
   FINALISTS.forEach(function(p){
     var card = w.querySelector('[data-card="' + p.r + '"]'), b = card.querySelector(".vbtn");
-    var mine = votes.indexOf(p.r) !== -1;
-    card.classList.toggle("voted", mine);
-    b.setAttribute("aria-pressed", mine ? "true" : "false");
-    b.disabled = !voteLive() || (!mine && (!verified || votes.length >= MAXV));
-    b.textContent = mine ? "투표함 ✓ (누르면 취소)"
-      : (!voteLive() ? (VOTEWIN.state === "closed" ? "투표 마감" : "11.30 오픈")
-      : (!verified ? "휴대폰 인증 후 투표" : (votes.length >= MAXV ? "3표를 모두 썼어요" : "투표하기")));
+    var on = picks.indexOf(p.r) !== -1;
+    card.classList.toggle("picked", on);
+    b.classList.toggle("on", on);
+    b.setAttribute("aria-pressed", on ? "true" : "false");
+    b.disabled = !voteLive() || (!on && picks.length >= MAXV);
+    b.textContent = on ? "선택함 ✓" : (!voteLive() ? (VOTEWIN.state === "closed" ? "투표 마감" : "11.30 오픈")
+      : (picks.length >= MAXV ? "3개를 모두 골랐어요" : "이 결과물 선택"));
   });
 }
 /* 사이트는 PC 화면(1280px) 그대로 띄운 뒤 카드 폭에 맞게 줄입니다. */
@@ -1051,13 +1087,16 @@ function closeViewer(){
   document.body.style.overflow = "";
 }
 document.addEventListener("keydown", function(e){
-  if (e.key === "Escape" && !$("viewer").hidden) closeViewer();
+  if (e.key !== "Escape") return;
+  if (!$("viewer").hidden) closeViewer();
+  else if (!$("vmodal").hidden) closeVm();
 });
 
 /* ===================== 내비 ===================== */
 var VIEWS = ["vote","guide"];
 function go(v, noScroll){
   if (VIEWS.indexOf(v) === -1) v = "vote";
+  $("vbar2").hidden = v !== "vote";
   VIEWS.forEach(function(x){ $("v-" + x).hidden = x !== v; });
   document.querySelectorAll(".tabs button").forEach(function(b){
     b.setAttribute("aria-selected", b.getAttribute("data-view") === v ? "true" : "false");
@@ -1094,36 +1133,48 @@ window.addEventListener("scroll", function(){
   });
 }, { passive:true });
 
-/* ===================== 휴대폰 인증 ===================== */
-function setVerified(phone, token){
-  verified = true; myPhone = phone; myToken = token; votes = [];
-  ticket = ""; clearInterval(codeTimerId);
-  SS.set("ccwVote", JSON.stringify({ p: phone, t: token, at: Date.now() }));
-  note($("voteMsg"), "인증되었습니다. 마음에 드는 결과물에 투표해 주세요.", "ok");
-  return loadState().catch(function(){ renderVoteState(); renderWall(); });
+/* ===================== 투표 확정 · 휴대폰 인증 ===================== */
+function openVm(){
+  if (!picks.length || !voteLive()) return;
+  $("picked").innerHTML = picks.map(function(r){
+    var i = 0; FINALISTS.forEach(function(x, k){ if (x.r === r) i = k; });
+    var p = FINALISTS[i];
+    return '<li style="--ac:' + TINT[i] + '"><i></i><b>' + p.n + '</b><span>' + p.t + '</span></li>';
+  }).join("");
+  $("vmForm").hidden = false; $("vmDone").hidden = true;
+  note($("voteMsg"), "");
+  $("vmodal").hidden = false;
+  document.body.style.overflow = "hidden";
+  syncSubmit();
 }
-function resetAuth(msg){
-  verified = false; myPhone = ""; myToken = ""; votes = []; ticket = "";
-  clearInterval(codeTimerId);
-  SS.del("ccwVote");
-  $("phone").value = ""; $("code").value = ""; $("codeRow").hidden = true;
-  $("phone").disabled = false;
-  note($("voteMsg"), msg || "", msg ? "bad" : "");
-  renderVoteState(); renderWall();
+function closeVm(){
+  $("vmodal").hidden = true;
+  document.body.style.overflow = "";
+}
+function syncSubmit(){
+  var needCode = VOTEWIN.sms !== false;
+  $("submitVote").disabled = !$("vck").checked || !validPhone($("phone").value.trim())
+    || (needCode && (!ticket || $("code").value.length !== 6));
 }
 function startTimer(){
   clearInterval(codeTimerId);
   var tick = function(){
     var s = Math.max(0, Math.round((codeUntil - Date.now()) / 1000));
-    $("codeTimer").textContent = s ? (Math.floor(s / 60) + ":" + ("0" + s % 60).slice(-2)) : "시간 초과";
+    $("codeTimer").textContent = s ? (Math.floor(s / 60) + ":" + ("0" + s % 60).slice(-2)) : "시간 초과 · 다시 받아 주세요";
     if (!s) clearInterval(codeTimerId);
   };
   tick(); codeTimerId = setInterval(tick, 1000);
 }
-$("phone").addEventListener("input", function(){ this.value = fmtPhone(this.value); });
+$("confirmBtn").addEventListener("click", openVm);
+$("phone").addEventListener("input", function(){
+  this.value = fmtPhone(this.value);
+  if (ticket){ ticket = ""; $("codeBox").hidden = true; $("sendCode").textContent = "인증번호 받기"; }
+  syncSubmit();
+});
 $("phone").addEventListener("keydown", function(e){ if (e.key === "Enter") $("sendCode").click(); });
-$("code").addEventListener("input", function(){ this.value = this.value.replace(/\D/g, "").slice(0, 6); });
-$("code").addEventListener("keydown", function(e){ if (e.key === "Enter") $("verify").click(); });
+$("code").addEventListener("input", function(){ this.value = this.value.replace(/\D/g, "").slice(0, 6); syncSubmit(); });
+$("code").addEventListener("keydown", function(e){ if (e.key === "Enter" && !$("submitVote").disabled) $("submitVote").click(); });
+$("vck").addEventListener("change", syncSubmit);
 $("privMore").addEventListener("click", function(e){
   e.preventDefault();
   var open = $("privBox").hidden;
@@ -1133,34 +1184,46 @@ $("privMore").addEventListener("click", function(e){
 });
 $("sendCode").addEventListener("click", function(){
   var v = $("phone").value.trim(), btn = this;
-  if (!$("vck").checked){ note($("voteMsg"), "개인정보 수집·이용에 동의해 주세요.", "bad"); return; }
-  if (!validPhone(v)){
-    note($("voteMsg"), "휴대폰 번호를 확인해 주세요. (예: 010-1234-5678)", "bad");
-    $("phone").focus(); return;
-  }
+  if (!$("vck").checked){ note($("voteMsg"), "개인정보 수집·이용에 먼저 동의해 주세요.", "bad"); return; }
+  if (!validPhone(v)){ note($("voteMsg"), "휴대폰 번호를 확인해 주세요. (예: 010-1234-5678)", "bad"); $("phone").focus(); return; }
+  if (VOTEWIN.sms === false){ note($("voteMsg"), "번호가 확인되었습니다. 투표 완료를 눌러 주세요.", "ok"); syncSubmit(); return; }
   busy(btn, true);
   api("/api/otp", { method: "POST", body: { action: "send", phone: v } })
     .then(function(j){
-      if (j.sms === false){ busy(btn, false, "확인"); return setVerified(v, j.token); }
+      if (j.sms === false){ busy(btn, false, "확인됨"); VOTEWIN.sms = false; syncSubmit(); return; }
       ticket = j.ticket; codeUntil = Date.now() + 5 * 60 * 1000;
-      $("codeRow").hidden = false; $("code").value = j.mockCode || ""; $("code").focus();
+      $("codeBox").hidden = false; $("code").value = j.mockCode || ""; $("code").focus();
       startTimer();
-      note($("voteMsg"), v + " 으로 인증번호를 보냈습니다. 문자로 받은 6자리를 넣어 주세요.", "ok");
+      note($("voteMsg"), "인증번호를 문자로 보냈습니다. 6자리를 넣고 투표 완료를 눌러 주세요.", "ok");
       busy(btn, false, "다시 받기");
+      syncSubmit();
     })
     .catch(function(e){ busy(btn, false); note($("voteMsg"), e.message, "bad"); });
 });
-$("verify").addEventListener("click", function(){
-  var v = $("phone").value.trim(), c = $("code").value.trim(), btn = this;
-  if (c.length !== 6){ note($("voteMsg"), "문자로 받은 인증번호 6자리를 넣어 주세요.", "bad"); return; }
+$("submitVote").addEventListener("click", function(){
+  var v = $("phone").value.trim(), btn = this, chosen = picks.slice();
   busy(btn, true);
-  api("/api/otp", { method: "POST", body: { action: "verify", phone: v, code: c, ticket: ticket } })
-    .then(function(j){ busy(btn, false, "확인"); return setVerified(v, j.token); })
-    .catch(function(e){ busy(btn, false, "확인"); note($("voteMsg"), e.message, "bad"); });
+  var getToken = VOTEWIN.sms === false
+    ? api("/api/otp", { method: "POST", body: { action: "send", phone: v } })
+    : api("/api/otp", { method: "POST", body: { action: "verify", phone: v, code: $("code").value, ticket: ticket } });
+  getToken
+    .then(function(j){
+      return api("/api/vote", { method: "POST", body: { phone: v, token: j.token, targets: chosen.map(String) } });
+    })
+    .then(function(){
+      busy(btn, false, "투표 완료");
+      ticket = ""; clearInterval(codeTimerId);
+      $("phone").value = ""; $("code").value = ""; $("codeBox").hidden = true; $("sendCode").textContent = "인증번호 받기";
+      $("doneSub").innerHTML = chosen.map(function(r){
+        return "<b>" + FINALISTS.filter(function(x){ return x.r === r; })[0].n + "</b>";
+      }).join(" · ") + " 님께 투표했습니다.<br>같은 번호로 다시 투표하면 마감 전까지 바꿀 수 있습니다.";
+      $("vmForm").hidden = true; $("vmDone").hidden = false;
+      picks = []; renderVoteState(); renderWall();
+    })
+    .catch(function(e){ busy(btn, false, "투표 완료"); note($("voteMsg"), e.message, "bad"); syncSubmit(); });
 });
-$("vreset").addEventListener("click", function(){ resetAuth(); });
 
-/* ===================== 투표 ===================== */
+/* ===================== 클릭 ===================== */
 document.addEventListener("click", function(e){
   var g = e.target.closest("[data-go]");
   if (g){ go(g.getAttribute("data-go")); return; }
@@ -1172,26 +1235,15 @@ document.addEventListener("click", function(e){
     return;
   }
   if (e.target.id === "viewer" || e.target.closest("#vwClose")){ closeViewer(); return; }
+  if (e.target.id === "vmodal" || e.target.closest("[data-close-vm]")){ closeVm(); return; }
 
   var v = e.target.closest("[data-v]");
   if (v){
-    if (!voteLive() || !verified) return;
-    var r = Number(v.getAttribute("data-v")), k = votes.indexOf(r);
-    var before = votes.slice();
-    if (k !== -1) votes.splice(k, 1);
-    else if (votes.length < MAXV) votes.push(r);
-    else return;
+    if (!voteLive()) return;
+    var r = Number(v.getAttribute("data-v")), k = picks.indexOf(r);
+    if (k !== -1) picks.splice(k, 1);
+    else if (picks.length < MAXV) picks.push(r);
     renderVoteState(); renderWall();
-    api("/api/vote", { method: "POST", body: { phone: myPhone, token: myToken, targets: votes } })
-      .then(function(){
-        note($("voteMsg"), votes.length ? ("투표가 저장되었습니다. (" + votes.length + " / " + MAXV + "표)") : "투표를 모두 취소했습니다.", "ok");
-      })
-      .catch(function(err){
-        votes = before;
-        if (err.data && err.data.reauth) return resetAuth(err.message);
-        renderVoteState(); renderWall();
-        note($("voteMsg"), err.message, "bad");
-      });
   }
 });
 
@@ -1232,14 +1284,7 @@ $("totop").addEventListener("click", function(){ window.scrollTo({ top:0, behavi
 /* ===================== 시작 ===================== */
 $("dday").textContent = "Final Sprint " + dlabel(dday("2026-12-04"));
 renderHtl(); renderVoteState(); renderWall(); go("vote", true);
-(function(){
-  var saved = null;
-  try { saved = JSON.parse(SS.get("ccwVote") || "null"); } catch (e) {}
-  if (saved && saved.p && saved.t && Date.now() - saved.at < 3 * 60 * 60 * 1000){
-    verified = true; myPhone = saved.p; myToken = saved.t;
-  }
-  loadState().catch(function(e){ note($("voteMsg"), e.message, "bad"); });
-})();
+loadState().catch(function(){});
 /* 창으로 돌아오면 투표 기간 상태를 다시 읽습니다 (오픈 · 마감 시각을 넘긴 경우 대비) */
 document.addEventListener("visibilitychange", function(){ if (!document.hidden) loadState().catch(function(){}); });
 </script>
