@@ -4,15 +4,15 @@ import crypto from "node:crypto";
 
 /** 결선 진출자 10인. id 는 투표·제출 식별자입니다. */
 export const FINALISTS = [
-  { id: "1", name: "성원제", cohort: 4, task: "자동영상편집 (타임라인 기준)" },
-  { id: "2", name: "전혜선", cohort: 5, task: "정산합시다 — 웹소설 정산 효율화 사이트" },
-  { id: "3",    name: "최예지", cohort: 5, task: "레퍼런스를 기획 방향으로 번역하는 AI 콘텐츠 디렉터" },
-  { id: "4", name: "신은정", cohort: 5, task: "K-IP 1page report" },
-  { id: "5",    name: "김민지", cohort: 2, task: "해외 콘텐츠 배급 통합 대시보드" },
-  { id: "6", name: "양영주", cohort: 3, task: "웹소설 퍼블리싱 & 투고 자동화 에이전트" },
-  { id: "7",  name: "남가현", cohort: 4, task: "가현 피디 스튜디오" },
-  { id: "8",     name: "조은지", cohort: 5, task: "ScenePulse — 업로드 영상 반응 추이 분석" },
-  { id: "9", name: "박성현", cohort: 5, task: "contest brief" },
+  { id: "1", name: "성원제", cohort: 4, task: "꿀" },
+  { id: "2", name: "전혜선", cohort: 5, task: "웹소설 데이터 분석 사이트" },
+  { id: "3",    name: "최예지", cohort: 5, task: "OWN TAKE" },
+  { id: "4", name: "신은정", cohort: 5, task: "3분 K-IP Report" },
+  { id: "5",    name: "김민지", cohort: 2, task: "글로벌 콘텐츠 배급 관리 대시보드" },
+  { id: "6", name: "양영주", cohort: 3, task: "노블윙 - 웹소설/소설 작가를 위한 AI 투고 도우미 서비스" },
+  { id: "7",  name: "남가현", cohort: 4, task: "K-콘덱스" },
+  { id: "8",     name: "조은지", cohort: 5, task: "Refy [리파이: 링크 하나로, 바이럴 포인트부터 레퍼런스까지 한 번에]" },
+  { id: "9", name: "박성현", cohort: 5, task: "빠꺼의 방" },
   { id: "10",    name: "조하늘", cohort: 4, task: "라이츠가이드 대시보드" }
 ];
 
