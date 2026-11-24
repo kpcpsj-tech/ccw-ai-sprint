@@ -2,7 +2,7 @@ import crypto from "node:crypto";
 
 /* ===================== 고정 데이터 ===================== */
 
-/** 결선 진출자 10인. id 는 투표·제출 식별자입니다. */
+/** 청중 투표 대상 진출자 9인 (조하늘 제외). id 는 투표·제출 식별자입니다. */
 export const FINALISTS = [
   { id: "1", name: "성원제", cohort: 4, task: "꿀" },
   { id: "2", name: "전혜선", cohort: 5, task: "웹소설 데이터 분석 사이트" },
@@ -12,8 +12,7 @@ export const FINALISTS = [
   { id: "6", name: "양영주", cohort: 3, task: "노블윙 - 웹소설/소설 작가를 위한 AI 투고 도우미 서비스" },
   { id: "7",  name: "남가현", cohort: 4, task: "K-콘덱스" },
   { id: "8",     name: "조은지", cohort: 5, task: "Refy [리파이: 링크 하나로, 바이럴 포인트부터 레퍼런스까지 한 번에]" },
-  { id: "9", name: "박성현", cohort: 5, task: "빠꺼의 방" },
-  { id: "10",    name: "조하늘", cohort: 4, task: "라이츠가이드 대시보드" }
+  { id: "9", name: "박성현", cohort: 5, task: "빠꺼의 방" }
 ];
 
 /** 대면 멘토링 10월 2일 슬롯. 12시는 점심. */

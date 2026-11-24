@@ -970,7 +970,7 @@ input,select,textarea{font-size:16px}   /* iOS 자동 확대 방지 */
                aria-label="진출자 비밀번호" autocomplete="off"
                autocapitalize="none" autocorrect="off" spellcheck="false">
       </div>
-      <p class="authnote" id="authNote">사무국이 진출자 10인에게만 개별 안내한 비밀번호입니다.</p>
+      <p class="authnote" id="authNote">사무국이 진출자에게만 개별 안내한 비밀번호입니다.</p>
 
       <div class="mlab">결과물 공개 동의</div>
       <div class="agree">
@@ -1028,8 +1028,7 @@ var FINALISTS = [
   {r:6,  n:"양영주", c:3, k:"현업", t:"노블윙 - 웹소설/소설 작가를 위한 AI 투고 도우미 서비스",     u:"https://novelwing.app", live:false},
   {r:7,  n:"남가현", c:4, k:"신규", t:"K-콘덱스",                         u:"https://k-condex.ghghgh02.workers.dev/", live:false},
   {r:8,  n:"조은지", c:5, k:"신규", t:"Refy [리파이: 링크 하나로, 바이럴 포인트부터 레퍼런스까지 한 번에]",    u:"https://refy-ten.vercel.app/", live:true},
-  {r:9,  n:"박성현", c:5, k:"신규", t:"빠꺼의 방",                              u:"https://room-for-parker-live.vercel.app", live:true},
-  {r:10, n:"조하늘", c:4, k:"",     t:"라이츠가이드 대시보드",                      u:"", live:false}
+  {r:9,  n:"박성현", c:5, k:"신규", t:"빠꺼의 방",                              u:"https://room-for-parker-live.vercel.app", live:true}
 ];
 var HTL = [
   {d:"09.21", l:"AI Boost 시작", s:"now"},
@@ -1553,7 +1552,7 @@ document.addEventListener("click", function(e){
 });
 
 /* 비밀번호는 서버(환경변수)에만 있습니다. 화면 코드에는 들어 있지 않습니다. */
-var HINT_F = '사무국이 진출자 10인에게만 개별 안내한 비밀번호입니다.';
+var HINT_F = '사무국이 진출자에게만 개별 안내한 비밀번호입니다.';
 var HINT_A = '운영사무국에만 공유하는 비밀번호입니다.';
 var PWLEN = 4;   /* 들어가기 버튼을 열어 주는 최소 길이. 실제 확인은 서버가 합니다. */
 

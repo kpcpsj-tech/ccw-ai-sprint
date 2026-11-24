@@ -23,7 +23,7 @@ const BEFORE = `
   var PW = { finalist: "DEMO-111", admin: "DEMO-222" };
   var norm = function(v){ return String(v||"").toUpperCase().replace(/[^A-Z0-9]/g,""); };
 
-  var NAMES = ["성원제","전혜선","최예지","신은정","김민지","양영주","남가현","조은지","박성현","조하늘"];
+  var NAMES = ["성원제","전혜선","최예지","신은정","김민지","양영주","남가현","조은지","박성현"];
   var TASKS = ["자동영상편집 (타임라인 기준)","정산합시다 — 웹소설 정산 효율화 사이트",
     "레퍼런스를 기획 방향으로 번역하는 AI 콘텐츠 디렉터","K-IP 1page report",
     "해외 콘텐츠 배급 통합 대시보드","웹소설 퍼블리싱 & 투고 자동화 에이전트",
