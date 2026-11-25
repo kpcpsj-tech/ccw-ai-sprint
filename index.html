@@ -645,6 +645,12 @@ input,select,textarea{font-size:16px}   /* iOS 자동 확대 방지 */
 .brand .lg{width:30px;height:30px}
 .brand .lg .flower{width:100%;height:100%;display:block;transition:transform .6s cubic-bezier(.2,1.4,.4,1)}
 .brand:hover .lg .flower{transform:rotate(72deg)}
+/* ---------- 누적 투표수 ---------- */
+.vtotal{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin:-6px 0 20px}
+.vt-k{font:800 12px var(--lat);letter-spacing:.12em;color:var(--tx3)}
+.vt-n{font:800 clamp(34px,4vw,48px)/1 var(--lat);letter-spacing:-.04em}
+.vt-n small{font-size:.42em;margin-left:4px;color:var(--tx2)}
+.vt-s{font-size:13px;color:var(--tx3)}
 /* ---------- 투표 상태 줄 ---------- */
 .vstatus{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;
   padding-bottom:12px;margin-bottom:22px;border-bottom:1px solid var(--line);
@@ -984,6 +990,11 @@ body.cur-down .cur.ring{width:32px;height:32px;margin:-16px 0 0 -16px}
     <span class="vs-r">AI SPRINT · FINAL SPRINT DEMO DAY</span></div>
   <div class="sec-h nonum"><h2>청중 투표</h2>
     <span class="hint">온라인 11.30(월) 00:00 ~ 12.4(금) 18:00</span></div>
+  <div class="vtotal" id="vtotal" hidden>
+    <span class="vt-k" id="vtK">누적 투표수</span>
+    <b class="vt-n"><span id="vtN">0</span><small>표</small></b>
+    <span class="vt-s" id="vtS">1인 3표 · 1분마다 갱신</span>
+  </div>
 
   <ol class="vsteps">
     <li><b>1</b><span>마음에 드는 결과물을<br><strong>꼭 3개</strong> 고릅니다</span></li>
@@ -1255,9 +1266,23 @@ function loadState(){
   return api("/api/state").then(function(j){
     VOTEWIN = j.vote || VOTEWIN;
     MAXV = VOTEWIN.maxPerPhone || 3;
+    if (typeof j.total === "number") showTotal(j.total);
     renderVoteState(); renderWall();
     return j;
   });
+}
+function showTotal(n){
+  var box = $("vtotal"); if (!box) return;
+  box.hidden = false;
+  $("vtK").textContent = voteTest() ? "누적 투표수 (테스트)" : "누적 투표수";
+  var el = $("vtN"), from = Number(el.dataset.n || 0), t0 = performance.now();
+  el.dataset.n = n;
+  (function step(t){
+    var k = Math.min(1, (t - t0) / 700);
+    el.textContent = Math.round(from + (n - from) * (1 - Math.pow(1 - k, 3))).toLocaleString("ko-KR");
+    if (k < 1) requestAnimationFrame(step);
+  })(t0);
+  $("vtS").textContent = "1인 3표 · 참여 약 " + Math.floor(n / 3).toLocaleString("ko-KR") + "명";
 }
 function voteLive(){ return VOTEWIN.state === "open" || VOTEWIN.state === "test"; }
 function voteTest(){ return VOTEWIN.state === "test"; }
@@ -1727,6 +1752,7 @@ $("submitVote").addEventListener("click", function(){
       $("vmForm").hidden = true; $("vmDone").hidden = false;
       var fl = $("doneFlower"); fl.classList.remove("bloom"); void fl.offsetWidth; fl.classList.add("bloom");
       picks = []; renderVoteState(); renderWall();
+      setTimeout(function(){ loadState().catch(function(){}); }, 1500);
     })
     .catch(function(e){ busy(btn, false, "투표 완료"); note($("voteMsg"), e.message, "bad"); syncSubmit(); });
 });
@@ -1877,4 +1903,5 @@ renderHtl(); renderBooths(); renderVoteState(); renderWall(); go("vote", true);
 loadState().catch(function(){});
 /* 창으로 돌아오면 투표 기간 상태를 다시 읽습니다 (오픈 · 마감 시각을 넘긴 경우 대비) */
 document.addEventListener("visibilitychange", function(){ if (!document.hidden) loadState().catch(function(){}); });
+setInterval(function(){ if (!document.hidden) loadState().catch(function(){}); }, 60000);
 </script>
