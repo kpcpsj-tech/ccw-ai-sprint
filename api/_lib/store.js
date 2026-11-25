@@ -113,5 +113,36 @@ export async function setup() {
   return { store: "sheets" };
 }
 
+/**
+ * 투표 한 건 저장. 이 번호의 같은 상태(유효/테스트) 표 중 이번에 고르지 않은 것은 취소하고, 새로 고른 것만 추가합니다.
+ * script 드라이버는 시트 스크립트 한 번 호출로 끝냅니다. 스크립트가 예전 버전이면 예전 방식으로 처리합니다.
+ */
+const OLD_SCRIPT = /알 수 없는 action/;
+export async function castVote(hash, status, rows) {
+  if (driver() === "script") {
+    try { return await script.castVote(hash, status, rows); }
+    catch (e) { if (!OLD_SCRIPT.test(e.message)) throw e; }
+  }
+  const all = await read(VOTE_TAB);
+  const mine = all.filter((v) => v.phone_hash === hash && v.status === status);
+  const want = new Set(rows.map((r) => String(r.target_id)));
+  const have = new Set();
+  for (const v of mine) {
+    if (want.has(String(v.target_id)) && !have.has(String(v.target_id))) have.add(String(v.target_id));
+    else await setStatus(VOTE_TAB, v._row, "취소");
+  }
+  let added = 0;
+  for (const r of rows) if (!have.has(String(r.target_id))) { await append(VOTE_TAB, r); added++; }
+  return { ok: true, added };
+}
+
+export async function myVotes(hash, status) {
+  if (driver() === "script") {
+    try { return await script.myVotes(hash, status); }
+    catch (e) { if (!OLD_SCRIPT.test(e.message)) throw e; }
+  }
+  return (await read(VOTE_TAB)).filter((v) => v.phone_hash === hash && v.status === status).map((v) => v.target_id);
+}
+
 /** 테스트 전용 */
 export function _reset() { mem.bookings = []; mem.votes = []; }

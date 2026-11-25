@@ -34,7 +34,7 @@ export default async function handler(req, res) {
     return fail(res, 429, "인증번호는 1분에 한 번만 받을 수 있습니다. 잠시 후 다시 눌러 주세요.");
   if (limited("pd:" + hash, 5, 24 * 60 * 60 * 1000))
     return fail(res, 429, "이 번호로는 오늘 인증번호를 더 받을 수 없습니다.");
-  if (limited("i:" + ip, 15, 10 * 60 * 1000))
+  if (limited("i:" + ip, 40, 10 * 60 * 1000))   /* 사무실 · 행사장처럼 같은 와이파이를 여럿이 쓰는 경우를 생각해 넉넉히 */
     return fail(res, 429, "요청이 너무 많습니다. 10분 뒤 다시 시도해 주세요.");
 
   const code = newCode();

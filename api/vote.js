@@ -2,10 +2,10 @@
  * POST /api/vote   { phone, token, targets: [id, ...] }
  * 휴대폰 인증(/api/otp)으로 받은 토큰이 있어야 합니다. 한 번호당 정확히 3표(서로 다른 3명).
  */
-import { read, append, setStatus, VOTE_TAB } from "./_lib/store.js";
+import { castVote } from "./_lib/store.js";
 import { checkToken } from "./_lib/otp.js";
 import { FINALISTS, MAX_VOTES_PER_PHONE, json, fail, readBody, votingWindow,
-         normalizePhone, maskPhone, hashPhone, clientIp, maskIp, newId, nowIso } from "./_lib/util.js";
+         normalizePhone, maskPhone, hashPhone, clientIp, maskIp, newId, nowIso, ballotStatus } from "./_lib/util.js";
 
 export default async function handler(req, res) {
   if (req.method !== "POST") return fail(res, 405, "POST만 지원합니다.");
@@ -29,37 +29,16 @@ export default async function handler(req, res) {
 
   try {
     const hash = hashPhone(phone);
-    const all = await read(VOTE_TAB);
-    const mine = all.filter((v) => v.phone_hash === hash && v.status !== "취소");
-    const current = new Set(mine.map((v) => v.target_id));
-    const target = new Set(wanted);
-
-    // 뺀 표는 취소, 새로 넣은 표는 추가 — 화면 상태를 그대로 반영합니다.
-    for (const v of mine) {
-      if (!target.has(v.target_id)) await setStatus(VOTE_TAB, v._row, "취소");
-    }
-
-    const ip = clientIp(req);
-    const added = [];
-    for (const t of wanted) {
-      if (current.has(t)) continue;
+    const status = ballotStatus(w);
+    const ip = clientIp(req), at = nowIso();
+    const rows = wanted.map((t) => {
       const f = FINALISTS.find((x) => x.id === t);
-      const row = {
-        id: newId(), created_at: nowIso(),
-        phone_hash: hash, phone_masked: maskPhone(phone),
-        target_id: t, target_name: f.name,
-        ip, ip_masked: maskIp(ip), status: "유효"
-      };
-      await append(VOTE_TAB, row);
-      added.push(t);
-    }
-
-    json(res, 200, {
-      ok: true,
-      votes: wanted,
-      left: MAX_VOTES_PER_PHONE - wanted.length,
-      added: added.length
+      return { id: newId(), created_at: at, phone_hash: hash, phone_masked: maskPhone(phone),
+               target_id: t, target_name: f.name, ip, ip_masked: maskIp(ip), status };
     });
+    const r = await castVote(hash, status, rows);
+    json(res, 200, { ok: true, votes: wanted, left: MAX_VOTES_PER_PHONE - wanted.length,
+                     added: r.added || 0, test: status === "테스트" });
   } catch (e) {
     fail(res, 500, e.message);
   }

@@ -40,3 +40,5 @@ export const append      = (tab, row)              => call({ action: "append", t
 export const setStatus   = (tab, row, status)      => call({ action: "setStatus", tab, row, status }).then(() => undefined);
 export const appendUnique= (tab, row, conflicts)   => call({ action: "appendUnique", tab, row, conflicts });
 export const setup       = ()                      => call({ action: "setup" });
+export const castVote    = (hash, status, rows)     => call({ action: "castVote", hash, status, rows });
+export const myVotes     = (hash, status)           => call({ action: "myVotes", hash, status }).then((j) => j.votes || []);

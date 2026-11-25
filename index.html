@@ -183,10 +183,8 @@ table{border-collapse:collapse}
 .subnav button:hover{background:rgba(34,30,31,.06);color:var(--tx)}
 .subnav button[aria-current="true"]{background:var(--vfill);color:#fff}
 .subnav button:focus-visible{outline:2px solid var(--vio);outline-offset:-2px}
-.subnav .si{width:9px;height:9px;border-radius:50%;flex:none;font-size:0;background:var(--yellow)}
-.subnav button:nth-child(2) .si{background:var(--red)}
-.subnav button:nth-child(3) .si{background:var(--green)}
-.subnav button:nth-child(4) .si{background:var(--blue)}
+.subnav .si{width:9px;height:9px;border-radius:50%;flex:none;font-size:0;background:#b9b1ab}
+.subnav button[aria-current="true"] .si{background:#fff}
 
 .doc{background:var(--bg2);border-radius:var(--r);padding:clamp(22px,3.2vw,36px);min-width:0}
 .doc section + section{margin-top:40px;padding-top:36px;border-top:1px solid var(--line)}
@@ -280,11 +278,11 @@ td.tk{color:var(--tx2);min-width:240px}
 @media (max-width:520px){.funnel{gap:8px}}
 .fn{position:relative;overflow:hidden;isolation:isolate;background:var(--bg);border-radius:20px;padding:20px 20px 18px;min-height:120px;
   display:flex;flex-direction:column;justify-content:space-between}
-.fn:before{content:'';position:absolute;z-index:-1;width:110px;height:110px;border-radius:50%;right:-34px;top:-40px;background:var(--yellow)}
-.fn:nth-child(2):before{background:var(--green)}
-.fn.hl:before{background:var(--blue)}
+.fn:before{content:'';position:absolute;z-index:-1;width:110px;height:110px;border-radius:50%;right:-34px;top:-40px;background:#e6e1dc}
+.fn:nth-child(2):before{background:#cfc8c2}
+.fn.hl:before{background:#8f8784}
 .fn .v{font:800 clamp(36px,4.4vw,52px)/1 var(--lat);letter-spacing:-.05em}
-.fn.hl .v{color:var(--blue)}
+.fn.hl .v{color:var(--tx)}
 .fn .l{font-size:13px;font-weight:700;color:var(--tx2);margin-top:8px}
 
 .htl{background:var(--bg);border-radius:20px;padding:clamp(22px,3vw,30px) clamp(12px,2vw,22px);margin-top:18px}
@@ -611,9 +609,9 @@ input,select,textarea{font-size:16px}   /* iOS 자동 확대 방지 */
 .gnotes{margin:18px 0 0;padding:12px 14px 12px 30px;border-radius:14px;background:var(--bg2);font-size:13px;color:var(--tx2);line-height:1.6}
 .vsteps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
 .vsteps li{display:flex;gap:12px;align-items:center;background:var(--bg2);border-radius:18px;padding:14px 16px;font-size:13.5px;line-height:1.5;color:var(--tx2)}
-.vsteps li b{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font:800 15px var(--lat);color:#fff;background:var(--yellow)}
-.vsteps li:nth-child(2) b{background:var(--red)}
-.vsteps li:nth-child(3) b{background:var(--blue)}
+.vsteps li b{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font:800 15px var(--lat);color:#fff;background:var(--tx)}
+.vsteps li:nth-child(2) b{background:#5a5150}
+.vsteps li:nth-child(3) b{background:#8f8784}
 .vsteps strong{color:var(--tx)}
 @media (max-width:700px){.vsteps{grid-template-columns:1fr}.vsteps br{display:none}}
 .vbar2{position:sticky;bottom:0;z-index:44;margin-top:-1px;padding:12px 0 calc(12px + env(safe-area-inset-bottom));
@@ -967,7 +965,7 @@ body.cur-down .cur.ring{width:32px;height:32px;margin:-16px 0 0 -16px}
             <tbody>
               <tr><td class="nm">합산 최종 1위</td><td class="tk mono">약 100만원 상당</td></tr>
               <tr><td class="nm">합산 최종 2~3위</td><td class="tk mono">약 50만원 상당</td></tr>
-              <tr><td class="nm">인기상 (청중 투표 1위)</td><td class="tk mono">약 30만원 상당 · 1~3위 선정자 제외</td></tr>
+              <tr><td class="nm">인기상 (청중 투표 1위)</td><td class="tk mono">약 30만원 상당</td></tr>
             </tbody>
           </table>
         </div>
@@ -1261,7 +1259,8 @@ function loadState(){
     return j;
   });
 }
-function voteLive(){ return VOTEWIN.state === "open"; }
+function voteLive(){ return VOTEWIN.state === "open" || VOTEWIN.state === "test"; }
+function voteTest(){ return VOTEWIN.state === "test"; }
 
 function fmtPhone(v){
   var d = String(v || "").replace(/\D/g, "").slice(0, 11);
@@ -1274,17 +1273,20 @@ function validPhone(v){ return /^01[016789]-\d{3,4}-\d{4}$/.test(v); }
 function renderVoteState(){
   var vs = $("voteState");
   if (vs){
-    vs.textContent = VOTEWIN.state === "open" ? "진행 중" : (VOTEWIN.state === "closed" ? "마감" : "오픈 예정");
+    vs.textContent = VOTEWIN.state === "open" ? "진행 중" : (VOTEWIN.state === "closed" ? "마감" : (voteTest() ? "오픈 예정 · 테스트 중" : "오픈 예정"));
     vs.style.color = VOTEWIN.state === "open" ? "var(--ok)" : "var(--tx3)";
   }
   var vt = $("vsTxt");
   if (vt){
-    vt.textContent = voteLive() ? "온라인 투표 진행 중 · 12.4(금) 18:00 마감"
+    vt.textContent = voteTest() ? "테스트 기간 · 지금 넣은 표는 정식 집계에 들어가지 않습니다 (11.30 00:00 정식 오픈)"
+      : voteLive() ? "온라인 투표 진행 중 · 12.4(금) 18:00 마감"
       : (VOTEWIN.state === "closed" ? "온라인 투표 마감 · 결과는 12.4 데모데이에서 발표"
                                     : "온라인 투표 11.30(월) 00:00 오픈");
     $("vsDot").className = voteLive() ? "on" : "";
   }
-  $("voteBanner").querySelector("div").innerHTML = voteLive()
+  $("voteBanner").querySelector("div").innerHTML = voteTest()
+    ? '<b>지금은 테스트 기간입니다.</b> 실제로 인증하고 투표해 볼 수 있지만, 이 표는 <b>정식 집계에 들어가지 않습니다.</b> 정식 투표는 11월 30일(월) 00:00에 열립니다.'
+    : voteLive()
     ? '<b>청중 투표가 열려 있습니다.</b> 카드의 <b>크게 보기</b>로 결과물을 직접 써 보고, 마음에 드는 결과물을 골라 주세요.'
     : (VOTEWIN.state === "closed"
         ? '<b>청중 투표가 마감되었습니다.</b> 참여해 주셔서 감사합니다. 결과는 12월 4일 데모데이에서 발표합니다.'
@@ -1721,7 +1723,7 @@ $("submitVote").addEventListener("click", function(){
       $("doneSub").innerHTML = chosen.map(function(r){
         return "<b>" + FINALISTS.filter(function(x){ return x.r === r; })[0].n + "</b>";
       }).join(" · ") + " 님께 투표했습니다.<br>같은 번호로 다시 투표하면 마감 전까지 바꿀 수 있습니다."
-        + "<br><b>12월 4일 데모데이 현장에서 스티커로 한 번 더 투표할 수 있어요.</b>";
+        + (voteTest() ? "<br><b>테스트 표라 정식 집계에는 들어가지 않습니다.</b>" : "<br><b>12월 4일 데모데이 현장에서 스티커로 한 번 더 투표할 수 있어요.</b>");
       $("vmForm").hidden = true; $("vmDone").hidden = false;
       var fl = $("doneFlower"); fl.classList.remove("bloom"); void fl.offsetWidth; fl.classList.add("bloom");
       picks = []; renderVoteState(); renderWall();

@@ -105,6 +105,51 @@ function appendUnique(tab, obj, conflicts) {
   return { ok: true };
 }
 
+/**
+ * 투표 한 건을 한 번에 처리합니다 (읽기 · 예전 표 취소 · 새 표 추가를 잠금 안에서 한꺼번에).
+ * 여러 명이 동시에 눌러도 시트를 한 번만 오가므로 줄이 길어지지 않습니다.
+ *   body.hash   : 휴대폰 번호 해시
+ *   body.status : "유효" (정식 투표) 또는 "테스트" (오픈 전 시험)
+ *   body.rows   : 이번에 고른 표 [{id, created_at, ..., target_id, status}]
+ */
+function castVote(body) {
+  var sh = sheetFor("votes"), cols = COLS.votes;
+  var cH = cols.indexOf("phone_hash"), cT = cols.indexOf("target_id"), cS = cols.indexOf("status");
+  var last = sh.getLastRow();
+  var values = last >= 2 ? sh.getRange(2, 1, last - 1, cols.length).getDisplayValues() : [];
+  var wanted = {}, have = {};
+  for (var w = 0; w < body.rows.length; w++) wanted[String(body.rows[w].target_id)] = true;
+  for (var i = 0; i < values.length; i++) {
+    if (String(values[i][cH]) !== String(body.hash) || String(values[i][cS]) !== String(body.status)) continue;
+    var t = String(values[i][cT]);
+    if (wanted[t] && !have[t]) have[t] = true;
+    else sh.getRange(i + 2, cS + 1).setValue("취소");
+  }
+  var add = [];
+  for (var k = 0; k < body.rows.length; k++) {
+    var r = body.rows[k];
+    if (have[String(r.target_id)]) continue;
+    var line = [];
+    for (var c = 0; c < cols.length; c++) line.push(r[cols[c]] === undefined ? "" : String(r[cols[c]]));
+    add.push(line);
+  }
+  if (add.length) {
+    var at = Math.max(sh.getLastRow() + 1, 2);
+    var rng = sh.getRange(at, 1, add.length, cols.length);
+    rng.setNumberFormat("@");
+    rng.setValues(add);
+  }
+  return { ok: true, added: add.length };
+}
+
+/** 이 번호가 지금 투표해 둔 대상 */
+function myVotes(body) {
+  var rows = readRows("votes"), out2 = [];
+  for (var i = 0; i < rows.length; i++)
+    if (rows[i].phone_hash === String(body.hash) && rows[i].status === String(body.status)) out2.push(rows[i].target_id);
+  return { ok: true, votes: out2 };
+}
+
 function doPost(e) {
   var body;
   try { body = JSON.parse(e.postData.contents); }
@@ -116,7 +161,7 @@ function doPost(e) {
     return out({ ok: false, message: "인증에 실패했습니다." });
 
   var lock = LockService.getScriptLock();
-  try { lock.waitLock(20000); }
+  try { lock.waitLock(25000); }
   catch (err) { return out({ ok: false, message: "다른 요청을 처리 중입니다. 잠시 후 다시 시도해 주세요." }); }
 
   try {
@@ -130,6 +175,8 @@ function doPost(e) {
       case "setStatus":    setStatus(body.tab, body.row, body.status);
                            return out({ ok: true });
       case "appendUnique": return out(appendUnique(body.tab, body.row, body.conflicts || []));
+      case "castVote":     return out(castVote(body));
+      case "myVotes":      return out(myVotes(body));
       default:             return out({ ok: false, message: "알 수 없는 action: " + body.action });
     }
   } catch (err) {

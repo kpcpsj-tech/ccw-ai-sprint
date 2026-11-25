@@ -137,9 +137,18 @@ export function newId() {
   return crypto.randomUUID();
 }
 
+/**
+ * 오픈 전 시험 기간. 정식 오픈(VOTE_OPEN) 전까지 실제로 투표해 볼 수 있고,
+ * 이때 들어온 표는 시트에 status "테스트"로 남아 정식 집계("유효")에 섞이지 않습니다.
+ * 끄려면 Vercel 환경변수 VOTE_TEST 를 0 으로 둡니다. 정식 오픈 시각이 되면 저절로 끝납니다.
+ */
+export const VOTE_TEST = process.env.VOTE_TEST !== "0";
+/** 지금 받는 표에 붙일 상태 */
+export const ballotStatus = (w) => (w.state === "test" ? "테스트" : "유효");
+
 export function votingWindow(at = new Date()) {
   const t = at.getTime();
-  if (t < Date.parse(VOTE_OPEN)) return { state: "before", opensAt: VOTE_OPEN };
+  if (t < Date.parse(VOTE_OPEN)) return VOTE_TEST ? { state: "test", opensAt: VOTE_OPEN } : { state: "before", opensAt: VOTE_OPEN };
   if (t > Date.parse(VOTE_CLOSE)) return { state: "closed", closedAt: VOTE_CLOSE };
   return { state: "open", closesAt: VOTE_CLOSE };
 }
