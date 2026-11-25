@@ -639,6 +639,18 @@ input,select,textarea{font-size:16px}   /* iOS 자동 확대 방지 */
 .mfoot{display:flex;gap:9px;margin-top:22px}
 .mfoot .btn{flex:1;padding:14px 18px;font-size:14.5px}
 .mnote{font-size:12px;color:var(--tx3);margin-top:14px;line-height:1.65}
+/* ---------- 마우스를 따라다니는 커서 ---------- */
+.cur{position:fixed;left:0;top:0;z-index:250;pointer-events:none;border-radius:50%;opacity:0;
+  transition:opacity .3s,width .3s cubic-bezier(.3,1.5,.5,1),height .3s cubic-bezier(.3,1.5,.5,1),margin .3s cubic-bezier(.3,1.5,.5,1),border-color .4s}
+.cur.dot{width:8px;height:8px;margin:-4px 0 0 -4px;background:var(--tx)}
+.cur.ring{width:38px;height:38px;margin:-19px 0 0 -19px;border:1.5px solid var(--tx);mix-blend-mode:multiply}
+.cur.ring:before,.cur.ring:after{content:"";position:absolute;border-radius:50%;inset:6px;background:var(--cur1,var(--yellow));opacity:.6;transition:background-color .4s,transform .3s}
+.cur.ring:after{background:var(--cur2,var(--green));opacity:.45;inset:10px;transform:translate(5px,5px)}
+body.cur-on .cur{opacity:1}
+body.cur-hot .cur.ring{width:64px;height:64px;margin:-32px 0 0 -32px;border-color:var(--cur2,var(--blue))}
+body.cur-hot .cur.ring:after{transform:translate(-6px,-4px)}
+body.cur-down .cur.ring{width:28px;height:28px;margin:-14px 0 0 -14px}
+
 /* ---------- 마우스를 올렸을 때 (마우스가 있는 기기에서만) ---------- */
 @media (hover:hover) and (pointer:fine){
   .kv .circ{transition:translate .7s cubic-bezier(.2,.8,.2,1),scale .35s cubic-bezier(.2,1.4,.4,1);cursor:pointer}
@@ -1632,6 +1644,53 @@ $("totop").addEventListener("click", function(){ window.scrollTo({ top:0, behavi
     if (!raf) raf = requestAnimationFrame(apply);
   });
   document.querySelector(".banner").addEventListener("mouseleave", function(){ mx = 0; my = 0; if (!raf) raf = requestAnimationFrame(apply); });
+})();
+
+/* ===================== 마우스를 따라다니는 커서 (참고: CON:TINUE 사이트) ===================== */
+(function(){
+  if (!window.matchMedia || !matchMedia("(hover:hover) and (pointer:fine)").matches) return;
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  var dot = document.createElement("i"), ring = document.createElement("i");
+  dot.className = "cur dot"; ring.className = "cur ring";
+  dot.setAttribute("aria-hidden", "true"); ring.setAttribute("aria-hidden", "true");
+  document.body.appendChild(ring); document.body.appendChild(dot);
+  var ptr = null, rx = 0, ry = 0, run = false;
+  var HOT = "a,button,label,select,summary,[role=tab],.circ,.vc,[data-v],[data-view-site]";
+  /* 카드 위에서는 그 진출자 색으로 바뀝니다 */
+  var PAIRS = [["var(--yellow)","var(--green)"],["var(--red)","var(--yellow)"],["var(--green)","var(--blue)"],
+               ["var(--blue)","var(--purple)"],["var(--purple)","var(--red)"]];
+  var pair = 0;
+  function follow(){
+    if (!ptr){ run = false; return; }
+    rx += (ptr.x - rx) * .2; ry += (ptr.y - ry) * .2;
+    ring.style.transform = "translate(" + rx.toFixed(1) + "px," + ry.toFixed(1) + "px)";
+    if (Math.abs(ptr.x - rx) + Math.abs(ptr.y - ry) > .3) requestAnimationFrame(follow); else run = false;
+  }
+  addEventListener("pointermove", function(e){
+    if (e.pointerType !== "mouse") return;
+    if (!ptr){ rx = e.clientX; ry = e.clientY; }
+    ptr = { x: e.clientX, y: e.clientY };
+    dot.style.transform = "translate(" + ptr.x + "px," + ptr.y + "px)";
+    document.body.classList.add("cur-on");
+    var t = e.target.closest ? e.target : null;
+    document.body.classList.toggle("cur-hot", !!(t && t.closest(HOT)));
+    var card = t && t.closest(".vc,[data-card]");
+    if (card){
+      ring.style.setProperty("--cur1", getComputedStyle(card).getPropertyValue("--ac"));
+    } else ring.style.removeProperty("--cur1");
+    if (!run){ run = true; requestAnimationFrame(follow); }
+  }, { passive: true });
+  document.documentElement.addEventListener("mouseleave", function(){ document.body.classList.remove("cur-on"); ptr = null; });
+  addEventListener("pointerdown", function(){
+    document.body.classList.add("cur-down");
+    pair = (pair + 1) % PAIRS.length;   /* 누를 때마다 원 안의 색이 다음 색으로 */
+    ring.style.setProperty("--cur2", PAIRS[pair][1]);
+  });
+  addEventListener("pointerup", function(){ document.body.classList.remove("cur-down"); });
+  /* 사이트를 띄운 칸(iframe) 위로 가면 커서를 숨깁니다 (그 안에서는 마우스 위치를 알 수 없어서) */
+  document.addEventListener("mouseover", function(e){
+    if (e.target.tagName === "IFRAME"){ document.body.classList.remove("cur-on"); ptr = null; }
+  });
 })();
 
 /* ===================== 시작 ===================== */
