@@ -41,7 +41,7 @@ export default async function handler(req, res) {
   try {
     await sendSms(phone, `[CCW AI SPRINT] 청중 투표 인증번호 [${code}] 5분 안에 입력해 주세요.`);
   } catch (e) {
-    return fail(res, 502, e.message);
+    return json(res, 502, { ok: false, message: e.message, detail: e.detail || "" });
   }
   json(res, 200, { ok: true, sms: true, ticket: makeTicket(hash, code), ...(SMS_MOCK ? { mockCode: code } : {}) });
 }

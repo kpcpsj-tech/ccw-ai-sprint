@@ -90,7 +90,11 @@ export async function sendSms(to, text) {
   if (!r.ok) {
     const t = await r.text().catch(() => "");
     console.error("solapi", r.status, t.slice(0, 300));
-    throw new Error("인증 문자를 보내지 못했습니다. 잠시 후 다시 시도해 주세요.");
+    let code = "";
+    try { code = JSON.parse(t).errorCode || ""; } catch (_) {}
+    const err = new Error("인증 문자를 보내지 못했습니다. 잠시 후 다시 시도해 주세요.");
+    err.detail = (r.status + " " + code).trim();   /* 원인 파악용 (솔라피 오류 코드만, 키·번호 없음) */
+    throw err;
   }
   return r.json().catch(() => ({}));
 }
