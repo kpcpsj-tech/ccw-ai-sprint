@@ -993,7 +993,6 @@ body.cur-down .cur.ring{width:32px;height:32px;margin:-16px 0 0 -16px}
   <div class="vtotal" id="vtotal" hidden>
     <span class="vt-k" id="vtK">누적 투표수</span>
     <b class="vt-n"><span id="vtN">0</span><small>표</small></b>
-    <span class="vt-s" id="vtS">1인 3표 · 1분마다 갱신</span>
   </div>
 
   <ol class="vsteps">
@@ -1282,7 +1281,6 @@ function showTotal(n){
     el.textContent = Math.round(from + (n - from) * (1 - Math.pow(1 - k, 3))).toLocaleString("ko-KR");
     if (k < 1) requestAnimationFrame(step);
   })(t0);
-  $("vtS").textContent = "1인 3표 · 참여 약 " + Math.floor(n / 3).toLocaleString("ko-KR") + "명";
 }
 function voteLive(){ return VOTEWIN.state === "open" || VOTEWIN.state === "test"; }
 function voteTest(){ return VOTEWIN.state === "test"; }
