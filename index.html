@@ -212,6 +212,8 @@ table{border-collapse:collapse}
 .sec-h h2{grid-column:2;grid-row:2;font:800 clamp(26px,3.2vw,40px)/1.1 var(--kr);letter-spacing:-.045em}
 .sec-h .hint{grid-column:2;grid-row:1;font:800 11.5px var(--lat);letter-spacing:.12em;color:var(--vio);margin:0}
 .sec-h .btn{grid-column:3;grid-row:2;align-self:end}
+.sec-h.nonum{grid-template-columns:1fr;gap:6px 0}
+.sec-h.nonum h2,.sec-h.nonum .hint{grid-column:1}
 @media (max-width:520px){.sec-h{grid-template-columns:auto 1fr}.sec-h .btn{grid-column:1 / -1;grid-row:auto;justify-self:start;margin-left:0!important}}
 .card{background:var(--bg2);border-radius:var(--r)}
 .pad{padding:clamp(18px,2.6vw,26px)}
@@ -834,7 +836,7 @@ input,select,textarea{font-size:16px}   /* iOS 자동 확대 방지 */
 
 <!-- ======================= 투표 ======================= -->
 <div class="view wrap" id="v-vote">
-  <div class="sec-h"><span class="n">01</span><h2>청중 투표</h2>
+  <div class="sec-h nonum"><h2>청중 투표</h2>
     <span class="hint">11.30(월) 00:00 오픈 · 12.4(금) 18:00 마감</span></div>
 
   <ol class="vsteps">
