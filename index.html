@@ -4,7 +4,8 @@
 <meta name="color-scheme" content="light">
 <meta name="theme-color" content="#ffffff">
 <meta name="description" content="CCW AI 스프린트 파이널 스프린트 — 일정 안내, 대면 멘토링 예약, 결과물 제출">
-<title>AI와 함께 더 멀리 달리는 K-콘텐츠</title>
+<title>AI SPRINT</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><g><circle cx='32.0' cy='21.0' r='14' fill='%23f9b23c' fill-opacity='.82'/><circle cx='42.5' cy='28.6' r='14' fill='%23ea4a35' fill-opacity='.82'/><circle cx='38.5' cy='40.9' r='14' fill='%239b5bb0' fill-opacity='.82'/><circle cx='25.5' cy='40.9' r='14' fill='%232f6fba' fill-opacity='.82'/><circle cx='21.5' cy='28.6' r='14' fill='%234fae5a' fill-opacity='.82'/></g><circle cx='32' cy='32' r='2.2' fill='%23ea4a35'/></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;700;800;900&display=swap">
@@ -639,6 +640,105 @@ input,select,textarea{font-size:16px}   /* iOS 자동 확대 방지 */
 .mfoot{display:flex;gap:9px;margin-top:22px}
 .mfoot .btn{flex:1;padding:14px 18px;font-size:14.5px}
 .mnote{font-size:12px;color:var(--tx3);margin-top:14px;line-height:1.65}
+
+/* ---------- 꽃 로고 ---------- */
+.brand .lg{width:30px;height:30px}
+.brand .lg .flower{width:100%;height:100%;display:block;transition:transform .6s cubic-bezier(.2,1.4,.4,1)}
+.brand:hover .lg .flower{transform:rotate(72deg)}
+/* ---------- 투표 상태 줄 ---------- */
+.vstatus{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;
+  padding-bottom:12px;margin-bottom:22px;border-bottom:1px solid var(--line);
+  font:800 12px var(--lat);letter-spacing:.06em;color:var(--tx3)}
+.vstatus span{display:inline-flex;align-items:center;gap:8px}
+.vstatus b{color:var(--tx);font-weight:800}
+.vstatus i{width:9px;height:9px;border-radius:50%;background:var(--tx3)}
+.vstatus i.on{background:var(--red);animation:blinkL 1.4s ease-in-out infinite}
+@media (max-width:560px){.vs-r{display:none!important}}
+/* ---------- 현장 투표 ---------- */
+.onsite{margin-top:40px;padding:clamp(22px,3.4vw,36px);border-radius:26px;background:#fdf3e7;position:relative;overflow:hidden;isolation:isolate}
+.onsite:before{content:"";position:absolute;z-index:-1;width:220px;height:220px;border-radius:50%;right:-60px;top:-80px;background:var(--yellow);opacity:.55}
+.onsite:after{content:"";position:absolute;z-index:-1;width:120px;height:120px;border-radius:50%;right:110px;top:-50px;background:var(--red);opacity:.5;mix-blend-mode:multiply}
+.os-k{font:800 11.5px var(--lat);letter-spacing:.14em;color:var(--red)}
+.os-head h3{font:800 clamp(22px,2.8vw,32px)/1.25 var(--kr);letter-spacing:-.045em;margin-top:8px}
+.os-head h3 span{background:linear-gradient(transparent 60%,rgba(249,178,60,.55) 0)}
+.os-head p{font-size:14.5px;color:var(--tx2);margin-top:10px;max-width:64ch;line-height:1.75}
+.os-head p b{color:var(--tx)}
+.os-time{display:flex;flex-wrap:wrap;margin-top:20px;border-top:1.5px solid var(--tx);border-bottom:1px solid var(--line2)}
+.os-time div{flex:1 1 180px;padding:14px 18px 14px 0;display:flex;flex-direction:column;gap:2px}
+.os-time div + div{padding-left:18px;border-left:1px solid var(--line2)}
+.os-time b{font:800 clamp(20px,2.4vw,26px)/1.1 var(--lat);letter-spacing:-.03em}
+.os-time span{font-size:13px;color:var(--tx2)}
+@media (max-width:640px){.os-time{flex-direction:column}.os-time div{flex:none;padding:12px 0}.os-time div + div{padding-left:0;border-left:0;border-top:1px solid var(--line2)}}
+.os-list{list-style:none;margin:16px 0 0;padding:0;display:flex;flex-direction:column;gap:8px}
+.os-list li{position:relative;padding-left:20px;font-size:14px;color:var(--tx2);line-height:1.65}
+.os-list li::before{content:"";position:absolute;left:0;top:7px;width:10px;height:10px;border-radius:50%;background:var(--blue)}
+.os-list li:nth-child(2)::before{background:var(--yellow)}
+.os-list li:nth-child(3)::before{background:var(--green)}
+.os-list b{color:var(--tx)}
+.os-map-h{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin:26px 0 10px}
+.os-map-h b{font-size:16px;font-weight:800}
+.os-map-h span{font-size:12.5px;color:var(--red);font-weight:700}
+.bmap{position:relative;display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:10px;
+  padding:16px;border:2.5px solid var(--tx);border-radius:16px;background:#fff8ef}
+.bm-top{grid-column:2 / 8;grid-row:1;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px}
+.bm-side{grid-column:8;grid-row:1 / 5;display:grid;grid-template-rows:repeat(3,auto);gap:10px;align-content:start}
+.bm-b{border:1.5px solid var(--tx);border-radius:10px;background:#dbe8c3;min-height:58px;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:2px;text-align:center;padding:6px 2px}
+.bm-b b{font:800 16px var(--lat)}
+.bm-b span{font-size:11.5px;font-weight:800}
+.bm-b.on{background:var(--ac);color:#fff}
+.bm-side .bm-b{min-height:72px}
+.bm-mid{grid-column:3 / 6;grid-row:2 / 4;align-self:center;border:1.5px solid var(--tx);border-radius:12px;background:#c9dcb4;
+  padding:16px 8px;text-align:center;font-size:20px;font-weight:900;display:flex;flex-direction:column;gap:2px}
+.bm-photo{grid-column:1 / 3;grid-row:3 / 5;border:1.5px solid var(--tx);border-radius:12px;background:#ecebb6;padding:18px 8px;
+  text-align:center;font-size:18px;font-weight:900;display:flex;flex-direction:column;justify-content:center;gap:2px}
+.bm-mid small,.bm-photo small{font-size:11.5px;font-weight:600;color:var(--tx2)}
+.bm-in{grid-column:5 / 8;grid-row:4;align-self:end;justify-self:end;font-size:12.5px;font-weight:800;display:flex;gap:6px;align-items:center}
+.bm-in span{letter-spacing:.1em}
+@media (max-width:640px){
+  .bmap{gap:6px;padding:10px}
+  .bm-top{gap:6px}.bm-side{gap:6px}
+  .bm-b{min-height:44px}.bm-b b{font-size:13px}.bm-b span{font-size:10px}
+  .bm-side .bm-b{min-height:52px}
+  .bm-mid{font-size:15px;padding:10px 4px}.bm-photo{font-size:14px;padding:12px 4px}
+}
+.os-note{font-size:12px;color:var(--tx3);margin-top:8px}
+.bchip{display:inline-block;margin-right:7px;padding:1px 8px;border-radius:100px;background:var(--ac);color:#fff;font:800 10.5px var(--lat);letter-spacing:.06em;vertical-align:1px}
+/* ---------- 타임라인 (THE ROAD TO FINAL SPRINT) ---------- */
+.htl-t{text-align:left;font:800 11.5px var(--lat);letter-spacing:.16em;color:var(--tx3)}
+.htl-t b{display:block;font:800 clamp(24px,3vw,34px)/1.05 var(--lat);letter-spacing:-.04em;color:var(--tx);margin-top:4px}
+.htl-row{align-items:flex-end;margin-top:8px}
+.nd{position:relative;padding-top:24px}
+.nd .dt{margin:0 0 10px;font-size:17px}
+.nd .dot{width:16px;height:16px;border:0;background:var(--line2)}
+.nd.done .dot,.nd.now .dot{background:var(--c)}
+.nd .lb{margin-top:10px;font-weight:800;font-size:12.5px;color:var(--tx3)}
+.nd.done .lb,.nd.now .lb{color:var(--c)}
+.nd.now .dot{width:18px;height:18px;box-shadow:0 0 0 5px #fff,0 0 0 7px var(--c),0 0 0 12px #fff,0 0 0 13px var(--c)}
+.nd .today{position:absolute;top:0;left:50%;transform:translateX(-50%);font:800 9.5px var(--lat);letter-spacing:.1em;
+  background:var(--tx);color:#fff;border-radius:100px;padding:2px 8px}
+.ln{margin:0 0 30px;align-self:flex-end;border-top:1.5px dashed var(--line2);height:0;background:none}
+@media (max-width:700px){
+  .htl-row{align-items:stretch}
+  .nd{padding-top:0;grid-template-columns:20px auto 1fr;align-items:center;column-gap:10px}
+  .nd .dot{grid-column:1;grid-row:1}.nd .dt{grid-column:2;margin:0}.nd .lb{grid-column:3;margin:0}
+  .nd .today{position:static;transform:none;grid-column:3;grid-row:1;justify-self:end}
+  .ln{margin:2px 0 2px 9px;width:0;height:14px;border-top:0;border-left:1.5px dashed var(--line2)}
+}
+/* ---------- 투표 완료: 다섯 점이 모여 꽃 ---------- */
+.done-flower{position:relative;width:96px;height:96px;margin:6px auto 14px}
+.done-flower i{position:absolute;left:50%;top:50%;width:42px;height:42px;margin:-21px 0 0 -21px;border-radius:50%;opacity:.85;mix-blend-mode:multiply;
+  transform:translate(var(--x),var(--y))}
+.done-flower i:nth-child(1){background:var(--yellow);--x:0px;--y:-17px;--lx:-56px}
+.done-flower i:nth-child(2){background:var(--red);--x:16px;--y:-5px;--lx:-28px}
+.done-flower i:nth-child(3){background:var(--purple);--x:10px;--y:14px;--lx:0px}
+.done-flower i:nth-child(4){background:var(--blue);--x:-10px;--y:14px;--lx:28px}
+.done-flower i:nth-child(5){background:var(--green);--x:-16px;--y:-5px;--lx:56px}
+.done-flower.bloom i{animation:bloom .9s cubic-bezier(.2,1.3,.4,1) both}
+.done-flower.bloom i:nth-child(2){animation-delay:.06s}.done-flower.bloom i:nth-child(3){animation-delay:.12s}
+.done-flower.bloom i:nth-child(4){animation-delay:.18s}.done-flower.bloom i:nth-child(5){animation-delay:.24s}
+@keyframes bloom{0%{transform:translate(var(--lx),0) scale(.55);opacity:0}40%{transform:translate(var(--lx),0) scale(.55);opacity:.9}100%{transform:translate(var(--x),var(--y));opacity:.85}}
+.done-flower:after{content:"";position:absolute;left:50%;top:50%;width:6px;height:6px;margin:-3px 0 0 -3px;border-radius:50%;background:var(--red)}
 /* ---------- 마우스를 따라다니는 커서 ---------- */
 .cur{position:fixed;left:0;top:0;z-index:250;pointer-events:none;border-radius:50%;opacity:0;
   transition:opacity .3s,width .3s cubic-bezier(.3,1.5,.5,1),height .3s cubic-bezier(.3,1.5,.5,1),margin .3s cubic-bezier(.3,1.5,.5,1),border-color .4s}
@@ -693,7 +793,7 @@ body.cur-down .cur.ring{width:28px;height:28px;margin:-14px 0 0 -14px}
 <header class="gnb">
   <div class="wrap row">
     <div class="brand">
-      <span class="lg" aria-hidden="true"><b></b><b></b><b></b><b></b><b></b></span>
+      <span class="lg"><svg class="flower" viewBox="0 0 64 64" aria-hidden="true"><g style="mix-blend-mode:multiply"><circle cx="32.0" cy="21.0" r="14" fill="#f9b23c" fill-opacity=".82"/><circle cx="42.5" cy="28.6" r="14" fill="#ea4a35" fill-opacity=".82"/><circle cx="38.5" cy="40.9" r="14" fill="#9b5bb0" fill-opacity=".82"/><circle cx="25.5" cy="40.9" r="14" fill="#2f6fba" fill-opacity=".82"/><circle cx="21.5" cy="28.6" r="14" fill="#4fae5a" fill-opacity=".82"/></g><circle cx="32" cy="32" r="2.2" fill="#ea4a35"/></svg></span>
       <span class="bt">AI SPRINT<small>CCW 5TH · FINAL SPRINT</small></span>
       <img id="logoCcw" alt="CCW">
     </div>
@@ -803,7 +903,7 @@ body.cur-down .cur.ring{width:28px;height:28px;margin:-14px 0 0 -14px}
         <h3>일정</h3>
         <p>제출 → 전문가 최종평가 → 청중 투표 → 데모데이 순서로 이어집니다.</p>
         <div class="htl">
-          <div class="htl-t">주요 일정</div>
+          <div class="htl-t">THE ROAD TO <b>FINAL SPRINT</b></div>
           <div class="htl-row" id="htl"></div>
         </div>
         <div class="tblw" style="margin-top:14px">
@@ -879,8 +979,10 @@ body.cur-down .cur.ring{width:28px;height:28px;margin:-14px 0 0 -14px}
 
 <!-- ======================= 투표 ======================= -->
 <div class="view wrap" id="v-vote">
+  <div class="vstatus"><span><i id="vsDot"></i><b id="vsTxt">청중 투표</b></span>
+    <span class="vs-r">AI SPRINT · FINAL SPRINT DEMO DAY</span></div>
   <div class="sec-h nonum"><h2>청중 투표</h2>
-    <span class="hint">11.30(월) 00:00 오픈 · 12.4(금) 18:00 마감</span></div>
+    <span class="hint">온라인 11.30(월) 00:00 ~ 12.4(금) 18:00</span></div>
 
   <ol class="vsteps">
     <li><b>1</b><span>마음에 드는 결과물을<br><strong>꼭 3개</strong> 고릅니다</span></li>
@@ -893,6 +995,29 @@ body.cur-down .cur.ring{width:28px;height:28px;margin:-14px 0 0 -14px}
   </div>
 
   <div class="wall" id="wall"></div>
+
+  <!-- 데모데이 현장 투표 -->
+  <section class="onsite" id="onsite">
+    <div class="os-head">
+      <span class="os-k">DEMO DAY · 2026.12.04 FRI</span>
+      <h3>데모데이 현장에서 <span>한 번 더</span> 응원해 주세요</h3>
+      <p>홍릉콘텐츠인재캠퍼스 <b>2층 프로젝트 룸</b>에서 9개 부스를 직접 체험하고 <b>스티커로 현장 투표</b>할 수 있습니다.
+        <b>온라인으로 이미 투표했어도 현장 투표에 참여할 수 있어요.</b></p>
+    </div>
+    <div class="os-time">
+      <div><b>15:00 – 18:00</b><span>부스 시연 · 현장 스티커 투표</span></div>
+      <div><b>19:15</b><span>파이널리스트 대표 발표</span></div>
+      <div><b>19:30</b><span>시상</span></div>
+    </div>
+    <ul class="os-list">
+      <li><b>온라인 투표</b> — 이 사이트에서 휴대폰 인증 후 3개를 고릅니다. 12월 4일(금) <b>18:00</b>까지.</li>
+      <li><b>현장 투표</b> — 데모데이 당일 부스에서 스티커로 투표합니다. 온라인 투표와 따로 받습니다.</li>
+      <li><b>최종 순위</b> — 전문가 최종평가 85% + 청중 평가 15%(온라인 · 현장 투표 합산)</li>
+    </ul>
+    <div class="os-map-h"><b>현장 부스 배치</b><span>부스 위치는 추첨 후 공개됩니다</span></div>
+    <div class="bmap" id="bmap" aria-label="데모데이 현장 부스 배치도"></div>
+    <p class="os-note">실제 배치는 현장 사정에 따라 달라질 수 있어요.</p>
+  </section>
 </div>
 
 <!-- 투표 확정 바 (화면 맨 아래 고정) -->
@@ -968,7 +1093,7 @@ body.cur-down .cur.ring{width:28px;height:28px;margin:-14px 0 0 -14px}
     </div>
 
     <div id="vmDone" hidden style="text-align:center;padding:10px 0 4px">
-      <div class="done-dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+      <div class="done-flower" id="doneFlower" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
       <h3>투표가 완료되었습니다</h3>
       <p class="msub" id="doneSub"></p>
       <div class="mfoot"><button class="btn" type="button" data-close-vm>확인</button></div>
@@ -1040,16 +1165,17 @@ var FINALISTS = [
   /* u: 결과물 주소 · live: 투표 카드 안에 실제 사이트를 띄울 수 있음
      (false 는 사이트가 다른 페이지 안에 들어가는 것을 막아 둔 경우 → 화면 사진으로 대신)
      shot: 카드에는 화면 사진을 쓰고, 크게 보기에서만 실제 사이트를 띄움 (첫 화면에서 한 번 눌러야 하는 사이트)
-     k: 신규 / 현업 */
-  {r:1,  n:"성원제", c:4, k:"신규", t:"꿀",               u:"https://ggul-studio.vercel.app/", live:false}, /* 로그인이 다른 페이지 안에서는 막혀 화면 사진으로 */
-  {r:2,  n:"전혜선", c:5, k:"신규", t:"웹소설 데이터 분석 사이트",     u:"https://webnovel-pi.vercel.app/intro.html", live:true},
-  {r:3,  n:"최예지", c:5, k:"신규", t:"OWN TAKE", u:"https://own-take.vercel.app/studio", live:true, shot:true}, /* 첫 화면이 언어 선택이라 카드는 사진, 크게 보기는 실제 사이트 */
-  {r:4,  n:"신은정", c:5, k:"신규", t:"3분 K-IP Report",                          u:"https://frontend-one-chi-92.vercel.app/", live:true},
-  {r:5,  n:"김민지", c:2, k:"현업", t:"글로벌 콘텐츠 배급 관리 대시보드",             u:"https://pink-mu-one.vercel.app/", live:false},
-  {r:6,  n:"양영주", c:3, k:"현업", t:"노블윙 - 웹소설/소설 작가를 위한 AI 투고 도우미 서비스",     u:"https://novelwing.app", live:false},
-  {r:7,  n:"남가현", c:4, k:"신규", t:"K-콘덱스",                         u:"https://k-condex.ghghgh02.workers.dev/", live:false},
-  {r:8,  n:"조은지", c:5, k:"신규", t:"Refy [리파이: 링크 하나로, 바이럴 포인트부터 레퍼런스까지 한 번에]",    u:"https://refy-ten.vercel.app/", live:true},
-  {r:9,  n:"박성현", c:5, k:"신규", t:"빠꺼의 방",                              u:"https://room-for-parker-live.vercel.app", live:true}
+     k: 신규 / 현업
+     b: 데모데이 부스 번호 (추첨 후 1~9 를 적으면 카드와 배치도에 나타납니다) */
+  {r:1,  n:"성원제", c:4, k:"신규", b:0, t:"꿀",               u:"https://ggul-studio.vercel.app/", live:false}, /* 로그인이 다른 페이지 안에서는 막혀 화면 사진으로 */
+  {r:2,  n:"전혜선", c:5, k:"신규", b:0, t:"웹소설 데이터 분석 사이트",     u:"https://webnovel-pi.vercel.app/intro.html", live:true},
+  {r:3,  n:"최예지", c:5, k:"신규", b:0, t:"OWN TAKE", u:"https://own-take.vercel.app/studio", live:true, shot:true}, /* 첫 화면이 언어 선택이라 카드는 사진, 크게 보기는 실제 사이트 */
+  {r:4,  n:"신은정", c:5, k:"신규", b:0, t:"3분 K-IP Report",                          u:"https://frontend-one-chi-92.vercel.app/", live:true},
+  {r:5,  n:"김민지", c:2, k:"현업", b:0, t:"글로벌 콘텐츠 배급 관리 대시보드",             u:"https://pink-mu-one.vercel.app/", live:false},
+  {r:6,  n:"양영주", c:3, k:"현업", b:0, t:"노블윙 - 웹소설/소설 작가를 위한 AI 투고 도우미 서비스",     u:"https://novelwing.app", live:false},
+  {r:7,  n:"남가현", c:4, k:"신규", b:0, t:"K-콘덱스",                         u:"https://k-condex.ghghgh02.workers.dev/", live:false},
+  {r:8,  n:"조은지", c:5, k:"신규", b:0, t:"Refy [리파이: 링크 하나로, 바이럴 포인트부터 레퍼런스까지 한 번에]",    u:"https://refy-ten.vercel.app/", live:true},
+  {r:9,  n:"박성현", c:5, k:"신규", b:0, t:"빠꺼의 방",                              u:"https://room-for-parker-live.vercel.app", live:true}
 ];
 var HTL = [
   {d:"09.21", iso:"2026-09-21", l:"AI Boost 시작"},
@@ -1103,10 +1229,13 @@ function dlabel(n){ return n > 0 ? "D-" + n : (n === 0 ? "D-DAY" : "D+" + (-n));
 
 /* ===================== 렌더 ===================== */
 function renderHtl(){
+  var C = ["var(--red)","var(--yellow)","var(--green)","var(--blue)","var(--purple)"];
   var o = "";
   HTL.forEach(function(n, i){
-    o += '<div class="nd ' + n.s + '"><div class="dot">' + (n.s === "now" ? "●" : "") + '</div>'
-       + '<div><div class="dt">' + n.d + '</div><div class="lb">' + n.l + '</div></div></div>';
+    o += '<div class="nd ' + n.s + '" style="--c:' + C[i % 5] + '">'
+       + (n.s === "now" ? '<span class="today">TODAY</span>' : '')
+       + '<div class="dt">' + n.d + '</div><div class="dot"></div>'
+       + '<div class="lb">' + n.l + '</div></div>';
     if (i < HTL.length - 1) o += '<div class="ln"></div>';
   });
   $("htl").innerHTML = o;
@@ -1135,6 +1264,13 @@ function renderVoteState(){
   if (vs){
     vs.textContent = VOTEWIN.state === "open" ? "진행 중" : (VOTEWIN.state === "closed" ? "마감" : "오픈 예정");
     vs.style.color = VOTEWIN.state === "open" ? "var(--ok)" : "var(--tx3)";
+  }
+  var vt = $("vsTxt");
+  if (vt){
+    vt.textContent = voteLive() ? "온라인 투표 진행 중 · 12.4(금) 18:00 마감"
+      : (VOTEWIN.state === "closed" ? "온라인 투표 마감 · 결과는 12.4 데모데이에서 발표"
+                                    : "온라인 투표 11.30(월) 00:00 오픈");
+    $("vsDot").className = voteLive() ? "on" : "";
   }
   $("voteBanner").querySelector("div").innerHTML = voteLive()
     ? '<b>청중 투표가 열려 있습니다.</b> 카드의 <b>크게 보기</b>로 결과물을 직접 써 보고, 마음에 드는 결과물을 골라 주세요.'
@@ -1326,6 +1462,26 @@ function openGuide(r){
 }
 function closeGuide(){ $("guide").hidden = true; document.body.style.overflow = ""; }
 
+/* ---- 부스 ---- */
+function boothChip(p){
+  return p.b ? '<span class="bchip">BOOTH ' + ("0" + p.b).slice(-2) + '</span>' : '';
+}
+function renderBooths(){
+  var by = {}; FINALISTS.forEach(function(p, i){ if (p.b) by[p.b] = { p: p, c: TINT[i] }; });
+  var cell = function(n){
+    var x = by[n], nn = ("0" + n).slice(-2);
+    return '<div class="bm-b bm-' + n + (x ? ' on" style="--ac:' + x.c + '"' : '"') + '>'
+      + '<b>' + nn + '</b>' + (x ? '<span>' + x.p.n + '</span>' : '') + '</div>';
+  };
+  var top = "", side = "";
+  for (var i = 1; i <= 6; i++) top += cell(i);
+  for (var j = 7; j <= 9; j++) side += cell(j);
+  $("bmap").innerHTML = '<div class="bm-top">' + top + '</div><div class="bm-side">' + side + '</div>'
+    + '<div class="bm-mid">다과<small>가운데 테이블</small></div>'
+    + '<div class="bm-photo">포토부스<small>포토월 · QR 사진</small></div>'
+    + '<div class="bm-in">입구 <span aria-hidden="true">◀ · · ·</span></div>';
+}
+
 /* ---- 투표 카드 ---- */
 function stageHtml(p, i){
   var open = p.u ? '<button class="vopen" type="button" data-view-site="' + p.r + '">크게 보기 ↗</button>' : '';
@@ -1347,7 +1503,7 @@ function renderWall(){
     w.innerHTML = FINALISTS.map(function(p, i){
       return '<article class="vc play" data-card="' + p.r + '" style="--ac:' + TINT[i] + '">'
         + stageHtml(p, i)
-        + '<div class="vb"><div class="vwho">' + p.n + ' · ' + p.c + '기' + (p.k ? ' · ' + p.k : '') + '</div>'
+        + '<div class="vb"><div class="vwho">' + boothChip(p) + p.n + ' · ' + p.c + '기' + (p.k ? ' · ' + p.k : '') + '</div>'
         + '<div class="vttl">' + p.t + '</div>'
         + summaryHtml(p)
         + '<button class="vhow" type="button" data-view-site="' + p.r + '">자세히 보기 · 사용 방법 →</button>'
@@ -1552,8 +1708,10 @@ $("submitVote").addEventListener("click", function(){
       $("phone").value = ""; $("code").value = ""; $("codeBox").hidden = true; $("sendCode").textContent = "인증번호 받기";
       $("doneSub").innerHTML = chosen.map(function(r){
         return "<b>" + FINALISTS.filter(function(x){ return x.r === r; })[0].n + "</b>";
-      }).join(" · ") + " 님께 투표했습니다.<br>같은 번호로 다시 투표하면 마감 전까지 바꿀 수 있습니다.";
+      }).join(" · ") + " 님께 투표했습니다.<br>같은 번호로 다시 투표하면 마감 전까지 바꿀 수 있습니다."
+        + "<br><b>12월 4일 데모데이 현장에서 스티커로 한 번 더 투표할 수 있어요.</b>";
       $("vmForm").hidden = true; $("vmDone").hidden = false;
+      var fl = $("doneFlower"); fl.classList.remove("bloom"); void fl.offsetWidth; fl.classList.add("bloom");
       picks = []; renderVoteState(); renderWall();
     })
     .catch(function(e){ busy(btn, false, "투표 완료"); note($("voteMsg"), e.message, "bad"); syncSubmit(); });
@@ -1695,7 +1853,7 @@ $("totop").addEventListener("click", function(){ window.scrollTo({ top:0, behavi
 
 /* ===================== 시작 ===================== */
 $("dday").textContent = "Final Sprint " + dlabel(dday("2026-12-04"));
-renderHtl(); renderVoteState(); renderWall(); go("vote", true);
+renderHtl(); renderBooths(); renderVoteState(); renderWall(); go("vote", true);
 loadState().catch(function(){});
 /* 창으로 돌아오면 투표 기간 상태를 다시 읽습니다 (오픈 · 마감 시각을 넘긴 경우 대비) */
 document.addEventListener("visibilitychange", function(){ if (!document.hidden) loadState().catch(function(){}); });
