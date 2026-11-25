@@ -97,9 +97,11 @@ table{border-collapse:collapse}
 .kv{position:relative;container-type:inline-size;aspect-ratio:1/1.02;width:100%;isolation:isolate}
 .kv .burst{position:absolute;left:52%;top:-6%;width:72%;height:auto;z-index:0;opacity:.5;
   animation:spin 60s linear infinite}
-.kv .trail{display:none;position:absolute;left:0;top:58%;width:52%;height:32%;z-index:0}
-.kv .trail i{position:absolute;top:0;width:32cqw;height:32cqw;border-radius:50%;background:#ece8e3;
-  box-shadow:inset 0 0 0 .25cqw rgba(34,30,31,.06)}
+.kv .trail{position:absolute;inset:0;z-index:0;pointer-events:none}
+.kv .trail i{position:absolute;top:46cqw;width:50cqw;height:50cqw;border-radius:50%;
+  background:radial-gradient(circle at 60% 50%,#ddd3ca,#ece6df 72%);box-shadow:inset 0 0 0 .2cqw rgba(34,30,31,.04);
+  animation:trailIn .9s cubic-bezier(.2,.8,.2,1) both}
+@keyframes trailIn{from{opacity:0;transform:translateX(12cqw)}}
 .kv .circ{position:absolute;border-radius:50%;z-index:1;mix-blend-mode:multiply}
 .kv .ct{width:42cqw;height:42cqw;left:22cqw;top:-4cqw;background:var(--yellow);animation:pop .6s .1s cubic-bezier(.2,1.5,.4,1) both}
 .kv .cr{width:38cqw;height:38cqw;left:60cqw;top:14cqw;background:var(--red);animation:pop .6s .22s cubic-bezier(.2,1.5,.4,1) both}
@@ -743,13 +745,14 @@ input,select,textarea{font-size:16px}   /* iOS 자동 확대 방지 */
 .cur{position:fixed;left:0;top:0;z-index:250;pointer-events:none;border-radius:50%;opacity:0;
   transition:opacity .3s,width .3s cubic-bezier(.3,1.5,.5,1),height .3s cubic-bezier(.3,1.5,.5,1),margin .3s cubic-bezier(.3,1.5,.5,1),border-color .4s}
 .cur.dot{width:8px;height:8px;margin:-4px 0 0 -4px;background:var(--tx)}
-.cur.ring{width:38px;height:38px;margin:-19px 0 0 -19px;border:1.5px solid var(--tx);mix-blend-mode:multiply}
-.cur.ring:before,.cur.ring:after{content:"";position:absolute;border-radius:50%;inset:6px;background:var(--cur1,var(--yellow));opacity:.6;transition:background-color .4s,transform .3s}
-.cur.ring:after{background:var(--cur2,var(--green));opacity:.45;inset:10px;transform:translate(5px,5px)}
+.cur.ring{width:56px;height:56px;margin:-28px 0 0 -28px}
+.cur.ring svg{width:100%;height:100%;display:block;overflow:visible;animation:spin 7s linear infinite}
+.cur.ring .core{fill:var(--cur1,var(--red));fill-opacity:.85;transition:fill .4s}
+.cur.ring .rays{stroke:#9a918a;stroke-width:1.6;stroke-linecap:round}
 body.cur-on .cur{opacity:1}
-body.cur-hot .cur.ring{width:64px;height:64px;margin:-32px 0 0 -32px;border-color:var(--cur2,var(--blue))}
-body.cur-hot .cur.ring:after{transform:translate(-6px,-4px)}
-body.cur-down .cur.ring{width:28px;height:28px;margin:-14px 0 0 -14px}
+body.cur-hot .cur.ring{width:84px;height:84px;margin:-42px 0 0 -42px}
+body.cur-hot .cur.ring svg{animation-duration:2.6s}
+body.cur-down .cur.ring{width:32px;height:32px;margin:-16px 0 0 -16px}
 
 /* ---------- 마우스를 올렸을 때 (마우스가 있는 기기에서만) ---------- */
 @media (hover:hover) and (pointer:fine){
@@ -1776,7 +1779,11 @@ $("totop").addEventListener("click", function(){ window.scrollTo({ top:0, behavi
   }
   burst += '</g></svg>';
   document.querySelectorAll("[data-kv]").forEach(function(el){
-    el.innerHTML = burst + '<i class="circ ct"></i><i class="circ cr"></i><i class="circ cg"></i><i class="circ cb"></i><i class="circ cp"></i>'
+    var trail = '<div class="trail" aria-hidden="true">';
+    for (var t = 0; t < 8; t++)   /* 파랑 원 뒤로 흐려지며 겹치는 그림자 원 */
+      trail += '<i style="left:' + (4 + t * 3.5) + 'cqw;opacity:' + (.12 + t * .1).toFixed(2) + ';animation-delay:' + (.5 + t * .05).toFixed(2) + 's"></i>';
+    trail += '</div>';
+    el.innerHTML = burst + trail + '<i class="circ ct"></i><i class="circ cr"></i><i class="circ cg"></i><i class="circ cb"></i><i class="circ cp"></i>'
       + '<p class="word w1" aria-hidden="true">CCW</p><p class="word w2" aria-hidden="true">05</p>';
   });
 })();
@@ -1810,6 +1817,7 @@ $("totop").addEventListener("click", function(){ window.scrollTo({ top:0, behavi
   if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
   var dot = document.createElement("i"), ring = document.createElement("i");
   dot.className = "cur dot"; ring.className = "cur ring";
+  ring.innerHTML = '<svg viewBox="0 0 100 100"><g class="rays"><line x1="70.0" y1="50.0" x2="98.0" y2="50.0"/><line x1="69.6" y1="53.9" x2="97.1" y2="59.4"/><line x1="68.5" y1="57.7" x2="94.3" y2="68.4"/><line x1="66.6" y1="61.1" x2="89.9" y2="76.7"/><line x1="64.1" y1="64.1" x2="83.9" y2="83.9"/><line x1="61.1" y1="66.6" x2="76.7" y2="89.9"/><line x1="57.7" y1="68.5" x2="68.4" y2="94.3"/><line x1="53.9" y1="69.6" x2="59.4" y2="97.1"/><line x1="50.0" y1="70.0" x2="50.0" y2="98.0"/><line x1="46.1" y1="69.6" x2="40.6" y2="97.1"/><line x1="42.3" y1="68.5" x2="31.6" y2="94.3"/><line x1="38.9" y1="66.6" x2="23.3" y2="89.9"/><line x1="35.9" y1="64.1" x2="16.1" y2="83.9"/><line x1="33.4" y1="61.1" x2="10.1" y2="76.7"/><line x1="31.5" y1="57.7" x2="5.7" y2="68.4"/><line x1="30.4" y1="53.9" x2="2.9" y2="59.4"/><line x1="30.0" y1="50.0" x2="2.0" y2="50.0"/><line x1="30.4" y1="46.1" x2="2.9" y2="40.6"/><line x1="31.5" y1="42.3" x2="5.7" y2="31.6"/><line x1="33.4" y1="38.9" x2="10.1" y2="23.3"/><line x1="35.9" y1="35.9" x2="16.1" y2="16.1"/><line x1="38.9" y1="33.4" x2="23.3" y2="10.1"/><line x1="42.3" y1="31.5" x2="31.6" y2="5.7"/><line x1="46.1" y1="30.4" x2="40.6" y2="2.9"/><line x1="50.0" y1="30.0" x2="50.0" y2="2.0"/><line x1="53.9" y1="30.4" x2="59.4" y2="2.9"/><line x1="57.7" y1="31.5" x2="68.4" y2="5.7"/><line x1="61.1" y1="33.4" x2="76.7" y2="10.1"/><line x1="64.1" y1="35.9" x2="83.9" y2="16.1"/><line x1="66.6" y1="38.9" x2="89.9" y2="23.3"/><line x1="68.5" y1="42.3" x2="94.3" y2="31.6"/><line x1="69.6" y1="46.1" x2="97.1" y2="40.6"/></g><circle class="core" cx="50" cy="50" r="21"/></svg>';
   dot.setAttribute("aria-hidden", "true"); ring.setAttribute("aria-hidden", "true");
   document.body.appendChild(ring); document.body.appendChild(dot);
   var ptr = null, rx = 0, ry = 0, run = false;
@@ -1834,15 +1842,16 @@ $("totop").addEventListener("click", function(){ window.scrollTo({ top:0, behavi
     document.body.classList.toggle("cur-hot", !!(t && t.closest(HOT)));
     var card = t && t.closest(".vc,[data-card]");
     if (card){
+      delete ring.dataset.click;
       ring.style.setProperty("--cur1", getComputedStyle(card).getPropertyValue("--ac"));
-    } else ring.style.removeProperty("--cur1");
+    } else if (!ring.dataset.click) ring.style.removeProperty("--cur1");
     if (!run){ run = true; requestAnimationFrame(follow); }
   }, { passive: true });
   document.documentElement.addEventListener("mouseleave", function(){ document.body.classList.remove("cur-on"); ptr = null; });
   addEventListener("pointerdown", function(){
     document.body.classList.add("cur-down");
     pair = (pair + 1) % PAIRS.length;   /* 누를 때마다 원 안의 색이 다음 색으로 */
-    ring.style.setProperty("--cur2", PAIRS[pair][1]);
+    if (!ring.style.getPropertyValue("--cur1") || ring.dataset.click) { ring.style.setProperty("--cur1", PAIRS[pair][0]); ring.dataset.click = "1"; }
   });
   addEventListener("pointerup", function(){ document.body.classList.remove("cur-down"); });
   /* 사이트를 띄운 칸(iframe) 위로 가면 커서를 숨깁니다 (그 안에서는 마우스 위치를 알 수 없어서) */
