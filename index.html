@@ -639,6 +639,37 @@ input,select,textarea{font-size:16px}   /* iOS 자동 확대 방지 */
 .mfoot{display:flex;gap:9px;margin-top:22px}
 .mfoot .btn{flex:1;padding:14px 18px;font-size:14.5px}
 .mnote{font-size:12px;color:var(--tx3);margin-top:14px;line-height:1.65}
+/* ---------- 마우스를 올렸을 때 (마우스가 있는 기기에서만) ---------- */
+@media (hover:hover) and (pointer:fine){
+  .kv .circ{transition:translate .7s cubic-bezier(.2,.8,.2,1),scale .35s cubic-bezier(.2,1.4,.4,1);cursor:pointer}
+  .kv .circ:hover{scale:1.07}
+  .kv .burst{transition:translate .9s cubic-bezier(.2,.8,.2,1)}
+  .kv .w2{transition:translate .7s cubic-bezier(.2,.8,.2,1)}
+  .vc{transition:transform .25s,border-color .25s,box-shadow .25s}
+  .vc:hover{transform:translateY(-6px);
+    box-shadow:0 22px 34px -22px color-mix(in srgb,var(--ac) 80%,transparent),0 0 0 2px var(--ac)}
+  .vc .vs .pan,.vc .vs.live iframe{transition:scale .5s cubic-bezier(.2,.8,.2,1)}
+  .vc:hover .vs .pan{scale:1.04}
+  .vc .vopen{opacity:.82;transition:opacity .2s,transform .2s,background .2s}
+  .vc:hover .vopen{opacity:1;transform:translateY(-2px)}
+  .vc .vsum li::before{transition:scale .3s cubic-bezier(.2,1.4,.4,1)}
+  .vc:hover .vsum li::before{scale:1.5}
+  .vsteps li{transition:transform .2s}
+  .vsteps li b{transition:scale .3s cubic-bezier(.2,1.4,.4,1)}
+  .vsteps li:hover{transform:translateY(-2px)}
+  .vsteps li:hover b{scale:1.15}
+  .foot-big i{transition:scale .3s cubic-bezier(.2,1.4,.4,1)}
+  .foot-big i:hover{scale:1.25}
+  .brand .lg b{transition:translate .4s cubic-bezier(.2,1.4,.4,1)}
+  .brand:hover .lg b:nth-child(1){translate:-2px -2px}
+  .brand:hover .lg b:nth-child(2){translate:2px -2px}
+  .brand:hover .lg b:nth-child(3){translate:-2px 2px}
+  .brand:hover .lg b:nth-child(5){translate:2px 2px}
+  .fn,.kpi{transition:transform .25s}
+  .fn:hover{transform:translateY(-3px)}
+  .fn:before{transition:scale .4s cubic-bezier(.2,1.4,.4,1)}
+  .fn:hover:before{scale:1.25}
+}
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition-duration:.01ms!important}
   .vc.play .vbar i{width:45%}
@@ -1578,6 +1609,29 @@ $("totop").addEventListener("click", function(){ window.scrollTo({ top:0, behavi
     el.innerHTML = burst + '<i class="circ ct"></i><i class="circ cr"></i><i class="circ cg"></i><i class="circ cb"></i><i class="circ cp"></i>'
       + '<p class="word w1" aria-hidden="true">CCW</p><p class="word w2" aria-hidden="true">05</p>';
   });
+})();
+
+/* ===================== 키비주얼: 마우스를 따라 원이 살짝 움직임 ===================== */
+(function(){
+  if (!window.matchMedia || !matchMedia("(hover:hover) and (pointer:fine)").matches) return;
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  var art = document.querySelector(".hero .art"); if (!art) return;
+  var layers = [[".ct", 26], [".cr", -20], [".cg", 16], [".cb", -12], [".cp", 30], [".burst", -8], [".w2", 6]];
+  var raf = 0, mx = 0, my = 0;
+  function apply(){
+    raf = 0;
+    layers.forEach(function(l){
+      var el = art.querySelector(l[0]);
+      if (el) el.style.translate = (mx * l[1]).toFixed(1) + "px " + (my * l[1]).toFixed(1) + "px";
+    });
+  }
+  document.querySelector(".banner").addEventListener("mousemove", function(e){
+    var r = art.getBoundingClientRect();
+    mx = Math.max(-1, Math.min(1, (e.clientX - (r.left + r.width / 2)) / (r.width / 2)));
+    my = Math.max(-1, Math.min(1, (e.clientY - (r.top + r.height / 2)) / (r.height / 2)));
+    if (!raf) raf = requestAnimationFrame(apply);
+  });
+  document.querySelector(".banner").addEventListener("mouseleave", function(){ mx = 0; my = 0; if (!raf) raf = requestAnimationFrame(apply); });
 })();
 
 /* ===================== 시작 ===================== */
