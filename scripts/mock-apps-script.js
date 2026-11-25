@@ -39,6 +39,7 @@ http.createServer(async (req, res) => {
   catch { return send({ ok: false, message: "요청을 읽지 못했습니다." }); }
 
   if (b.secret !== SECRET) return send({ ok: false, message: "인증에 실패했습니다." });
+  if (Math.random() < Number(process.env.MOCK_FAIL || 0)) { res.statusCode = 503; return res.end("<html>busy</html>"); }
 
   /* 실제 Apps Script 처럼: 한 번에 한 요청만(잠금), 호출마다 MOCK_LATENCY ms 걸림 */
   const prev = lockChain; let release; lockChain = new Promise((r) => (release = r));
