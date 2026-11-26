@@ -13,8 +13,8 @@ async function totalVotes(status) {
   } catch { /* 시트가 잠시 바쁘면 예전 값을 그대로 씁니다 */ }
   return totalCache.n;
 }
-import { FINALISTS, MAX_VOTES_PER_PHONE, json, fail, votingWindow, normalizePhone, hashPhone, ballotStatus } from "./_lib/util.js";
-import { SMS_ON, checkToken } from "./_lib/otp.js";
+import { FINALISTS, MAX_VOTES_PER_PHONE, json, fail, votingWindow, normalizeEmail, hashPhone, ballotStatus } from "./_lib/util.js";
+import { MAIL_ON, checkToken } from "./_lib/otp.js";
 
 export default async function handler(req, res) {
   if (req.method !== "GET") return fail(res, 405, "GET만 지원합니다.");
@@ -23,7 +23,7 @@ export default async function handler(req, res) {
     const window = votingWindow();
     let myVotes = null;
     const q = new URL(req.url, "http://x").searchParams;
-    const phone = normalizePhone(req.query?.phone ?? q.get("phone"));
+    const phone = normalizeEmail(req.query?.email ?? q.get("email"));
     if (phone) {
       const hash = hashPhone(phone);
       if (checkToken(req.headers["x-vote-token"], hash)) {
@@ -36,7 +36,7 @@ export default async function handler(req, res) {
       ok: true,
       total,
       finalists: FINALISTS,
-      vote: { ...window, maxPerPhone: MAX_VOTES_PER_PHONE, sms: SMS_ON, myVotes }
+      vote: { ...window, maxPerPhone: MAX_VOTES_PER_PHONE, sms: MAIL_ON, myVotes }
     });
   } catch (e) {
     fail(res, 500, e.message);

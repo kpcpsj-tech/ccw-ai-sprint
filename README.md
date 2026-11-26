@@ -94,14 +94,15 @@ Vercel 환경변수: `SHEET_ID`, `GOOGLE_SERVICE_ACCOUNT_EMAIL`, `GOOGLE_PRIVATE
 > B안을 쓰신다면 `APPS_SCRIPT_*` 대신 `SHEET_ID` · `GOOGLE_SERVICE_ACCOUNT_EMAIL` · `GOOGLE_PRIVATE_KEY` 를 넣습니다.
 > `GOOGLE_PRIVATE_KEY` 는 JSON 에 적힌 그대로(줄바꿈이 `\n` 문자로 들어 있는 상태) 붙여넣으면 됩니다.
 
-휴대폰 문자 인증(솔라피) — 세 값이 모두 있어야 인증번호 문자가 나갑니다. 하나라도 없으면 번호 형식만 확인합니다.
+이메일 인증 (Gmail 여러 계정을 차례로 사용) — `MAILER_URLS` 가 비어 있으면 이메일 형식만 확인합니다.
+Gmail 무료 계정은 하루 약 100통이라, 계정마다 `apps-script/Mailer.gs` 를 웹 앱으로 배포하고 주소를 모두 넣습니다.
+한 계정이 한도를 다 쓰면 다음 계정으로 자동으로 넘어갑니다. 남은 발송량은 `/api/health?mail=1` 에서 봅니다.
 
 | 이름 | 값 |
 |---|---|
-| `SOLAPI_API_KEY` | 솔라피 콘솔 → API Key 관리의 API Key |
-| `SOLAPI_API_SECRET` | 같은 곳의 API Secret |
-| `SOLAPI_SENDER` | 솔라피에 등록한 발신번호 (숫자만) |
-| `VOTE_SECRET` | (선택) 아무 긴 문자열. 인증 토큰 서명용. 없으면 `SOLAPI_API_SECRET` 를 씁니다 |
+| `MAILER_URLS` | 발송 스크립트 웹 앱 주소(…/exec)들. 쉼표로 구분 |
+| `APPS_SCRIPT_SECRET` | (이미 있음) 발송 스크립트의 SECRET 도 이 값과 같게 둡니다 |
+| `VOTE_SECRET` | (선택) 아무 긴 문자열. 인증 토큰 서명용. 없으면 `APPS_SCRIPT_SECRET` 을 씁니다 |
 
 투표 현황은 구글 시트 `votes` 탭에서 봅니다. 새 탭에 아래 수식을 넣으면 진출자별 득표가 나옵니다(취소된 표 제외).
 

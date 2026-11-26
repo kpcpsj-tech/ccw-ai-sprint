@@ -998,7 +998,7 @@ body.cur-down .cur.ring{width:32px;height:32px;margin:-16px 0 0 -16px}
   <ol class="vsteps">
     <li><b>1</b><span>마음에 드는 결과물을<br><strong>꼭 3개</strong> 고릅니다</span></li>
     <li><b>2</b><span>맨 아래<br><strong>투표 확정</strong>을 누릅니다</span></li>
-    <li><b>3</b><span>휴대폰 <strong>인증번호</strong>를 넣으면<br>투표 완료</span></li>
+    <li><b>3</b><span>이메일로 받은 <strong>인증번호</strong>를 넣으면<br>투표 완료</span></li>
   </ol>
 
   <div class="callout info" style="margin-top:14px;margin-bottom:14px" id="voteBanner">
@@ -1021,7 +1021,7 @@ body.cur-down .cur.ring{width:32px;height:32px;margin:-16px 0 0 -16px}
       <div><b>19:30</b><span>시상</span></div>
     </div>
     <ul class="os-list">
-      <li><b>온라인 투표</b> — 이 사이트에서 휴대폰 인증 후 3개를 고릅니다. 12월 4일(금) <b>18:00</b>까지.</li>
+      <li><b>온라인 투표</b> — 이 사이트에서 3개를 고르고 이메일로 인증합니다. 12월 4일(금) <b>18:00</b>까지.</li>
       <li><b>현장 투표</b> — 데모데이 당일 부스에서 스티커로 투표합니다. 온라인 투표와 따로 받습니다.</li>
       <li><b>최종 순위</b> — 전문가 최종평가 85% + 청중 평가 15%(온라인 · 현장 투표 합산)</li>
     </ul>
@@ -1055,7 +1055,7 @@ body.cur-down .cur.ring{width:32px;height:32px;margin:-16px 0 0 -16px}
   </div>
 </div>
 
-<!-- 투표 확정 · 휴대폰 인증 창 -->
+<!-- 투표 확정 · 이메일 인증 창 -->
 <div class="ov" id="vmodal" hidden>
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="vmT">
     <div id="vmForm">
@@ -1066,15 +1066,15 @@ body.cur-down .cur.ring{width:32px;height:32px;margin:-16px 0 0 -16px}
       <div class="agree" style="margin-top:16px">
         <label class="ck"><input type="checkbox" id="vck">
           <span class="cv"><b>개인정보 수집·이용에 동의합니다<span class="req">필수</span></b>
-          휴대폰 번호와 접속 IP를 본인 확인과 중복 투표 방지, 결과 집계에만 사용합니다.
+          이메일 주소와 접속 IP를 본인 확인과 중복 투표 방지, 결과 집계에만 사용합니다.
           <button type="button" class="lnk" id="privMore" aria-expanded="false">자세히 보기</button></span></label>
         <div class="privbox" id="privBox" hidden>
           <table>
             <tbody>
-              <tr><th>수집 항목</th><td>휴대폰 번호, 접속 IP 주소, 투표 내역(투표 대상 · 시각)</td></tr>
-              <tr><th>수집 · 이용 목적</th><td>본인 확인(인증번호 문자 발송), 중복 투표 방지, 청중 투표 결과 집계</td></tr>
+              <tr><th>수집 항목</th><td>이메일 주소, 접속 IP 주소, 투표 내역(투표 대상 · 시각)</td></tr>
+              <tr><th>수집 · 이용 목적</th><td>본인 확인(인증번호 메일 발송), 중복 투표 방지, 청중 투표 결과 집계</td></tr>
               <tr><th>보유 · 이용 기간</th><td><b>결과 발표 후 1개월(2027. 1. 4.)까지</b> 보관한 뒤 파기합니다.
-                휴대폰 번호는 암호화(해시)해 저장하며, 운영 기록에는 가운데 자리를 가린 번호만 남습니다.</td></tr>
+                이메일 주소는 암호화(해시)해 저장하며, 운영 기록에는 앞 두 글자만 남기고 가린 주소만 남습니다.</td></tr>
               <tr><th>동의 거부 권리</th><td>동의하지 않을 수 있으며, 이 경우 청중 투표에 참여할 수 없습니다.</td></tr>
               <tr><th>문의</th><td>CCW 운영사무국 · koccaccw@gmail.com</td></tr>
             </tbody>
@@ -1082,15 +1082,15 @@ body.cur-down .cur.ring{width:32px;height:32px;margin:-16px 0 0 -16px}
         </div>
       </div>
 
-      <div class="mlab">휴대폰 번호</div>
+      <div class="mlab">이메일 주소</div>
       <div class="vform">
-        <input type="tel" id="phone" inputmode="numeric" maxlength="13" placeholder="010-0000-0000" aria-label="휴대폰 번호" autocomplete="tel">
+        <input type="email" id="phone" inputmode="email" maxlength="100" placeholder="name@gmail.com" aria-label="이메일 주소" autocomplete="email" autocapitalize="off" spellcheck="false">
         <button class="btn" type="button" id="sendCode">인증번호 받기</button>
       </div>
       <div id="codeBox" hidden>
         <div class="mlab">인증번호 <span class="mono" id="codeTimer" style="margin-left:6px;color:var(--blue)"></span></div>
         <div class="vform">
-          <input type="text" id="code" inputmode="numeric" maxlength="6" placeholder="문자로 받은 6자리" aria-label="인증번호" autocomplete="one-time-code">
+          <input type="text" id="code" inputmode="numeric" maxlength="6" placeholder="메일로 받은 6자리" aria-label="인증번호" autocomplete="one-time-code">
         </div>
       </div>
       <div id="voteMsg" style="font-size:13.5px;margin-top:12px" aria-live="polite"></div>
@@ -1099,7 +1099,7 @@ body.cur-down .cur.ring{width:32px;height:32px;margin:-16px 0 0 -16px}
         <button class="btn ghost" type="button" data-close-vm>다시 고르기</button>
         <button class="btn" type="button" id="submitVote" disabled>투표 완료</button>
       </div>
-      <p class="mnote">한 번호당 결과물 3개에 한 표씩 투표합니다. 같은 번호로 다시 투표하면 마감 전까지 마지막에 고른 3개로 바뀝니다.
+      <p class="mnote">한 이메일당 결과물 3개에 한 표씩 투표합니다. 같은 이메일로 다시 투표하면 마감 전까지 마지막에 고른 3개로 바뀝니다.
         득표 현황은 공개하지 않으며, 결과는 12월 4일 데모데이에서 발표합니다.</p>
     </div>
 
@@ -1291,7 +1291,7 @@ function fmtPhone(v){
   if (d.length < 8) return d.slice(0, 3) + "-" + d.slice(3);
   return d.slice(0, 3) + "-" + d.slice(3, d.length - 4) + "-" + d.slice(-4);
 }
-function validPhone(v){ return /^01[016789]-\d{3,4}-\d{4}$/.test(v); }
+function validPhone(v){ return /^[^\s@]{1,64}@[^\s@]+\.[a-z]{2,}$/i.test(v); }
 
 function renderVoteState(){
   var vs = $("voteState");
@@ -1662,7 +1662,7 @@ window.addEventListener("scroll", function(){
   });
 }, { passive:true });
 
-/* ===================== 투표 확정 · 휴대폰 인증 ===================== */
+/* ===================== 투표 확정 · 이메일 인증 ===================== */
 function openVm(){
   if (picks.length !== MAXV || !voteLive()) return;
   $("picked").innerHTML = picks.map(function(r){
@@ -1696,7 +1696,6 @@ function startTimer(){
 }
 $("confirmBtn").addEventListener("click", openVm);
 $("phone").addEventListener("input", function(){
-  this.value = fmtPhone(this.value);
   if (ticket){ ticket = ""; $("codeBox").hidden = true; $("sendCode").textContent = "인증번호 받기"; }
   syncSubmit();
 });
@@ -1714,16 +1713,16 @@ $("privMore").addEventListener("click", function(e){
 $("sendCode").addEventListener("click", function(){
   var v = $("phone").value.trim(), btn = this;
   if (!$("vck").checked){ note($("voteMsg"), "개인정보 수집·이용에 먼저 동의해 주세요.", "bad"); return; }
-  if (!validPhone(v)){ note($("voteMsg"), "휴대폰 번호를 확인해 주세요. (예: 010-1234-5678)", "bad"); $("phone").focus(); return; }
-  if (VOTEWIN.sms === false){ note($("voteMsg"), "번호가 확인되었습니다. 투표 완료를 눌러 주세요.", "ok"); syncSubmit(); return; }
+  if (!validPhone(v)){ note($("voteMsg"), "이메일 주소를 확인해 주세요. (예: name@gmail.com)", "bad"); $("phone").focus(); return; }
+  if (VOTEWIN.sms === false){ note($("voteMsg"), "주소가 확인되었습니다. 투표 완료를 눌러 주세요.", "ok"); syncSubmit(); return; }
   busy(btn, true);
-  api("/api/otp", { method: "POST", body: { action: "send", phone: v } })
+  api("/api/otp", { method: "POST", body: { action: "send", email: v } })
     .then(function(j){
       if (j.sms === false){ busy(btn, false, "확인됨"); VOTEWIN.sms = false; syncSubmit(); return; }
       ticket = j.ticket; codeUntil = Date.now() + 5 * 60 * 1000;
       $("codeBox").hidden = false; $("code").value = j.mockCode || ""; $("code").focus();
       startTimer();
-      note($("voteMsg"), "인증번호를 문자로 보냈습니다. 6자리를 넣고 투표 완료를 눌러 주세요.", "ok");
+      note($("voteMsg"), "인증번호를 메일로 보냈습니다. 메일이 안 보이면 스팸함도 확인해 주세요.", "ok");
       busy(btn, false, "다시 받기");
       syncSubmit();
     })
@@ -1733,11 +1732,11 @@ $("submitVote").addEventListener("click", function(){
   var v = $("phone").value.trim(), btn = this, chosen = picks.slice();
   busy(btn, true);
   var getToken = VOTEWIN.sms === false
-    ? api("/api/otp", { method: "POST", body: { action: "send", phone: v } })
-    : api("/api/otp", { method: "POST", body: { action: "verify", phone: v, code: $("code").value, ticket: ticket } });
+    ? api("/api/otp", { method: "POST", body: { action: "send", email: v } })
+    : api("/api/otp", { method: "POST", body: { action: "verify", email: v, code: $("code").value, ticket: ticket } });
   getToken
     .then(function(j){
-      return api("/api/vote", { method: "POST", body: { phone: v, token: j.token, targets: chosen.map(String) } });
+      return api("/api/vote", { method: "POST", body: { email: v, token: j.token, targets: chosen.map(String) } });
     })
     .then(function(){
       busy(btn, false, "투표 완료");
@@ -1745,7 +1744,7 @@ $("submitVote").addEventListener("click", function(){
       $("phone").value = ""; $("code").value = ""; $("codeBox").hidden = true; $("sendCode").textContent = "인증번호 받기";
       $("doneSub").innerHTML = chosen.map(function(r){
         return "<b>" + FINALISTS.filter(function(x){ return x.r === r; })[0].n + "</b>";
-      }).join(" · ") + " 님께 투표했습니다.<br>같은 번호로 다시 투표하면 마감 전까지 바꿀 수 있습니다."
+      }).join(" · ") + " 님께 투표했습니다.<br>같은 이메일로 다시 투표하면 마감 전까지 바꿀 수 있습니다."
         + (voteTest() ? "<br><b>테스트 표라 정식 집계에는 들어가지 않습니다.</b>" : "<br><b>12월 4일 데모데이 현장에서 스티커로 한 번 더 투표할 수 있어요.</b>");
       $("vmForm").hidden = true; $("vmDone").hidden = false;
       var fl = $("doneFlower"); fl.classList.remove("bloom"); void fl.offsetWidth; fl.classList.add("bloom");

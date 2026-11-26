@@ -124,6 +124,29 @@ export function maskPhone(digits) {
   return `${head}-****-${tail}`;
 }
 
+/** 이메일 주소를 비교용으로 정리합니다.
+ *  소문자로 바꾸고, Gmail 은 점(.)과 +뒤 꼬리표를 지웁니다 (a.b+1@gmail.com == ab@gmail.com).
+ *  일회용 메일 주소는 받지 않습니다. 형식이 틀리면 null. */
+const THROWAWAY = new Set(["mailinator.com","10minutemail.com","guerrillamail.com","tempmail.com","temp-mail.org",
+  "yopmail.com","sharklasers.com","trashmail.com","dispostable.com","getnada.com","maildrop.cc","tmpmail.org"]);
+export function normalizeEmail(v) {
+  const e = String(v || "").trim().toLowerCase();
+  const m = /^([a-z0-9._%+-]{1,64})@([a-z0-9-]+(?:\.[a-z0-9-]+)*\.[a-z]{2,})$/.exec(e);
+  if (!m) return null;
+  let [, local, domain] = m;
+  if (THROWAWAY.has(domain)) return null;
+  if (domain === "gmail.com" || domain === "googlemail.com") {
+    local = local.split("+")[0].replace(/\./g, ""); domain = "gmail.com";
+  }
+  return local ? `${local}@${domain}` : null;
+}
+
+/** 운영 기록용으로 가린 이메일: ab***@gmail.com */
+export function maskEmail(email) {
+  const [local, domain] = email.split("@");
+  return local.slice(0, 2) + "***@" + domain;
+}
+
 export function hashPhone(digits) {
   const salt = process.env.PHONE_SALT || "ccw-ai-sprint";
   return crypto.createHmac("sha256", salt).update(digits).digest("hex").slice(0, 32);
