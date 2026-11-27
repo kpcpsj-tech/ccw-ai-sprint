@@ -562,7 +562,7 @@ input,select,textarea{font-size:16px}   /* iOS 자동 확대 방지 */
 .privbox td{padding:10px 8px;line-height:1.6}
 .vsum{list-style:none;margin:2px 0 0;padding:0;display:flex;flex-direction:column;gap:5px}
 .vsum li{position:relative;padding-left:14px;font-size:13px;line-height:1.6;color:var(--tx2)}
-.vsum li::before{content:"";position:absolute;left:0;top:8px;width:6px;height:6px;border-radius:50%;background:var(--ac)}
+.vsum li::before{content:"";position:absolute;left:0;top:8px;width:6px;height:6px;border-radius:50%;background:#111}
 .vc .vsum{padding:10px 12px;border-radius:14px;background:var(--bg)}
 .viewer .vwin{width:min(1440px,100%);height:min(920px,100%)}
 .vwbody{flex:1;min-height:0;display:grid;grid-template-columns:minmax(300px,380px) 1fr}
@@ -770,8 +770,8 @@ body.cur-down .cur.ring{width:32px;height:32px;margin:-16px 0 0 -16px}
   .kv .burst{transition:translate .9s cubic-bezier(.2,.8,.2,1)}
   .kv .w2{transition:translate .7s cubic-bezier(.2,.8,.2,1)}
   .vc{transition:transform .25s,border-color .25s,box-shadow .25s}
-  .vc:hover{transform:translateY(-6px);
-    box-shadow:0 22px 34px -22px color-mix(in srgb,var(--ac) 80%,transparent),0 0 0 2px var(--ac)}
+  .vc:hover{transform:translateY(-6px);border-color:#111;
+    box-shadow:0 22px 34px -22px rgba(0,0,0,.45)}
   .vc .vs .pan,.vc .vs.live iframe{transition:scale .5s cubic-bezier(.2,.8,.2,1)}
   .vc:hover .vs .pan{scale:1.04}
   .vc .vopen{opacity:.82;transition:opacity .2s,transform .2s,background .2s}
