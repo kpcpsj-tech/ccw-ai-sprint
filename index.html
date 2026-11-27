@@ -847,7 +847,7 @@ body.cur-down .cur.ring{width:32px;height:32px;margin:-16px 0 0 -16px}
           <b class="mono" style="font-weight:700">11.30 (월) ~ 12.04 (금) 18:00</b>
           <b id="voteState" style="font-weight:700"></b></div>
         <div class="mrow"><span class="mk">데모</span>
-          <b style="font-weight:700">12.04 (금) 15:00 · 홍릉콘텐츠인재캠퍼스 2층</b>
+          <b style="font-weight:700">12.04 (금) 13:00부터 관람 · 홍릉콘텐츠인재캠퍼스 2층</b>
           <button class="gcal" type="button" id="gcal">+ Google Calendar</button></div>
       </div>
       <div class="b-side">
@@ -936,7 +936,7 @@ body.cur-down .cur.ring{width:32px;height:32px;margin:-16px 0 0 -16px}
                   <td class="tk">한국생산성본부 405호. 1인당 발표·시연 10분 + 질의응답 5분, 5인씩 두 차례(순서 무작위 추첨)</td></tr>
               <tr><td class="nm mono">11.30 (월) ~ 12.04 (금) 18:00</td><td class="nm">청중 투표</td>
                   <td class="tk">이 사이트의 투표 탭에서 진행 (데모데이 현장 투표 포함)</td></tr>
-              <tr><td class="nm mono">12.04 (금) 15:00~18:00</td><td class="nm">데모데이 부스 · 현장 투표</td>
+              <tr><td class="nm mono">12.04 (금) 13:00~</td><td class="nm">데모데이 (13:00부터 관람 · 15:00~18:00 부스 시연 · 현장 투표)</td>
                   <td class="tk">홍릉콘텐츠인재캠퍼스 2층 프로젝트 룸. 부스(이젤·노트북)에서 결과물 시연</td></tr>
               <tr><td class="nm mono">12.04 (금) 19:15</td><td class="nm">대표 발표</td>
                   <td class="tk">전문가 최종평가 1위의 대표 시연(5분 이내), CCW 5기 수료식 연계</td></tr>
@@ -1031,6 +1031,7 @@ body.cur-down .cur.ring{width:32px;height:32px;margin:-16px 0 0 -16px}
         <b>온라인으로 이미 투표했어도 현장 투표에 참여할 수 있어요.</b></p>
     </div>
     <div class="os-time">
+      <div><b>13:00 –</b><span>데모데이 관람 시작 · 부스 구경</span></div>
       <div><b>15:00 – 18:00</b><span>부스 시연 · 현장 스티커 투표</span></div>
       <div><b>19:15</b><span>파이널리스트 대표 발표</span></div>
       <div><b>19:30</b><span>시상</span></div>
@@ -1863,9 +1864,9 @@ document.addEventListener("click", function(e){
 $("gcal").addEventListener("click", function(){
   var u = "https://calendar.google.com/calendar/render?action=TEMPLATE"
     + "&text=" + encodeURIComponent("CCW AI Sprint 데모데이")
-    + "&dates=20261204T060000Z/20261204T103000Z"
+    + "&dates=20261204T040000Z/20261204T103000Z"
     + "&location=" + encodeURIComponent("홍릉콘텐츠인재캠퍼스 2층 프로젝트 룸")
-    + "&details=" + encodeURIComponent("부스 시연 15:00~18:00 · 대표 발표 19:15 · 시상 19:30\n" + location.origin);
+    + "&details=" + encodeURIComponent("관람 13:00부터 · 부스 시연 15:00~18:00 · 대표 발표 19:15 · 시상 19:30\n" + location.origin);
   window.open(u, "_blank", "noopener");
 });
 $("share").addEventListener("click", function(){
