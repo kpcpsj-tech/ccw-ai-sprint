@@ -94,6 +94,15 @@ Vercel 환경변수: `SHEET_ID`, `GOOGLE_SERVICE_ACCOUNT_EMAIL`, `GOOGLE_PRIVATE
 > B안을 쓰신다면 `APPS_SCRIPT_*` 대신 `SHEET_ID` · `GOOGLE_SERVICE_ACCOUNT_EMAIL` · `GOOGLE_PRIVATE_KEY` 를 넣습니다.
 > `GOOGLE_PRIVATE_KEY` 는 JSON 에 적힌 그대로(줄바꿈이 `\n` 문자로 들어 있는 상태) 붙여넣으면 됩니다.
 
+카카오 로그인 인증 — `KAKAO_REST_KEY` 가 있으면 카카오 로그인으로 본인 확인합니다 (회원번호만 씀, 이메일 인증보다 우선).
+
+| 이름 | 값 |
+|---|---|
+| `KAKAO_REST_KEY` | 카카오 디벨로퍼스 → 앱 → 앱 키 → REST API 키 |
+| `KAKAO_CLIENT_SECRET` | (선택) Client Secret 을 켠 경우 그 코드 |
+
+카카오 디벨로퍼스에 Redirect URI `https://ccw-ai-sprint-eight.vercel.app/api/kakao` 를 등록해야 합니다.
+
 이메일 인증 (Gmail 여러 계정을 차례로 사용) — `MAILER_URLS` 가 비어 있으면 이메일 형식만 확인합니다.
 Gmail 무료 계정은 하루 약 100통이라, 계정마다 `apps-script/Mailer.gs` 를 웹 앱으로 배포하고 주소를 모두 넣습니다.
 한 계정이 한도를 다 쓰면 다음 계정으로 자동으로 넘어갑니다. 남은 발송량은 `/api/health?mail=1` 에서 봅니다.

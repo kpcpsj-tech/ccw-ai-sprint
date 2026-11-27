@@ -65,8 +65,8 @@ export function checkTicket(ticket, phoneHash, code) {
 }
 
 /** 투표 토큰 */
-export function makeToken(phoneHash) {
-  const body = b64(JSON.stringify({ p: phoneHash, e: Date.now() + TOKEN_TTL }));
+export function makeToken(phoneHash, masked) {
+  const body = b64(JSON.stringify({ p: phoneHash, e: Date.now() + TOKEN_TTL, ...(masked ? { m: masked } : {}) }));
   return body + "." + hmac("vote|" + body);
 }
 export function checkToken(token, phoneHash) {
@@ -96,6 +96,17 @@ async function callMailer(url, payload, ms = 20000) {
 /* 오늘 한도를 다 쓴 계정은 잠시 건너뜁니다 (서버 한 대 안에서 기억) */
 const spentUntil = new Map();
 let cursor = 0;
+
+/** 토큰만으로 신원을 꺼냅니다 (카카오 로그인용). 서명이 맞고 기한 안이면 { p, m }, 아니면 null */
+export function readToken(token) {
+  const [body, sig] = String(token || "").split(".");
+  if (!body || !sig || !same(sig, hmac("vote|" + body))) return null;
+  try { const d = JSON.parse(unb64(body)); return Date.now() <= d.e ? d : null; } catch { return null; }
+}
+
+/** 카카오 로그인 (REST API 키가 있으면 켜짐) */
+export const KAKAO_ON = !!process.env.KAKAO_REST_KEY;
+export const AUTH_MODE = KAKAO_ON ? "kakao" : (MAIL_ON ? "email" : "none");
 
 /** 인증번호 메일 보내기. 한도가 남은 계정을 차례로 찾아 보냅니다. */
 export async function sendMail(to, code) {

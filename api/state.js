@@ -14,7 +14,7 @@ async function totalVotes(status) {
   return totalCache.n;
 }
 import { FINALISTS, MAX_VOTES_PER_PHONE, json, fail, votingWindow, normalizeEmail, hashPhone, ballotStatus } from "./_lib/util.js";
-import { MAIL_ON, checkToken } from "./_lib/otp.js";
+import { MAIL_ON, AUTH_MODE, checkToken } from "./_lib/otp.js";
 
 export default async function handler(req, res) {
   if (req.method !== "GET") return fail(res, 405, "GET만 지원합니다.");
@@ -36,7 +36,7 @@ export default async function handler(req, res) {
       ok: true,
       total,
       finalists: FINALISTS,
-      vote: { ...window, maxPerPhone: MAX_VOTES_PER_PHONE, sms: MAIL_ON, myVotes }
+      vote: { ...window, maxPerPhone: MAX_VOTES_PER_PHONE, sms: MAIL_ON, auth: AUTH_MODE, myVotes }
     });
   } catch (e) {
     fail(res, 500, e.message);

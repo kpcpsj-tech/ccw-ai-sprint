@@ -793,6 +793,10 @@ body.cur-down .cur.ring{width:32px;height:32px;margin:-16px 0 0 -16px}
   *,*::before,*::after{animation:none!important;transition-duration:.01ms!important}
   .vc.play .vbar i{width:45%}
 }
+#kakaoBox{margin-top:16px}
+.btn.kakao{width:100%;justify-content:center;gap:8px;background:#FEE500;color:#191919;border-color:#FEE500;box-shadow:none}
+.btn.kakao:hover{filter:brightness(.97)}
+.kakao-note{font-size:12.5px;color:var(--muted,#777);margin:8px 2px 0;text-align:center}
 </style>
 
 <!-- ======================= 상단 바 ======================= -->
@@ -998,7 +1002,7 @@ body.cur-down .cur.ring{width:32px;height:32px;margin:-16px 0 0 -16px}
   <ol class="vsteps">
     <li><b>1</b><span>마음에 드는 결과물을<br><strong>꼭 3개</strong> 고릅니다</span></li>
     <li><b>2</b><span>맨 아래<br><strong>투표 확정</strong>을 누릅니다</span></li>
-    <li><b>3</b><span>이메일로 받은 <strong>인증번호</strong>를 넣으면<br>투표 완료</span></li>
+    <li><b>3</b><span id="step3">이메일로 받은 <strong>인증번호</strong>를 넣으면<br>투표 완료</span></li>
   </ol>
 
   <div class="callout info" style="margin-top:14px;margin-bottom:14px" id="voteBanner">
@@ -1021,7 +1025,7 @@ body.cur-down .cur.ring{width:32px;height:32px;margin:-16px 0 0 -16px}
       <div><b>19:30</b><span>시상</span></div>
     </div>
     <ul class="os-list">
-      <li><b>온라인 투표</b> — 이 사이트에서 3개를 고르고 이메일로 인증합니다. 12월 4일(금) <b>18:00</b>까지.</li>
+      <li><b>온라인 투표</b> — 이 사이트에서 3개를 고르고 <span class="idHow">이메일로</span> 인증합니다. 12월 4일(금) <b>18:00</b>까지.</li>
       <li><b>현장 투표</b> — 데모데이 당일 부스에서 스티커로 투표합니다. 온라인 투표와 따로 받습니다.</li>
       <li><b>최종 순위</b> — 전문가 최종평가 85% + 청중 평가 15%(온라인 · 현장 투표 합산)</li>
     </ul>
@@ -1066,15 +1070,15 @@ body.cur-down .cur.ring{width:32px;height:32px;margin:-16px 0 0 -16px}
       <div class="agree" style="margin-top:16px">
         <label class="ck"><input type="checkbox" id="vck">
           <span class="cv"><b>개인정보 수집·이용에 동의합니다<span class="req">필수</span></b>
-          이메일 주소와 접속 IP를 본인 확인과 중복 투표 방지, 결과 집계에만 사용합니다.
+          <span class="idName">이메일 주소</span>와 접속 IP를 본인 확인과 중복 투표 방지, 결과 집계에만 사용합니다.
           <button type="button" class="lnk" id="privMore" aria-expanded="false">자세히 보기</button></span></label>
         <div class="privbox" id="privBox" hidden>
           <table>
             <tbody>
-              <tr><th>수집 항목</th><td>이메일 주소, 접속 IP 주소, 투표 내역(투표 대상 · 시각)</td></tr>
-              <tr><th>수집 · 이용 목적</th><td>본인 확인(인증번호 메일 발송), 중복 투표 방지, 청중 투표 결과 집계</td></tr>
+              <tr><th>수집 항목</th><td><span class="idName">이메일 주소</span>, 접속 IP 주소, 투표 내역(투표 대상 · 시각)</td></tr>
+              <tr><th>수집 · 이용 목적</th><td>본인 확인(<span id="privWhy">인증번호 메일 발송</span>), 중복 투표 방지, 청중 투표 결과 집계</td></tr>
               <tr><th>보유 · 이용 기간</th><td><b>결과 발표 후 1개월(2027. 1. 4.)까지</b> 보관한 뒤 파기합니다.
-                이메일 주소는 암호화(해시)해 저장하며, 운영 기록에는 앞 두 글자만 남기고 가린 주소만 남습니다.</td></tr>
+                <span id="privKeep">이메일 주소는 암호화(해시)해 저장하며, 운영 기록에는 앞 두 글자만 남기고 가린 주소만 남습니다.</span></td></tr>
               <tr><th>동의 거부 권리</th><td>동의하지 않을 수 있으며, 이 경우 청중 투표에 참여할 수 없습니다.</td></tr>
               <tr><th>문의</th><td>CCW 운영사무국 · koccaccw@gmail.com</td></tr>
             </tbody>
@@ -1082,6 +1086,11 @@ body.cur-down .cur.ring{width:32px;height:32px;margin:-16px 0 0 -16px}
         </div>
       </div>
 
+      <div id="kakaoBox" hidden>
+        <button class="btn kakao" type="button" id="kakaoGo"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M12 3C6.5 3 2 6.6 2 11c0 2.8 1.9 5.3 4.7 6.7-.2.8-.7 2.8-.8 3.2 0 0 0 .3.2.4.1.1.3 0 .3 0 .4-.1 3.6-2.4 4.2-2.8.5.1 1 .1 1.4.1 5.5 0 10-3.6 10-8S17.5 3 12 3z"/></svg>카카오로 인증하고 투표하기</button>
+        <p class="kakao-note">카카오 회원번호만 확인합니다. 닉네임 · 전화번호 · 이메일은 받지 않습니다.</p>
+      </div>
+      <div id="emailBox">
       <div class="mlab">이메일 주소</div>
       <div class="vform">
         <input type="email" id="phone" inputmode="email" maxlength="100" placeholder="name@gmail.com" aria-label="이메일 주소" autocomplete="email" autocapitalize="off" spellcheck="false">
@@ -1093,13 +1102,14 @@ body.cur-down .cur.ring{width:32px;height:32px;margin:-16px 0 0 -16px}
           <input type="text" id="code" inputmode="numeric" maxlength="6" placeholder="메일로 받은 6자리" aria-label="인증번호" autocomplete="one-time-code">
         </div>
       </div>
+      </div>
       <div id="voteMsg" style="font-size:13.5px;margin-top:12px" aria-live="polite"></div>
 
       <div class="mfoot">
         <button class="btn ghost" type="button" data-close-vm>다시 고르기</button>
         <button class="btn" type="button" id="submitVote" disabled>투표 완료</button>
       </div>
-      <p class="mnote">한 이메일당 결과물 3개에 한 표씩 투표합니다. 같은 이메일로 다시 투표하면 마감 전까지 마지막에 고른 3개로 바뀝니다.
+      <p class="mnote"><span class="idPer">한 이메일당</span> 결과물 3개에 한 표씩 투표합니다. <span class="idSame">같은 이메일로</span> 다시 투표하면 마감 전까지 마지막에 고른 3개로 바뀝니다.
         득표 현황은 공개하지 않으며, 결과는 12월 4일 데모데이에서 발표합니다.</p>
     </div>
 
@@ -1265,6 +1275,7 @@ function loadState(){
   return api("/api/state").then(function(j){
     VOTEWIN = j.vote || VOTEWIN;
     MAXV = VOTEWIN.maxPerPhone || 3;
+    applyAuthMode();
     if (typeof j.total === "number") showTotal(j.total);
     renderVoteState(); renderWall();
     return j;
@@ -1680,6 +1691,32 @@ function closeVm(){
   $("vmodal").hidden = true;
   document.body.style.overflow = "";
 }
+function kakaoMode(){ return VOTEWIN.auth === "kakao"; }
+/* 인증 방식(카카오 / 이메일)에 맞춰 안내 문구와 입력칸을 바꿉니다 */
+function applyAuthMode(){
+  var k = kakaoMode();
+  $("kakaoBox").hidden = !k; $("emailBox").hidden = k; $("submitVote").hidden = k;
+  var set = function(sel, t){ document.querySelectorAll(sel).forEach(function(el){ el.textContent = t; }); };
+  set(".idName", k ? "카카오 회원번호" : "이메일 주소");
+  set(".idHow", k ? "카카오 로그인으로" : "이메일로");
+  set(".idPer", k ? "한 카카오 계정당" : "한 이메일당");
+  set(".idSame", k ? "같은 카카오 계정으로" : "같은 이메일로");
+  $("privWhy").textContent = k ? "카카오 로그인" : "인증번호 메일 발송";
+  $("privKeep").textContent = k
+    ? "카카오 회원번호는 암호화(해시)해 저장하며, 운영 기록에는 끝 네 자리만 남깁니다. 닉네임 · 전화번호 · 이메일은 받지 않습니다."
+    : "이메일 주소는 암호화(해시)해 저장하며, 운영 기록에는 앞 두 글자만 남기고 가린 주소만 남습니다.";
+  $("step3").innerHTML = k ? "<strong>카카오 로그인</strong>으로 인증하면<br>투표 완료" : "이메일로 받은 <strong>인증번호</strong>를 넣으면<br>투표 완료";
+}
+function showDone(chosen){
+  $("doneSub").innerHTML = chosen.map(function(r){
+    return "<b>" + FINALISTS.filter(function(x){ return String(x.r) === String(r); })[0].n + "</b>";
+  }).join(" · ") + " 님께 투표했습니다.<br>" + (kakaoMode() ? "같은 카카오 계정으로" : "같은 이메일로") + " 다시 투표하면 마감 전까지 바꿀 수 있습니다."
+    + (voteTest() ? "<br><b>테스트 표라 정식 집계에는 들어가지 않습니다.</b>" : "<br><b>12월 4일 데모데이 현장에서 스티커로 한 번 더 투표할 수 있어요.</b>");
+  $("vmForm").hidden = true; $("vmDone").hidden = false;
+  var fl = $("doneFlower"); fl.classList.remove("bloom"); void fl.offsetWidth; fl.classList.add("bloom");
+  picks = []; renderVoteState(); renderWall();
+  setTimeout(function(){ loadState().catch(function(){}); }, 1500);
+}
 function syncSubmit(){
   var needCode = VOTEWIN.sms !== false;
   $("submitVote").disabled = !$("vck").checked || !validPhone($("phone").value.trim())
@@ -1744,7 +1781,7 @@ $("submitVote").addEventListener("click", function(){
       $("phone").value = ""; $("code").value = ""; $("codeBox").hidden = true; $("sendCode").textContent = "인증번호 받기";
       $("doneSub").innerHTML = chosen.map(function(r){
         return "<b>" + FINALISTS.filter(function(x){ return x.r === r; })[0].n + "</b>";
-      }).join(" · ") + " 님께 투표했습니다.<br>같은 이메일로 다시 투표하면 마감 전까지 바꿀 수 있습니다."
+      }).join(" · ") + " 님께 투표했습니다.<br>" + (kakaoMode() ? "같은 카카오 계정으로" : "같은 이메일로") + " 다시 투표하면 마감 전까지 바꿀 수 있습니다."
         + (voteTest() ? "<br><b>테스트 표라 정식 집계에는 들어가지 않습니다.</b>" : "<br><b>12월 4일 데모데이 현장에서 스티커로 한 번 더 투표할 수 있어요.</b>");
       $("vmForm").hidden = true; $("vmDone").hidden = false;
       var fl = $("doneFlower"); fl.classList.remove("bloom"); void fl.offsetWidth; fl.classList.add("bloom");
@@ -1753,6 +1790,32 @@ $("submitVote").addEventListener("click", function(){
     })
     .catch(function(e){ busy(btn, false, "투표 완료"); note($("voteMsg"), e.message, "bad"); syncSubmit(); });
 });
+
+/* ===================== 카카오 인증 ===================== */
+$("kakaoGo").addEventListener("click", function(){
+  if (!$("vck").checked){ note($("voteMsg"), "개인정보 수집·이용에 먼저 동의해 주세요.", "bad"); return; }
+  try { sessionStorage.setItem("ccwPicks", JSON.stringify(picks)); } catch (e) {}
+  this.disabled = true;
+  location.href = "/api/kakao";
+});
+/* 카카오에서 돌아왔을 때: 골라 둔 3개를 되살려 바로 투표합니다 */
+function kakaoReturn(){
+  var h = location.hash, tok = (h.match(/[#&]kakao=([^&]+)/) || [])[1], err = (h.match(/[#&]kakao_err=([^&]+)/) || [])[1];
+  if (!tok && !err) return;
+  history.replaceState(null, "", location.pathname + location.search);
+  var saved = [];
+  try { saved = JSON.parse(sessionStorage.getItem("ccwPicks") || "[]"); sessionStorage.removeItem("ccwPicks"); } catch (e) {}
+  if (saved.length === MAXV) { picks = saved; renderVoteState(); renderWall(); }
+  go("vote", true);
+  if (picks.length !== MAXV) { if (err) alert(decodeURIComponent(err)); return; }
+  openVm(); $("vck").checked = true;
+  if (err) { note($("voteMsg"), decodeURIComponent(err), "bad"); return; }
+  var chosen = picks.slice(), btn = $("kakaoGo");
+  btn.disabled = true; note($("voteMsg"), "카카오 인증이 확인되었습니다. 투표를 저장하는 중입니다…", "ok");
+  api("/api/vote", { method: "POST", body: { kakao: true, token: tok, targets: chosen.map(String) } })
+    .then(function(){ btn.disabled = false; showDone(chosen); })
+    .catch(function(e){ btn.disabled = false; note($("voteMsg"), e.message, "bad"); });
+}
 
 /* ===================== 클릭 ===================== */
 document.addEventListener("click", function(e){
@@ -1897,7 +1960,7 @@ $("totop").addEventListener("click", function(){ window.scrollTo({ top:0, behavi
 /* ===================== 시작 ===================== */
 $("dday").textContent = "Final Sprint " + dlabel(dday("2026-12-04"));
 renderHtl(); renderBooths(); renderVoteState(); renderWall(); go("vote", true);
-loadState().catch(function(){});
+loadState().then(kakaoReturn).catch(function(){});
 /* 창으로 돌아오면 투표 기간 상태를 다시 읽습니다 (오픈 · 마감 시각을 넘긴 경우 대비) */
 document.addEventListener("visibilitychange", function(){ if (!document.hidden) loadState().catch(function(){}); });
 setInterval(function(){ if (!document.hidden) loadState().catch(function(){}); }, 60000);
