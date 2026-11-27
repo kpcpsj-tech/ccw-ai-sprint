@@ -626,6 +626,7 @@ input,select,textarea{font-size:16px}   /* iOS 자동 확대 방지 */
 /* 고른 카드: 색 대신 검정 테두리로 떠오르는 입체 효과 */
 .vc.picked{position:relative;border-color:#111;background:#fff;transform:translateY(-6px);
   box-shadow:0 6px 0 #111,0 18px 30px rgba(0,0,0,.18)}
+.vc.picked .vsum li::before{display:none}
 .vc.picked:hover{transform:translateY(-8px);box-shadow:0 8px 0 #111,0 22px 34px rgba(0,0,0,.2)}
 .vc.picked::after{content:"✓";position:absolute;top:12px;right:12px;z-index:3;width:30px;height:30px;border-radius:50%;
   display:grid;place-items:center;background:#111;color:#fff;font:900 15px/1 var(--kr);box-shadow:0 3px 0 #000,0 4px 10px rgba(0,0,0,.25)}
@@ -777,7 +778,7 @@ body.cur-down .cur.ring{width:32px;height:32px;margin:-16px 0 0 -16px}
   .vc .vopen{opacity:.82;transition:opacity .2s,transform .2s,background .2s}
   .vc:hover .vopen{opacity:1;transform:translateY(-2px)}
   .vc .vsum li::before{transition:scale .3s cubic-bezier(.2,1.4,.4,1)}
-  .vc:hover .vsum li::before{scale:1.5}
+  .vc.picked .vsum li::before{display:none}
   .vsteps li{transition:transform .2s}
   .vsteps li b{transition:scale .3s cubic-bezier(.2,1.4,.4,1)}
   .vsteps li:hover{transform:translateY(-2px)}
